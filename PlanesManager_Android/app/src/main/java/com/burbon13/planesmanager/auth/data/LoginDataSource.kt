@@ -1,6 +1,6 @@
-package com.burbon13.planesmanager.data
+package com.burbon13.planesmanager.auth.data
 
-import com.burbon13.planesmanager.data.model.LoggedInUser
+import com.burbon13.planesmanager.auth.data.model.LoggedInUser
 import java.io.IOException
 
 /**

@@ -1,4 +1,4 @@
-package com.burbon13.planesmanager.ui.login
+package com.burbon13.planesmanager.auth.ui
 
 import android.app.Activity
 import androidx.lifecycle.Observer
@@ -31,7 +31,9 @@ class LoginActivity : AppCompatActivity() {
         val login = findViewById<Button>(R.id.login)
         val loading = findViewById<ProgressBar>(R.id.loading)
 
-        loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
+        loginViewModel = ViewModelProviders.of(this,
+            LoginViewModelFactory()
+        )
             .get(LoginViewModel::class.java)
 
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {

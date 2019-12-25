@@ -1,4 +1,6 @@
-package com.burbon13.planesmanager.ui.login
+package com.burbon13.planesmanager.auth.ui
+
+import com.burbon13.planesmanager.auth.ui.LoggedInUserView
 
 /**
  * Authentication result : success (user details) or error message.

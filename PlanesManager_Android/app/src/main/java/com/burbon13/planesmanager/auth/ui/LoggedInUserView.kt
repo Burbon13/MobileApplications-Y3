@@ -1,4 +1,4 @@
-package com.burbon13.planesmanager.ui.login
+package com.burbon13.planesmanager.auth.ui
 
 /**
  * User details post authentication that is exposed to the UI

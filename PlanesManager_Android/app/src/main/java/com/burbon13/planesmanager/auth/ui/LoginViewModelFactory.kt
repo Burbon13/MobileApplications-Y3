@@ -1,9 +1,9 @@
-package com.burbon13.planesmanager.ui.login
+package com.burbon13.planesmanager.auth.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.burbon13.planesmanager.data.LoginDataSource
-import com.burbon13.planesmanager.data.LoginRepository
+import com.burbon13.planesmanager.auth.data.LoginDataSource
+import com.burbon13.planesmanager.auth.data.LoginRepository
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.

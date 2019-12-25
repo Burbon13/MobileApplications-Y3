@@ -1,6 +1,6 @@
-package com.burbon13.planesmanager.data
+package com.burbon13.planesmanager.auth.data
 
-import com.burbon13.planesmanager.data.model.LoggedInUser
+import com.burbon13.planesmanager.auth.data.model.LoggedInUser
 
 /**
  * Class that requests authentication and user information from the remote data source and

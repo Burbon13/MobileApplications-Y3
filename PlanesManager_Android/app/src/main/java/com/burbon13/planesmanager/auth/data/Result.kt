@@ -1,4 +1,4 @@
-package com.burbon13.planesmanager.data
+package com.burbon13.planesmanager.auth.data
 
 /**
  * A generic class that holds a value with its loading status.

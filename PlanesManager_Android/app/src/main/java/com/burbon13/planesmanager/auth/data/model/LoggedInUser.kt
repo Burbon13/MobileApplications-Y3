@@ -1,4 +1,4 @@
-package com.burbon13.planesmanager.data.model
+package com.burbon13.planesmanager.auth.data.model
 
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository
