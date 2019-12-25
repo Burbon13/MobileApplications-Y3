@@ -1,4 +1,4 @@
-package com.example.planesmanager
+package com.burbon13.planesmanager
 
 import org.junit.Test
 

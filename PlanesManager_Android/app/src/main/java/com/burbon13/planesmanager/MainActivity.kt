@@ -1,4 +1,4 @@
-package com.example.planesmanager
+package com.burbon13.planesmanager
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

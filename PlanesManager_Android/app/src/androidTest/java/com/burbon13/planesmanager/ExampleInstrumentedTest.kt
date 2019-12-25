@@ -1,4 +1,4 @@
-package com.example.planesmanager
+package com.burbon13.planesmanager
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
