@@ -41,10 +41,13 @@ class MyPlaneRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
-        holder.mBrandView.text = item.brand
-        holder.mModelView.text = item.model
+        holder.planeBrandView.text = item.brand
+        holder.planeModelView.text = item.model
+        holder.planePriceView.text = "US$${item.price / 1000000} milion"
+        holder.planeYearView.text = item.fabricationYear.toString()
+        holder.planeTailNumberView.text = item.tailNumber
 
-        with(holder.mView) {
+        with(holder.planeView) {
             tag = item
             setOnClickListener(mOnClickListener)
         }
@@ -52,12 +55,11 @@ class MyPlaneRecyclerViewAdapter(
 
     override fun getItemCount(): Int = mValues.size
 
-    inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val mBrandView: TextView = mView.plane_brand
-        val mModelView: TextView = mView.plane_model
-
-        override fun toString(): String {
-            return super.toString() + " '" + mBrandView.text + "' '" + mModelView.text + "'"
-        }
+    inner class ViewHolder(val planeView: View) : RecyclerView.ViewHolder(planeView) {
+        val planeBrandView: TextView = planeView.plane_brand
+        val planeModelView: TextView = planeView.plane_model
+        val planePriceView: TextView = planeView.plane_price
+        val planeYearView: TextView = planeView.plane_fabrication_year
+        val planeTailNumberView: TextView = planeView.plane_tail_number
     }
 }

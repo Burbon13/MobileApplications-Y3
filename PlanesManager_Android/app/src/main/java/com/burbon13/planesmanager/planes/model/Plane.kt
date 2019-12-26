@@ -2,7 +2,7 @@ package com.burbon13.planesmanager.planes.model
 
 
 data class Plane(
-    val id: Int,
+    val tailNumber: String,
     val brand: String,
     val model: String,
     val fabricationYear: Int,
