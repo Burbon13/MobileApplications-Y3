@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.burbon13.planesmanager.R
 import com.burbon13.planesmanager.core.TAG
+import com.burbon13.planesmanager.core.utils.hideKeyboard
 
 import com.burbon13.planesmanager.planes.dummy.DummyContent
 import com.burbon13.planesmanager.planes.model.Plane
@@ -27,7 +28,6 @@ class PlanesFragment : Fragment(), OnListFragmentInteractionListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
@@ -54,6 +54,11 @@ class PlanesFragment : Fragment(), OnListFragmentInteractionListener {
             }
         }
         return view
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        hideKeyboard()
     }
 
     companion object {

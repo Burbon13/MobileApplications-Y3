@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_controller_view_tag)
+        val navController = findNavController(R.id.my_nav_host_fragment)
         return NavigationUI.navigateUp(navController, drawer_layout)
     }
 }
