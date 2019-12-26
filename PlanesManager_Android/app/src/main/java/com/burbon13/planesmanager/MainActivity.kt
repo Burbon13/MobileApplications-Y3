@@ -2,28 +2,30 @@ package com.burbon13.planesmanager
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import kotlinx.android.synthetic.main.activity_navigation.*
 
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_navigation)
+        navController = findNavController(R.id.my_nav_host_fragment)
         NavigationUI.setupActionBarWithNavController(
             this,
-            findNavController(R.id.my_nav_host_fragment),
-            drawer_layout
+            navController
         )
         NavigationUI.setupWithNavController(
             nav_view,
-            findNavController(R.id.my_nav_host_fragment)
+            navController
         )
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.my_nav_host_fragment)
-        return NavigationUI.navigateUp(navController, drawer_layout)
+        return navController.navigateUp()
     }
 }

@@ -13,6 +13,7 @@
         <action
             android:id="@+id/action_loginActivity_to_planesFragment"
             app:destination="@id/planesFragment"
+            app:launchSingleTop="true"
             app:popUpTo="@+id/loginActivity"
             app:popUpToInclusive="true" />
     </fragment>
