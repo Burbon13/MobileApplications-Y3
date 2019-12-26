@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/loginActivity"
         android:name="com.burbon13.planesmanager.auth.ui.LoginFragment"
-        android:label="fragment_login"
+        android:label="Login"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginActivity_to_planesFragment"
@@ -17,6 +17,6 @@
     <fragment
         android:id="@+id/planesFragment"
         android:name="com.burbon13.planesmanager.planes.PlanesFragment"
-        android:label="fragment_plane_list"
+        android:label="Plane Manager"
         tools:layout="@layout/fragment_plane_list" />
 </navigation>
