@@ -1,5 +1,6 @@
 package com.burbon13.planesmanager.planes
 
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 
 import com.burbon13.planesmanager.R
+import com.burbon13.planesmanager.core.TAG
 import com.burbon13.planesmanager.planes.model.Plane
 
 import kotlinx.android.synthetic.main.fragment_plane.view.*
@@ -15,7 +17,6 @@ import kotlinx.android.synthetic.main.fragment_plane.view.*
 /**
  * [RecyclerView.Adapter] that can display a [Plane] and makes a call to the
  * specified [OnListFragmentInteractionListener].
- * TODO: Replace the implementation with code for your data type.
  */
 class MyPlaneRecyclerViewAdapter(
     private val mValues: List<Plane>,
@@ -25,6 +26,8 @@ class MyPlaneRecyclerViewAdapter(
     private val mOnClickListener: View.OnClickListener
 
     init {
+        Log.d(TAG, "Initializing MyPlaneRecyclerViewAdapter")
+        Log.d(TAG, "Setting click listener on plane items")
         mOnClickListener = View.OnClickListener { v ->
             val item = v.tag as Plane
             // Notify the active callbacks interface (the activity, if the fragment is attached to
@@ -34,6 +37,7 @@ class MyPlaneRecyclerViewAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        Log.d(TAG, "onCreateViewHolder()")
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_plane, parent, false)
         return ViewHolder(view)
@@ -41,6 +45,7 @@ class MyPlaneRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
+        Log.v(TAG, "onBindViewHolder() for position=$position: $item")
         holder.planeBrandView.text = item.brand
         holder.planeModelView.text = item.model
         holder.planePriceView.text = "US$${item.price / 1000000} milion"

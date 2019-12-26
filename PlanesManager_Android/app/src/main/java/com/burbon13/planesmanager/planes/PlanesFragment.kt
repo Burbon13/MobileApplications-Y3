@@ -24,12 +24,11 @@ import kotlinx.android.synthetic.main.fragment_plane_list.*
  */
 class PlanesFragment : Fragment(), OnListFragmentInteractionListener {
 
-    // TODO: Customize parameters
     private var columnCount = 1
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate()")
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
@@ -39,8 +38,10 @@ class PlanesFragment : Fragment(), OnListFragmentInteractionListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d(TAG, "onCreateView()")
         val view = inflater.inflate(R.layout.fragment_plane_list, container, false)
 
+        Log.d(TAG, "Setting divider, layout manager and adapter to plane RecyclerView")
         val recyclerViewPlanes = view.findViewById<RecyclerView>(R.id.recycler_view_planes)
         recyclerViewPlanes.setDivider(R.drawable.recycler_view_divider)
         recyclerViewPlanes.layoutManager = when {
@@ -57,15 +58,14 @@ class PlanesFragment : Fragment(), OnListFragmentInteractionListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        Log.d(TAG, "onActivityCreated()")
         hideKeyboard()
     }
 
     companion object {
 
-        // TODO: Customize parameter argument names
         const val ARG_COLUMN_COUNT = "column-count"
 
-        // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(columnCount: Int) =
             PlanesFragment().apply {
