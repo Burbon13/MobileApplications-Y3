@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/loginActivity">
+
+    <fragment
+        android:id="@+id/loginActivity"
+        android:name="com.burbon13.planesmanager.auth.ui.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginActivity_to_planesFragment"
+            app:destination="@id/planesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/planesFragment"
+        android:name="com.burbon13.planesmanager.planes.PlanesFragment"
+        android:label="fragment_plane_list"
+        tools:layout="@layout/fragment_plane_list" />
+</navigation>

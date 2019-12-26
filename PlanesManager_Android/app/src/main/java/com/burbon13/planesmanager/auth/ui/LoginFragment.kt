@@ -11,13 +11,12 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 
 import com.burbon13.planesmanager.R
 import kotlinx.android.synthetic.main.fragment_login.*
 
 
-class LoginActivity : Fragment() {
+class LoginFragment : Fragment() {
     private lateinit var viewModel: LoginViewModel
 
     override fun onCreateView(

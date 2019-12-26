@@ -1,4 +1,4 @@
-package com.burbon13.planesmanager.core.model
+package com.burbon13.planesmanager.planes.model
 
 
 data class Plane(

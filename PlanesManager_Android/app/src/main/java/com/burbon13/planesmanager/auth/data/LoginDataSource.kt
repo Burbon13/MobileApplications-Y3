@@ -1,25 +1,31 @@
 package com.burbon13.planesmanager.auth.data
 
-import com.burbon13.planesmanager.auth.data.model.LoggedInUser
-import java.io.IOException
+import com.burbon13.planesmanager.auth.data.model.User
+import com.burbon13.planesmanager.core.Api
+import com.burbon13.planesmanager.core.Result
+import retrofit2.http.Body
+import retrofit2.http.Headers
+import retrofit2.http.POST
+import java.lang.Exception
+
 
 /**
- * Class that handles authentication w/ login credentials and retrieves user information.
+ * Class that handles authentication w/ login credentials and retrieves the session token.
  */
 class LoginDataSource {
+    interface AuthService {
+        @Headers("Content-Type: application/json")
+        @POST("/api/auth/login")
+        suspend fun login(@Body user: User): TokenHolder
+    }
 
-    fun login(username: String, password: String): Result<LoggedInUser> {
-        try {
-            // TODO: handle loggedInUser authentication
-            val fakeUser = LoggedInUser(java.util.UUID.randomUUID().toString(), "Jane Doe")
-            return Result.Success(fakeUser)
-        } catch (e: Throwable) {
-            return Result.Error(IOException("Error logging in", e))
+    private val authService: AuthService = Api.retrofit.create(AuthService::class.java)
+
+    suspend fun login(user: User): Result<TokenHolder> {
+        return try {
+            Result.Success(authService.login(user))
+        } catch (e: Exception) {
+            Result.Error(e)
         }
     }
-
-    fun logout() {
-        // TODO: revoke authentication
-    }
 }
-
