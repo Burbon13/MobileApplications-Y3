@@ -34,7 +34,7 @@ class LoginRepository(val dataSource: LoginDataSource) {
             Log.d(TAG, "User $username logged in successfully")
             setLoggedInUser(user, result.data)
         } else {
-            Log.d(TAG, "User $username login failed: ${(result as Result.Error).exception}")
+            Log.d(TAG, "User $username login failed: ${(result as Result.Error).message}")
         }
         return result
     }

@@ -5,6 +5,9 @@ import com.burbon13.planesmanager.auth.data.model.User
 import com.burbon13.planesmanager.core.Api
 import com.burbon13.planesmanager.core.Result
 import com.burbon13.planesmanager.core.TAG
+import com.google.gson.JsonArray
+import com.google.gson.JsonParser
+import retrofit2.HttpException
 import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
@@ -28,7 +31,18 @@ class LoginDataSource {
         return try {
             Result.Success(authService.login(user))
         } catch (e: Exception) {
-            Result.Error(e)
+            if (e is HttpException) {
+                val errorJsonString = e.response()?.errorBody()?.string()
+                val errorMessage =
+                    JsonParser().parse(errorJsonString)
+                        .asJsonObject.get("issue")
+                        .asJsonArray.get(0)
+                        .asJsonObject.get("error")
+                        .asString
+                Result.Error(errorMessage)
+            } else {
+                Result.Error("Authentication error occurred")
+            }
         }
     }
 }
