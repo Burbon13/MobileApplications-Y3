@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 
 import com.burbon13.planesmanager.R
 import com.burbon13.planesmanager.core.TAG
@@ -55,7 +56,7 @@ class LoginFragment : Fragment() {
             loading.visibility = View.GONE
             if (loginResult.succeeded) {
                 Log.d(TAG, "Login result is successful, navigation to planes fragment")
-//                findNavController().navigate(R.id.)
+                findNavController().navigate(R.id.action_loginActivity_to_planesFragment)
             } else if (loginResult.failed) {
                 Log.d(TAG, "Login failed, showing Toast message")
                 Toast.makeText(context, loginResult.toString(), Toast.LENGTH_LONG).show()
