@@ -1,5 +1,6 @@
 package com.burbon13.planesmanager.auth.ui
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,6 +12,7 @@ import com.burbon13.planesmanager.R
 import com.burbon13.planesmanager.auth.data.LoginDataSource
 import com.burbon13.planesmanager.auth.data.TokenHolder
 import com.burbon13.planesmanager.core.Result
+import com.burbon13.planesmanager.core.TAG
 import kotlinx.coroutines.launch
 
 
@@ -24,12 +26,14 @@ class LoginViewModel : ViewModel() {
     val loginResult: LiveData<Result<TokenHolder>> = _loginResult
 
     fun login(username: String, password: String) {
+        Log.d(TAG, "Login username:$username password:$password")
         viewModelScope.launch {
             _loginResult.value = loginRepository.login(username, password)
         }
     }
 
     fun loginDataChanged(username: String, password: String) {
+        Log.v(TAG, "Login data changed")
         if (!isUserNameValid(username)) {
             _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
         } else if (!isPasswordValid(password)) {
@@ -48,6 +52,6 @@ class LoginViewModel : ViewModel() {
     }
 
     private fun isPasswordValid(password: String): Boolean {
-        return password.length > 5
+        return password.length > 2
     }
 }
