@@ -11,7 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.burbon13.planesmanager.R
 import com.burbon13.planesmanager.core.TAG
-import com.burbon13.planesmanager.core.utils.hideKeyboard
+import com.burbon13.planesmanager.core.utils.extensions.hideKeyboard
+import com.burbon13.planesmanager.core.utils.extensions.setDivider
 
 import com.burbon13.planesmanager.planes.dummy.DummyContent
 import com.burbon13.planesmanager.planes.model.Plane
@@ -41,6 +42,7 @@ class PlanesFragment : Fragment(), OnListFragmentInteractionListener {
 
         // Set the adapter
         if (view is RecyclerView) {
+            view.setDivider(R.drawable.recycler_view_divider)
             with(view) {
                 layoutManager = when {
                     columnCount <= 1 -> LinearLayoutManager(context)

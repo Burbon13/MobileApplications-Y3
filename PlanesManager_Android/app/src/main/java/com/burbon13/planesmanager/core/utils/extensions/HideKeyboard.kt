@@ -1,4 +1,4 @@
-package com.burbon13.planesmanager.core.utils
+package com.burbon13.planesmanager.core.utils.extensions
 
 import android.content.Context
 import android.view.WindowManager
