@@ -1,7 +1,10 @@
-{"tail_number":"XX-9999","brand":"Airbus","model":"A380","fabrication_year":2005,"engine":"TURBOJET","price":533000500,"_id":"1vPNKqrG7tCXo5Om"}
-{"tail_number":"XX-9457","brand":"Airbus","model":"A350","fabrication_year":2015,"engine":"TURBOJET","price":233000500,"_id":"HIz7HsH0LE9qNvYr"}
-{"tail_number":"SEXY_TAIllL","brand":"Boeing","model":"757-XXX","fabrication_year":2005,"engine":"TURBOJET","price":233000500,"_id":"Ti2jclAGGChRBd8T"}
-{"tail_number":"HY-5454","brand":"Boeing","model":"747-800","fabrication_year":2001,"engine":"TURBOJET","price":364000500,"_id":"U36uHiwhmbRS1rYT"}
-{"tail_number":"TR-3454","brand":"Boeing","model":"737 MAX8","fabrication_year":2018,"engine":"TURBOJET","price":164000500,"_id":"eixwPRWEEiPDy3fj"}
-{"tail_number":"SEXL","brand":"Boeing","model":"SEX-XXX","fabrication_year":2005,"engine":"TURBOJET","price":233000500,"_id":"Ti2jclAGGChRBd8T"}
-{"$$deleted":true,"_id":"HIz7HsH0LE9qNvYr"}
+{"tailNumber":"TFGS6","brand":"Airbus","model":"A380","fabricationYear":2002,"engine":"TURBOJET","price":491000500,"_id":"5L73LHQoz47hGZsA"}
+{"tailNumber":"CCLX34","brand":"Boeing","model":"737 MAX 8","fabricationYear":2014,"engine":"TURBOJET","price":216100500,"_id":"5TXOy3mxUMk6OUzJ"}
+{"tailNumber":"KLM3D3","brand":"Boeing","model":"777-200 ER","fabricationYear":2005,"engine":"TURBOJET","price":333100050,"_id":"S94ervFybGLPhoBU"}
+{"tailNumber":"TFGS7","brand":"Airbus","model":"A380","fabricationYear":2002,"engine":"TURBOJET","price":461000500,"_id":"SWLiHVlzcuIE2bcf"}
+{"tailNumber":"CGLXS7","brand":"Boeing","model":"757-800","fabricationYear":1995,"engine":"TURBOJET","price":361000500,"_id":"Umh2I2i4pj1J7ooz"}
+{"tailNumber":"CCLX33","brand":"Boeing","model":"737 MAX 8","fabricationYear":2014,"engine":"TURBOJET","price":216100050,"_id":"YX0tj1JqPDuGQWNb"}
+{"tailNumber":"U-DN456","brand":"Airbus","model":"A320","fabricationYear":2005,"engine":"TURBOJET","price":155000500,"_id":"d9Tvrf2cKsSs2smd"}
+{"tailNumber":"XX-9457","brand":"Airbus","model":"A350","fabricationYear":2015,"engine":"TURBOJET","price":233000500,"_id":"dci1FNKQyBdDXa8i"}
+{"tailNumber":"CCLX35","brand":"Boeing","model":"737 MAX 8","fabricationYear":2014,"engine":"TURBOJET","price":216100500,"_id":"mF0hKBi0nzNhnUgn"}
+{"tailNumber":"XXD456","brand":"Airbus","model":"A380","fabricationYear":2001,"engine":"TURBOJET","price":495000500,"_id":"u6wG6ieCuoawqYCY"}

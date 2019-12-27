@@ -1,4 +1,4 @@
-package com.burbon13.planesmanager.planes
+package com.burbon13.planesmanager.planes.ui
 
 import com.burbon13.planesmanager.planes.model.Plane
 

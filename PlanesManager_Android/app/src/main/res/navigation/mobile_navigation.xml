@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/planesFragment"
-        android:name="com.burbon13.planesmanager.planes.PlanesFragment"
+        android:name="com.burbon13.planesmanager.planes.ui.PlanesFragment"
         android:label="Plane Manager"
         tools:layout="@layout/fragment_plane_list" />
 </navigation>

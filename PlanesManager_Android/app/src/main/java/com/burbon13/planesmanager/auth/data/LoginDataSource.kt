@@ -5,7 +5,6 @@ import com.burbon13.planesmanager.auth.data.model.User
 import com.burbon13.planesmanager.core.Api
 import com.burbon13.planesmanager.core.Result
 import com.burbon13.planesmanager.core.TAG
-import com.google.gson.JsonArray
 import com.google.gson.JsonParser
 import retrofit2.HttpException
 import retrofit2.http.Body
@@ -31,6 +30,7 @@ class LoginDataSource {
         return try {
             Result.Success(authService.login(user))
         } catch (e: Exception) {
+            Log.d(TAG, "Exception occurred while logging in $user: ${e.message}")
             if (e is HttpException) {
                 val errorJsonString = e.response()?.errorBody()?.string()
                 val errorMessage =

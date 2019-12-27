@@ -14,7 +14,7 @@ export class PlaneStore {
     }
 
     async insert(plane) {
-        let tailNumber = plane.tail_number;
+        let tailNumber = plane.tailNumber;
         if (!tailNumber) {
             throw new Error('Missing tail_number property')
         }
@@ -26,7 +26,7 @@ export class PlaneStore {
         if (!model) {
             throw new Error('Missing model property')
         }
-        let fabricationYear = plane.fabrication_year;
+        let fabricationYear = plane.fabricationYear;
         if (!fabricationYear) {
             throw new Error('Missing fabrication_year property')
         }

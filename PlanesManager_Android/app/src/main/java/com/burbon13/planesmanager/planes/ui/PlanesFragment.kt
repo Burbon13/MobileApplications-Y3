@@ -1,4 +1,4 @@
-package com.burbon13.planesmanager.planes
+package com.burbon13.planesmanager.planes.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -8,22 +8,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.burbon13.planesmanager.R
 import com.burbon13.planesmanager.core.TAG
 import com.burbon13.planesmanager.core.utils.extensions.hideKeyboard
 import com.burbon13.planesmanager.core.utils.extensions.setDivider
 
-import com.burbon13.planesmanager.planes.dummy.DummyContent
 import com.burbon13.planesmanager.planes.model.Plane
-import kotlinx.android.synthetic.main.fragment_plane_list.*
 
 
 /**
  * A fragment representing a list of Items.
  */
 class PlanesFragment : Fragment(), OnListFragmentInteractionListener {
-
+    private lateinit var viewModel: PlanesViewModel
+    private lateinit var recyclerViewAdapter: MyPlaneRecyclerViewAdapter
     private var columnCount = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,10 +50,12 @@ class PlanesFragment : Fragment(), OnListFragmentInteractionListener {
             columnCount <= 1 -> LinearLayoutManager(context)
             else -> GridLayoutManager(context, columnCount)
         }
-        recyclerViewPlanes.adapter = MyPlaneRecyclerViewAdapter(
-            DummyContent.ITEMS,
+        recyclerViewAdapter = MyPlaneRecyclerViewAdapter(
+            listOf(),
             this@PlanesFragment as OnListFragmentInteractionListener
         )
+        recyclerViewPlanes.adapter = recyclerViewAdapter
+
 
         return view
     }
@@ -60,6 +64,20 @@ class PlanesFragment : Fragment(), OnListFragmentInteractionListener {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "onActivityCreated()")
         hideKeyboard()
+        viewModel = ViewModelProviders.of(this).get(PlanesViewModel::class.java)
+        setListeners()
+    }
+
+    private fun setListeners() {
+        viewModel.toastMessageLiveData.observe(this, Observer {
+            Log.d(TAG, "Toast changed, showing")
+            activity?.runOnUiThread {
+                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+            }
+        })
+        viewModel.planeLiveData.observe(this, Observer {
+            recyclerViewAdapter.planeList = it
+        })
     }
 
     companion object {

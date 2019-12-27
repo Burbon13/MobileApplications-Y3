@@ -1,4 +1,4 @@
-package com.burbon13.planesmanager.planes
+package com.burbon13.planesmanager.planes.ui
 
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
@@ -19,9 +19,16 @@ import kotlinx.android.synthetic.main.fragment_plane.view.*
  * specified [OnListFragmentInteractionListener].
  */
 class MyPlaneRecyclerViewAdapter(
-    private val mValues: List<Plane>,
+    private var mValues: List<Plane>,
     private val mListener: OnListFragmentInteractionListener?
 ) : RecyclerView.Adapter<MyPlaneRecyclerViewAdapter.ViewHolder>() {
+
+    var planeList: List<Plane>
+        set(value) {
+            mValues = value
+            notifyDataSetChanged()
+        }
+        get() = mValues
 
     private val mOnClickListener: View.OnClickListener
 

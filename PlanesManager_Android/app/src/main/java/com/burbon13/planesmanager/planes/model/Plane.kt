@@ -7,7 +7,7 @@ data class Plane(
     val model: String,
     val fabricationYear: Int,
     val engine: Engine,
-    val price: Int
+    val price: Long
 ) {
     enum class Engine {
         TURBOPROP,

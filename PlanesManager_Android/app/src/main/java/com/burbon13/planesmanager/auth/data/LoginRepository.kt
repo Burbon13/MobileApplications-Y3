@@ -11,7 +11,7 @@ import com.burbon13.planesmanager.core.TAG
  * Class that requests authentication and user information from the remote data source and
  * maintains an in-memory cache of login status and user credentials information.
  */
-class LoginRepository(val dataSource: LoginDataSource) {
+class LoginRepository(private val dataSource: LoginDataSource) {
     var user: User? = null
         private set
 
