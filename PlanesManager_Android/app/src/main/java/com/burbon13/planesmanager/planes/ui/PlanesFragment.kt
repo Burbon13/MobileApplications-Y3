@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.burbon13.planesmanager.R
 import com.burbon13.planesmanager.core.TAG
+import com.burbon13.planesmanager.core.utils.EndlessRecyclerViewScrollListener
 import com.burbon13.planesmanager.core.utils.extensions.hideKeyboard
 import com.burbon13.planesmanager.core.utils.extensions.setDivider
 
@@ -26,6 +27,7 @@ import com.burbon13.planesmanager.planes.model.Plane
 class PlanesFragment : Fragment(), OnListFragmentInteractionListener {
     private lateinit var viewModel: PlanesViewModel
     private lateinit var recyclerViewAdapter: MyPlaneRecyclerViewAdapter
+    private lateinit var scrollListener: EndlessRecyclerViewScrollListener
     private var columnCount = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,20 +45,23 @@ class PlanesFragment : Fragment(), OnListFragmentInteractionListener {
         Log.d(TAG, "onCreateView()")
         val view = inflater.inflate(R.layout.fragment_plane_list, container, false)
 
-        Log.d(TAG, "Setting divider, layout manager and adapter to plane RecyclerView")
         val recyclerViewPlanes = view.findViewById<RecyclerView>(R.id.recycler_view_planes)
         recyclerViewPlanes.setDivider(R.drawable.recycler_view_divider)
-        recyclerViewPlanes.layoutManager = when {
-            columnCount <= 1 -> LinearLayoutManager(context)
-            else -> GridLayoutManager(context, columnCount)
-        }
+        val linearLayoutManager = LinearLayoutManager(context)
+        recyclerViewPlanes.layoutManager = linearLayoutManager
         recyclerViewAdapter = MyPlaneRecyclerViewAdapter(
             listOf(),
             this@PlanesFragment as OnListFragmentInteractionListener
         )
         recyclerViewPlanes.adapter = recyclerViewAdapter
-
-
+        scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                loadNextDataFromApi(page)
+            }
+        }
+        recyclerViewPlanes.addOnScrollListener(scrollListener)
         return view
     }
 
@@ -80,6 +85,18 @@ class PlanesFragment : Fragment(), OnListFragmentInteractionListener {
         })
     }
 
+
+    override fun onListFragmentInteraction(item: Plane?) {
+        Log.i(TAG, "Plane touched")
+    }
+
+    // Append the next page of data into the adapter
+    // This method probably sends out a network request and appends new data items to your adapter.
+    private fun loadNextDataFromApi(offset: Int) {
+        Log.d(TAG, "Load data from next page with offset=$offset")
+        viewModel.appendPlanesPage(offset)
+    }
+
     companion object {
 
         const val ARG_COLUMN_COUNT = "column-count"
@@ -91,9 +108,5 @@ class PlanesFragment : Fragment(), OnListFragmentInteractionListener {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }
             }
-    }
-
-    override fun onListFragmentInteraction(item: Plane?) {
-        Log.i(TAG, "Plane touched")
     }
 }

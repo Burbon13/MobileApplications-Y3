@@ -8,4 +8,8 @@ class PlaneRepository(private val planeDataSource: PlaneDataSource) {
     suspend fun getAllPlanes(): Result<List<Plane>> {
         return planeDataSource.getPlanes()
     }
+
+    suspend fun getPagePlanes(pageOffset: Int): Result<List<Plane>> {
+        return planeDataSource.getPlanesPage(pageOffset)
+    }
 }

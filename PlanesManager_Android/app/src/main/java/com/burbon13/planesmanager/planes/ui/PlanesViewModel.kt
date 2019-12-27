@@ -27,23 +27,26 @@ class PlanesViewModel : ViewModel() {
         get() = _toastMessageMutableLiveData
 
     init {
-        Log.d(TAG, "Initializing PlanesViewModel")
+        _planeMutableLiveDate.value = listOf()
+        appendPlanesPage(0)
+    }
+
+    fun appendPlanesPage(pageOffset: Int) {
+        Log.d(TAG, "Append planes page with offset=$pageOffset")
         viewModelScope.launch {
-            var planesResult: Result<List<Plane>>? = null
+            var newPlanesResult: Result<List<Plane>>? = null
             withContext(Dispatchers.IO) {
-                Log.d(TAG, "Retrieving planes on Dispatchers.IO")
-                planesResult = planeRepository.getAllPlanes()
-                Log.d(TAG, "Planes retrieved")
+                newPlanesResult = planeRepository.getPagePlanes(pageOffset)
             }
-            if (planesResult is Result.Success) {
-                Log.d(TAG, "Planes retrieved successfully")
-                _planeMutableLiveDate.value = (planesResult as Result.Success<List<Plane>>).data
-                _toastMessageMutableLiveData.value = "Planes loaded successfully"
-            } else if (planesResult is Result.Error) {
+            if (newPlanesResult is Result.Success) {
+                Log.d(TAG, "Planes page with offset=$pageOffset retrieved successfully")
+                _planeMutableLiveDate.value =
+                    _planeMutableLiveDate.value?.plus((newPlanesResult as Result.Success<List<Plane>>).data)
+            } else if (newPlanesResult is Result.Error) {
                 Log.d(
                     TAG,
                     "Planes retrieval resulted in an error: " +
-                            (planesResult as Result.Error).message
+                            (newPlanesResult as Result.Error).message
                 )
                 _toastMessageMutableLiveData.value = "Error occurred while loading planes"
             }

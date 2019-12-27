@@ -83,6 +83,11 @@ class LoginFragment : Fragment() {
             viewModel.login(username.text.toString(), password.text.toString())
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.login("a@a.com", "aaa")
+    }
 }
 
 /**

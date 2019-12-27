@@ -7,7 +7,7 @@ export class PlaneStore {
     }
 
     async find(props) {
-        return this.store.find(props);
+        return this.store.find(props).sort({tailNumber: 1});
     }
 
     async findOne(props) {
@@ -21,8 +21,7 @@ export class PlaneStore {
      * @returns {Promise<*>}
      */
     async findPage(pageNumber) {
-        pageNumber -= 1;
-        return this.store.find({}).sort({tailNumber: 1}).skip((pageNumber - 1) * this.pageSize).limit(this.pageSize);
+        return this.store.find({}).sort({tailNumber: 1}).skip(pageNumber * this.pageSize).limit(this.pageSize);
     }
 
     async insert(plane) {

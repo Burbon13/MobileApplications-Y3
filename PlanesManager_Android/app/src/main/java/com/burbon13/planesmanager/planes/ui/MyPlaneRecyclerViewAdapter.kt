@@ -26,6 +26,7 @@ class MyPlaneRecyclerViewAdapter(
     var planeList: List<Plane>
         set(value) {
             mValues = value
+            Log.d(TAG, "Notify plane list data set changed")
             notifyDataSetChanged()
         }
         get() = mValues
