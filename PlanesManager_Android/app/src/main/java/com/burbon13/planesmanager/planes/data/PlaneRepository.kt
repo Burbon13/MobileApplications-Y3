@@ -12,4 +12,8 @@ class PlaneRepository(private val planeDataSource: PlaneDataSource) {
     suspend fun getPagePlanes(pageOffset: Int): Result<List<Plane>> {
         return planeDataSource.getPlanesPage(pageOffset)
     }
+
+    suspend fun addPlane(plane: Plane): Result<Plane> {
+        return planeDataSource.addPlane(plane)
+    }
 }

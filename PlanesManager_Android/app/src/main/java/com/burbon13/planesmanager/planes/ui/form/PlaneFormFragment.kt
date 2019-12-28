@@ -7,12 +7,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.NumberPicker
+import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.burbon13.planesmanager.R
+import com.burbon13.planesmanager.core.Result
 import com.burbon13.planesmanager.core.TAG
 import com.burbon13.planesmanager.core.utils.extensions.afterTextChanged
 import com.burbon13.planesmanager.planes.model.Plane
@@ -27,6 +27,7 @@ class PlaneFormFragment : Fragment() {
     private lateinit var enginePicker: NumberPicker
     private lateinit var priceEditText: EditText
     private lateinit var submitButton: Button
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +56,7 @@ class PlaneFormFragment : Fragment() {
         enginePicker.displayedValues = engines.toTypedArray()
         priceEditText = rootView.findViewById(R.id.edit_text_price)
         submitButton = rootView.findViewById(R.id.button_submit_plane)
+        progressBar = rootView.findViewById(R.id.progress_bar_plane_form)
 
         return rootView
     }
@@ -98,6 +100,38 @@ class PlaneFormFragment : Fragment() {
                 priceEditText.error = getString(planeFormState.priceError)
             }
         })
+        viewModel.processing.observe(this, Observer {
+            if (it) {
+                progressBar.visibility = View.VISIBLE
+                submitButton.isEnabled = false
+            } else {
+                progressBar.visibility = View.GONE
+                submitButton.isEnabled = true
+            }
+        })
+        viewModel.addPlaneResult.observe(this, Observer {
+            val addPlaneResult = it
+            if (addPlaneResult is Result.Success) {
+                activity?.runOnUiThread {
+                    Toast.makeText(context, "Plane added successfully!", Toast.LENGTH_LONG).show()
+                }
+                findNavController().popBackStack()
+            } else if (addPlaneResult is Result.Error) {
+                activity?.runOnUiThread {
+                    Toast.makeText(context, addPlaneResult.message, Toast.LENGTH_LONG).show()
+                }
+            }
+        })
+        submitButton.setOnClickListener {
+            viewModel.addPlane(
+                tailNumberEditText.text.toString(),
+                Plane.Brand.valueOf(brandPicker.displayedValues[brandPicker.value]),
+                modelEditText.text.toString(),
+                Plane.Engine.valueOf(enginePicker.displayedValues[enginePicker.value]),
+                yearEditText.text.toString(),
+                priceEditText.text.toString()
+            )
+        }
     }
 
     private fun formFieldsChanged() {

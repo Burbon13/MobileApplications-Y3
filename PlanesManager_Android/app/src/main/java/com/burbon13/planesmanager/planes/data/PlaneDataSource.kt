@@ -7,9 +7,7 @@ import com.burbon13.planesmanager.planes.model.Plane
 import com.burbon13.planesmanager.core.Result
 import com.google.gson.JsonParser
 import retrofit2.HttpException
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.Path
+import retrofit2.http.*
 
 
 class PlaneDataSource {
@@ -21,6 +19,10 @@ class PlaneDataSource {
         @Headers("Content-Type: application/json")
         @GET("/api/plane/page/{page_offset}")
         suspend fun getPlanesPage(@Path("page_offset") pageOffset: Int): List<Plane>
+
+        @Headers("Content-Type: application/json")
+        @POST("/api/plane")
+        suspend fun addPlane(@Body plane: Plane): Plane
     }
 
     private val planeService: PlaneService = Api.retrofit.create(PlaneService::class.java)
@@ -55,17 +57,33 @@ class PlaneDataSource {
         } catch (e: Exception) {
             Log.d(TAG, "Exception occurred while retrieving planes: ${e.message}")
             if (e is HttpException) {
-                val errorJsonString = e.response()?.errorBody()?.string()
-                val errorMessage =
-                    JsonParser().parse(errorJsonString)
-                        .asJsonObject.get("issue")
-                        .asJsonArray.get(0)
-                        .asJsonObject.get("error")
-                        .asString
-                Result.Error(errorMessage)
+                Result.Error(getApiErrorMessage(e))
             } else {
                 Result.Error("An error occurred, contact support if this persists")
             }
         }
+    }
+
+    suspend fun addPlane(plane: Plane): Result<Plane> {
+        Log.d(TAG, "Adding new plane to server: $plane")
+        return try {
+            Result.Success(planeService.addPlane(plane))
+        } catch (e: java.lang.Exception) {
+            Log.d(TAG, "Exception occurred while retrieving planes: ${e.message}")
+            if (e is HttpException) {
+                Result.Error(getApiErrorMessage(e))
+            } else {
+                Result.Error("An error occurred, contact support if this persist")
+            }
+        }
+    }
+
+    private fun getApiErrorMessage(e: HttpException): String {
+        val errorJsonString = e.response()?.errorBody()?.string()
+        return JsonParser().parse(errorJsonString)
+            .asJsonObject.get("issue")
+            .asJsonArray.get(0)
+            .asJsonObject.get("error")
+            .asString
     }
 }

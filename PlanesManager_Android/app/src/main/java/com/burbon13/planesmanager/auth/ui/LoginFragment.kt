@@ -73,7 +73,9 @@ class LoginFragment : Fragment() {
                 findNavController().navigate(R.id.action_loginActivity_to_planesFragment)
             } else if (loginResult is Result.Error) {
                 Log.d(TAG, "Login failed, showing Toast message")
-                Toast.makeText(context, loginResult.message, Toast.LENGTH_LONG).show()
+                activity?.runOnUiThread {
+                    Toast.makeText(context, loginResult.message, Toast.LENGTH_LONG).show()
+                }
             }
         })
         usernameEditText.afterTextChanged {

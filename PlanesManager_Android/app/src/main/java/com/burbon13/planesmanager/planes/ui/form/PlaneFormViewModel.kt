@@ -4,11 +4,16 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.burbon13.planesmanager.R
 import com.burbon13.planesmanager.core.TAG
 import com.burbon13.planesmanager.planes.data.PlaneDataSource
 import com.burbon13.planesmanager.planes.data.PlaneRepository
+import com.burbon13.planesmanager.planes.model.Plane
+import com.burbon13.planesmanager.core.Result
+import kotlinx.coroutines.launch
 import java.util.*
+
 
 class PlaneFormViewModel : ViewModel() {
     private val planeRepository = PlaneRepository(PlaneDataSource())
@@ -23,8 +28,36 @@ class PlaneFormViewModel : ViewModel() {
     val planeFormState: LiveData<PlaneFormState>
         get() = _planeFormState
 
-    fun addPlane() {
+    private val _addPlaneResult = MutableLiveData<Result<Plane>>()
+    val addPlaneResult: MutableLiveData<Result<Plane>>
+        get() = _addPlaneResult
 
+    private val _processing = MutableLiveData<Boolean>()
+    val processing: LiveData<Boolean>
+        get() = _processing
+
+    fun addPlane(
+        tailNumber: String,
+        brand: Plane.Brand,
+        model: String,
+        engine: Plane.Engine,
+        fabricationYear: String,
+        price: String
+    ) {
+        viewModelScope.launch {
+            _processing.value = true
+            _addPlaneResult.value = planeRepository.addPlane(
+                Plane(
+                    tailNumber,
+                    brand,
+                    model,
+                    fabricationYear.toInt(),
+                    engine,
+                    price.toLong()
+                )
+            )
+            _processing.value = false
+        }
     }
 
     fun updatePlane() {
@@ -62,7 +95,7 @@ class PlaneFormViewModel : ViewModel() {
             validData = false
         }
         try {
-            if (!isPriceValid(price.toInt())) {
+            if (!isPriceValid(price.toLong())) {
                 priceError = R.string.invalid_price
                 validData = false
             }
@@ -87,7 +120,7 @@ class PlaneFormViewModel : ViewModel() {
         return fabricationYear > 1950 && fabricationYear < Calendar.getInstance().get(Calendar.YEAR)
     }
 
-    private fun isPriceValid(price: Int): Boolean {
+    private fun isPriceValid(price: Long): Boolean {
         return price > 0
     }
 }

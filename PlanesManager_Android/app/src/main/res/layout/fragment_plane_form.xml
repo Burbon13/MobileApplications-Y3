@@ -105,6 +105,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/number_picker_engine" />
 
+        <ProgressBar
+            android:id="@+id/progress_bar_plane_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_price" />
+
         <Button
             android:id="@+id/button_submit_plane"
             android:layout_width="0dp"
@@ -114,10 +125,13 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
+            android:layout_marginBottom="32dp"
             android:enabled="false"
             android:text="@string/add_plane_btn_text"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_price" />
+            app:layout_constraintTop_toBottomOf="@+id/progress_bar_plane_form" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

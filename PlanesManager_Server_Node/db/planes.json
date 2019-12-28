@@ -198,3 +198,8 @@
 {"tailNumber":"KLM-172","brand":"BOEING","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"yX6CT5n7ahfQY6Qf"}
 {"tailNumber":"KLM-36","brand":"BOEING","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"ycBeOc8D1I1hud27"}
 {"tailNumber":"KLM-145","brand":"BOEING","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"yjamUxtTzCWt0XoG"}
+{"tailNumber":"KLM3D3","brand":"Boeing","model":"777-200 ER","fabricationYear":2005,"engine":"TURBOJET","price":3331000500,"_id":"qAQPtWsz38Nun3jy"}
+{"tailNumber":"KLM3D3","brand":"Boeing","model":"777-200 ER","fabricationYear":2005,"engine":"TURBOJET","price":3331000500,"_id":"pvxpRaaISuFC7Do3"}
+{"brand":"ATR","engine":"TURBOPROP","fabricationYear":1992,"model":"42-500","price":25166800,"tailNumber":"TAROM","_id":"qVTC3H4sZqeoYsZL"}
+{"brand":"AIRBUS","engine":"TURBOPROP","fabricationYear":1992,"model":"42-500","price":25166800,"tailNumber":"TAROM","_id":"oYx8YgEnu4h6s4wy"}
+{"brand":"BOMBARDIER","engine":"TURBOFAN","fabricationYear":2008,"model":"BOMBA","price":8500666,"tailNumber":"XXXINDIA","_id":"c8YwUqEAPpvgBEmF"}
