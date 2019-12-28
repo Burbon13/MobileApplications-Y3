@@ -1,17 +1,18 @@
-package com.burbon13.planesmanager.planes.ui
+package com.burbon13.planesmanager.planes.ui.list
 
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.burbon13.planesmanager.R
 import com.burbon13.planesmanager.core.TAG
@@ -20,12 +21,15 @@ import com.burbon13.planesmanager.core.utils.extensions.hideKeyboard
 import com.burbon13.planesmanager.core.utils.extensions.setDivider
 
 import com.burbon13.planesmanager.planes.model.Plane
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.fragment_plane_form.*
 
 
 /**
  * A fragment representing a list of Items.
  */
-class PlanesFragment : Fragment(), OnListFragmentInteractionListener {
+class PlanesFragment : Fragment(),
+    OnListFragmentInteractionListener {
     private lateinit var viewModel: PlanesViewModel
     private lateinit var recyclerViewAdapter: MyPlaneRecyclerViewAdapter
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
@@ -51,10 +55,11 @@ class PlanesFragment : Fragment(), OnListFragmentInteractionListener {
         recyclerViewPlanes.setDivider(R.drawable.recycler_view_divider)
         val linearLayoutManager = LinearLayoutManager(context)
         recyclerViewPlanes.layoutManager = linearLayoutManager
-        recyclerViewAdapter = MyPlaneRecyclerViewAdapter(
-            listOf(),
-            this@PlanesFragment as OnListFragmentInteractionListener
-        )
+        recyclerViewAdapter =
+            MyPlaneRecyclerViewAdapter(
+                listOf(),
+                this@PlanesFragment as OnListFragmentInteractionListener
+            )
         recyclerViewPlanes.adapter = recyclerViewAdapter
         scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
@@ -65,12 +70,15 @@ class PlanesFragment : Fragment(), OnListFragmentInteractionListener {
         }
         recyclerViewPlanes.addOnScrollListener(scrollListener)
         loadingProgressBar = view.findViewById(R.id.loading_progress_bar)
+        view.findViewById<FloatingActionButton>(R.id.floating_btn_plane_form).setOnClickListener {
+            findNavController().navigate(R.id.action_planesFragment_to_planeFormFragment)
+        }
         return view
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "onActivityCreated()")
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onFragmentStart()")
         hideKeyboard()
         viewModel = ViewModelProviders.of(this).get(PlanesViewModel::class.java)
         setListeners()
@@ -94,7 +102,6 @@ class PlanesFragment : Fragment(), OnListFragmentInteractionListener {
             }
         })
     }
-
 
     override fun onListFragmentInteraction(item: Plane?) {
         Log.i(TAG, "Plane touched")
