@@ -60,10 +60,10 @@ class MyPlaneRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
         Log.v(TAG, "onBindViewHolder() for position=$position: $item")
-        holder.planeBrandView.text = item.brand
+        holder.planeBrandView.text = item.brand?.toString()
         holder.planeModelView.text = item.model
         holder.planePriceView.text = "US$${item.price / 1000000} milion"
-        holder.planeYearView.text = item.fabricationYear.toString()
+        holder.planeYearView.text = item.fabricationYear?.toString()
         holder.planeTailNumberView.text = item.tailNumber
 
         with(holder.planeView) {

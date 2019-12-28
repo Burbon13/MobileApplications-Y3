@@ -18,6 +18,7 @@ import com.burbon13.planesmanager.core.Result
 
 import com.burbon13.planesmanager.R
 import com.burbon13.planesmanager.core.TAG
+import com.burbon13.planesmanager.core.utils.extensions.afterTextChanged
 import kotlinx.android.synthetic.main.fragment_login.*
 
 
@@ -108,19 +109,4 @@ class LoginFragment : Fragment() {
         password.afterTextChanged {}
         login.setOnClickListener(null)
     }
-}
-
-/**
- * Extension function to simplify setting an afterTextChanged action to EditText components.
- */
-fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
-    this.addTextChangedListener(object : TextWatcher {
-        override fun afterTextChanged(editable: Editable?) {
-            afterTextChanged.invoke(editable.toString())
-        }
-
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-    })
 }
