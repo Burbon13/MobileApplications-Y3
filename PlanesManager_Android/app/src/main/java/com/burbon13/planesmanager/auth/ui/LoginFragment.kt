@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -22,24 +23,35 @@ import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment() {
     private lateinit var viewModel: LoginViewModel
+    private lateinit var usernameEditText: EditText
+    private lateinit var passwordEditText: EditText
+    private lateinit var loginButton: Button
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate()")
+        viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         Log.d(TAG, "onCreateView()")
-        return inflater.inflate(R.layout.fragment_login, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_login, container, false)
+        usernameEditText = rootView.findViewById(R.id.username)
+        passwordEditText = rootView.findViewById(R.id.password)
+        loginButton = rootView.findViewById(R.id.login)
+        return rootView
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onActivityCreated()")
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
-        setupLoginForm()
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart()")
+        setListeners()
     }
 
-    private fun setupLoginForm() {
-        Log.d(TAG, "Setting up login form")
+    private fun setListeners() {
         viewModel.loginFormState.observe(this, Observer {
             Log.v(TAG, "Login form state modified")
             val loginState = it ?: return@Observer
@@ -63,30 +75,38 @@ class LoginFragment : Fragment() {
                 Toast.makeText(context, loginResult.message, Toast.LENGTH_LONG).show()
             }
         })
-        username.afterTextChanged {
+        usernameEditText.afterTextChanged {
             Log.v(TAG, "Username login field modified")
             viewModel.loginDataChanged(
                 username.text.toString(),
                 password.text.toString()
             )
         }
-        password.afterTextChanged {
+        passwordEditText.afterTextChanged {
             Log.v(TAG, "Password login field modified")
             viewModel.loginDataChanged(
                 username.text.toString(),
                 password.text.toString()
             )
         }
-        login.setOnClickListener {
+        loginButton.setOnClickListener {
             Log.v(TAG, "Login button clicked")
             loading.visibility = View.VISIBLE
             viewModel.login(username.text.toString(), password.text.toString())
         }
     }
 
+    // TODO: Delete in the end
     override fun onResume() {
         super.onResume()
         viewModel.login("a@a.com", "aaa")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        username.afterTextChanged {}
+        password.afterTextChanged {}
+        login.setOnClickListener(null)
     }
 }
 

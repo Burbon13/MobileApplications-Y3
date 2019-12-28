@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -22,26 +21,24 @@ import com.burbon13.planesmanager.core.utils.extensions.setDivider
 
 import com.burbon13.planesmanager.planes.model.Plane
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.fragment_plane_form.*
 
 
 /**
- * A fragment representing a list of Items.
+ * A fragment representing a list of Planes.
  */
 class PlanesFragment : Fragment(),
     OnListFragmentInteractionListener {
     private lateinit var viewModel: PlanesViewModel
-    private lateinit var recyclerViewAdapter: MyPlaneRecyclerViewAdapter
-    private lateinit var scrollListener: EndlessRecyclerViewScrollListener
     private lateinit var loadingProgressBar: ProgressBar
-    private var columnCount = 1
+    private lateinit var recyclerViewAdapter: MyPlaneRecyclerViewAdapter
+    private lateinit var recyclerViewPlanes: RecyclerView
+    private lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var addPlaneButton: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate()")
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-        }
+        viewModel = ViewModelProviders.of(this).get(PlanesViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -49,38 +46,31 @@ class PlanesFragment : Fragment(),
         savedInstanceState: Bundle?
     ): View? {
         Log.d(TAG, "onCreateView()")
-        val view = inflater.inflate(R.layout.fragment_plane_list, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_plane_list, container, false)
 
-        val recyclerViewPlanes = view.findViewById<RecyclerView>(R.id.recycler_view_planes)
+        recyclerViewPlanes = rootView.findViewById(R.id.recycler_view_planes)
         recyclerViewPlanes.setDivider(R.drawable.recycler_view_divider)
-        val linearLayoutManager = LinearLayoutManager(context)
+
+        linearLayoutManager = LinearLayoutManager(context)
         recyclerViewPlanes.layoutManager = linearLayoutManager
-        recyclerViewAdapter =
-            MyPlaneRecyclerViewAdapter(
-                listOf(),
-                this@PlanesFragment as OnListFragmentInteractionListener
-            )
+
+        recyclerViewAdapter = MyPlaneRecyclerViewAdapter(
+            listOf(),
+            this@PlanesFragment as OnListFragmentInteractionListener
+        )
         recyclerViewPlanes.adapter = recyclerViewAdapter
-        scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
-            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to the bottom of the list
-                loadNextDataFromApi(page)
-            }
-        }
-        recyclerViewPlanes.addOnScrollListener(scrollListener)
-        loadingProgressBar = view.findViewById(R.id.loading_progress_bar)
-        view.findViewById<FloatingActionButton>(R.id.floating_btn_plane_form).setOnClickListener {
-            findNavController().navigate(R.id.action_planesFragment_to_planeFormFragment)
-        }
-        return view
+
+        loadingProgressBar = rootView.findViewById(R.id.loading_progress_bar)
+
+        addPlaneButton = rootView.findViewById(R.id.floating_btn_plane_form)
+
+        return rootView
     }
 
     override fun onStart() {
         super.onStart()
-        Log.d(TAG, "onFragmentStart()")
+        Log.d(TAG, "onStart()")
         hideKeyboard()
-        viewModel = ViewModelProviders.of(this).get(PlanesViewModel::class.java)
         setListeners()
     }
 
@@ -101,6 +91,24 @@ class PlanesFragment : Fragment(),
                 loadingProgressBar.visibility = View.GONE
             }
         })
+        recyclerViewPlanes.addOnScrollListener(object :
+            EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                loadNextDataFromApi(page)
+            }
+        })
+        addPlaneButton.setOnClickListener {
+            Log.d(TAG, "Navigating from PlanesFragment to PlaneFormFragment")
+            findNavController().navigate(R.id.action_planesFragment_to_planeFormFragment)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        recyclerViewPlanes.clearOnScrollListeners()
+        addPlaneButton.setOnClickListener(null)
     }
 
     override fun onListFragmentInteraction(item: Plane?) {
@@ -112,18 +120,5 @@ class PlanesFragment : Fragment(),
     private fun loadNextDataFromApi(offset: Int) {
         Log.d(TAG, "Load data from next page with offset=$offset")
         viewModel.appendPlanesPage(offset)
-    }
-
-    companion object {
-
-        const val ARG_COLUMN_COUNT = "column-count"
-
-        @JvmStatic
-        fun newInstance(columnCount: Int) =
-            PlanesFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
-                }
-            }
     }
 }
