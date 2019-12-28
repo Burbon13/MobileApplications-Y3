@@ -29,6 +29,6 @@
     <fragment
         android:id="@+id/planeFormFragment"
         android:name="com.burbon13.planesmanager.planes.ui.form.PlaneFormFragment"
-        android:label="PlaneFormFragment"
-        tools:layout="@layout/fragment_plane_form"/>
+        android:label="Plane Form"
+        tools:layout="@layout/fragment_plane_form" />
 </navigation>

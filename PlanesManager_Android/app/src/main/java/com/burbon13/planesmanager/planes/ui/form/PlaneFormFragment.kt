@@ -2,29 +2,42 @@ package com.burbon13.planesmanager.planes.ui.form
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.NumberPicker
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.burbon13.planesmanager.R
+import com.burbon13.planesmanager.core.TAG
+import com.burbon13.planesmanager.core.utils.extensions.afterTextChanged
 import com.burbon13.planesmanager.planes.model.Plane
 
 
 class PlaneFormFragment : Fragment() {
+    private lateinit var viewModel: PlaneFormViewModel
     private lateinit var tailNumberEditText: EditText
     private lateinit var brandPicker: NumberPicker
     private lateinit var modelEditText: EditText
     private lateinit var yearEditText: EditText
     private lateinit var enginePicker: NumberPicker
-    private lateinit var price: EditText
+    private lateinit var priceEditText: EditText
+    private lateinit var submitButton: Button
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this).get(PlaneFormViewModel::class.java)
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_plane_form, container, false)
 
         tailNumberEditText = rootView.findViewById(R.id.edit_text_tail_number)
@@ -40,9 +53,59 @@ class PlaneFormFragment : Fragment() {
         enginePicker.minValue = 0
         enginePicker.maxValue = engines.size - 1
         enginePicker.displayedValues = engines.toTypedArray()
-        price = rootView.findViewById(R.id.edit_text_price)
+        priceEditText = rootView.findViewById(R.id.edit_text_price)
+        submitButton = rootView.findViewById(R.id.button_submit_plane)
 
         return rootView
     }
 
+    override fun onStart() {
+        super.onStart()
+        setListeners()
+    }
+
+    private fun setListeners() {
+        tailNumberEditText.afterTextChanged {
+            Log.d(TAG, "Tail number field modified")
+            formFieldsChanged()
+        }
+        modelEditText.afterTextChanged {
+            Log.d(TAG, "Model field modified")
+            formFieldsChanged()
+        }
+        yearEditText.afterTextChanged {
+            Log.d(TAG, "Year field modified")
+            formFieldsChanged()
+        }
+        priceEditText.afterTextChanged {
+            Log.d(TAG, "Price field modified")
+            formFieldsChanged()
+        }
+        viewModel.planeFormState.observe(this, Observer {
+            Log.d(TAG, "PlaneFormState changed")
+            val planeFormState = it ?: return@Observer
+            submitButton.isEnabled = planeFormState.isDataValid
+            if (planeFormState.tailNumberError != null) {
+                tailNumberEditText.error = getString(planeFormState.tailNumberError)
+            }
+            if (planeFormState.modelError != null) {
+                modelEditText.error = getString(planeFormState.modelError)
+            }
+            if (planeFormState.fabricationYearError != null) {
+                yearEditText.error = getString(planeFormState.fabricationYearError)
+            }
+            if (planeFormState.priceError != null) {
+                priceEditText.error = getString(planeFormState.priceError)
+            }
+        })
+    }
+
+    private fun formFieldsChanged() {
+        viewModel.planeFormStateChanged(
+            tailNumberEditText.text.toString(),
+            modelEditText.text.toString(),
+            yearEditText.text.toString(),
+            priceEditText.text.toString()
+        )
+    }
 }

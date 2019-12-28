@@ -74,8 +74,6 @@ class MyPlaneRecyclerViewAdapter(
 
     override fun getItemCount(): Int = mValues.size
 
-//    override fun
-
     inner class ViewHolder(val planeView: View) : RecyclerView.ViewHolder(planeView) {
         val planeBrandView: TextView = planeView.plane_brand
         val planeModelView: TextView = planeView.plane_model
