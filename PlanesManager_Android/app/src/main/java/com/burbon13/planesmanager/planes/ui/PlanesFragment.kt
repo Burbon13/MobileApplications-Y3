@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -28,6 +29,7 @@ class PlanesFragment : Fragment(), OnListFragmentInteractionListener {
     private lateinit var viewModel: PlanesViewModel
     private lateinit var recyclerViewAdapter: MyPlaneRecyclerViewAdapter
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
+    private lateinit var loadingProgressBar: ProgressBar
     private var columnCount = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +64,7 @@ class PlanesFragment : Fragment(), OnListFragmentInteractionListener {
             }
         }
         recyclerViewPlanes.addOnScrollListener(scrollListener)
+        loadingProgressBar = view.findViewById(R.id.loading_progress_bar)
         return view
     }
 
@@ -82,6 +85,13 @@ class PlanesFragment : Fragment(), OnListFragmentInteractionListener {
         })
         viewModel.planeLiveData.observe(this, Observer {
             recyclerViewAdapter.planeList = it
+        })
+        viewModel.loading.observe(this, Observer {
+            if (it) {
+                loadingProgressBar.visibility = View.VISIBLE
+            } else {
+                loadingProgressBar.visibility = View.GONE
+            }
         })
     }
 

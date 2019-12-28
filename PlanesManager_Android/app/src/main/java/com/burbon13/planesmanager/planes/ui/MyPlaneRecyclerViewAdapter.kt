@@ -30,6 +30,12 @@ class MyPlaneRecyclerViewAdapter(
             notifyDataSetChanged()
         }
         get() = mValues
+    private var mShowLoading = false
+
+    companion object {
+        private const val VIEW_TYPE_LOADING = 1
+        private const val VIEW_TYPE_NORMAL = 2
+    }
 
     private val mOnClickListener: View.OnClickListener
 
@@ -67,6 +73,8 @@ class MyPlaneRecyclerViewAdapter(
     }
 
     override fun getItemCount(): Int = mValues.size
+
+//    override fun
 
     inner class ViewHolder(val planeView: View) : RecyclerView.ViewHolder(planeView) {
         val planeBrandView: TextView = planeView.plane_brand

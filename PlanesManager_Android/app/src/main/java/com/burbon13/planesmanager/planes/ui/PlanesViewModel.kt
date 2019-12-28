@@ -26,6 +26,10 @@ class PlanesViewModel : ViewModel() {
     val toastMessageLiveData: LiveData<String>
         get() = _toastMessageMutableLiveData
 
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean>
+        get() = _loading
+
     init {
         _planeMutableLiveDate.value = listOf()
         appendPlanesPage(0)
@@ -34,6 +38,7 @@ class PlanesViewModel : ViewModel() {
     fun appendPlanesPage(pageOffset: Int) {
         Log.d(TAG, "Append planes page with offset=$pageOffset")
         viewModelScope.launch {
+            _loading.value = true
             var newPlanesResult: Result<List<Plane>>? = null
             withContext(Dispatchers.IO) {
                 newPlanesResult = planeRepository.getPagePlanes(pageOffset)
@@ -50,6 +55,7 @@ class PlanesViewModel : ViewModel() {
                 )
                 _toastMessageMutableLiveData.value = "Error occurred while loading planes"
             }
+            _loading.value = false
         }
     }
 }
