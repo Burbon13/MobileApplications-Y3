@@ -58,7 +58,7 @@ class PlanesViewModel : ViewModel() {
             _loading.value = false
         }
     }
-`
+
     fun reloadList() {
         Log.d(TAG, "Reload list")
         _toastMessageMutableLiveData.value = "Refreshing"
