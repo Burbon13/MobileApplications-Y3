@@ -6,7 +6,6 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.burbon13.planesmanager.core.TAG
 
 
 fun AppCompatActivity.hideKeyboard() {

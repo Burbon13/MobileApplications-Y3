@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.burbon13.planesmanager.R
-import com.burbon13.planesmanager.core.TAG
+import com.burbon13.planesmanager.core.utils.extensions.TAG
 import com.burbon13.planesmanager.core.utils.scroll.EndlessRecyclerViewScrollListener
 import com.burbon13.planesmanager.core.utils.extensions.hideKeyboard
 import com.burbon13.planesmanager.core.utils.extensions.setDivider

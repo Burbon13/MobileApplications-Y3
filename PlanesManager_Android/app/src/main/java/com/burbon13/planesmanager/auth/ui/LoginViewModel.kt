@@ -12,7 +12,7 @@ import com.burbon13.planesmanager.R
 import com.burbon13.planesmanager.auth.data.LoginDataSource
 import com.burbon13.planesmanager.auth.data.TokenHolder
 import com.burbon13.planesmanager.core.Result
-import com.burbon13.planesmanager.core.TAG
+import com.burbon13.planesmanager.core.utils.extensions.TAG
 import kotlinx.coroutines.launch
 
 

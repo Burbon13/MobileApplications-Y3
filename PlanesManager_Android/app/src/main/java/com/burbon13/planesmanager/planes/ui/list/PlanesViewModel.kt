@@ -9,7 +9,7 @@ import com.burbon13.planesmanager.planes.data.PlaneDataSource
 import com.burbon13.planesmanager.planes.data.PlaneRepository
 import com.burbon13.planesmanager.planes.model.Plane
 import com.burbon13.planesmanager.core.Result
-import com.burbon13.planesmanager.core.TAG
+import com.burbon13.planesmanager.core.utils.extensions.TAG
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

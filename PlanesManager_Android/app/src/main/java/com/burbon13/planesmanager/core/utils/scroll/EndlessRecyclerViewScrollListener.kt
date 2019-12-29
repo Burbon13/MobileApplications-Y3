@@ -3,7 +3,7 @@ package com.burbon13.planesmanager.core.utils.scroll
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.burbon13.planesmanager.core.TAG
+import com.burbon13.planesmanager.core.utils.extensions.TAG
 
 
 abstract class EndlessRecyclerViewScrollListener(
@@ -32,13 +32,15 @@ abstract class EndlessRecyclerViewScrollListener(
     override fun onScrolled(view: RecyclerView, dx: Int, dy: Int) {
         Log.v(TAG, "onScrolled()")
         val totalItemCount = mLayoutManager.itemCount
+        Log.v(TAG, "totalItemCount=$totalItemCount")
         val lastVisibleItemPosition = mLayoutManager.findLastVisibleItemPosition()
+        Log.v(TAG, "lastVisibleItemPosition=$lastVisibleItemPosition")
 
         // If the total item count is zero and the previous isn't, assume the
         // list is invalidated and should be reset back to initial state
         if (totalItemCount < state.previousTotalItemCount) {
+            Log.d(TAG, "List is invalidated, loading set to TRUE")
             state = if (totalItemCount == 0) {
-                Log.d(TAG, "List is invalidated, loading set to TRUE")
                 state.copy(
                     currentPage = state.startingPageIndex,
                     previousTotalItemCount = totalItemCount,
@@ -65,10 +67,9 @@ abstract class EndlessRecyclerViewScrollListener(
         // If we do need to reload some more data, we execute onLoadMore to fetch the data.
         // threshold should reflect how many total columns there are too
         if (!state.loading && lastVisibleItemPosition + state.visibleThreshold > totalItemCount) {
-            Log.d(TAG, "Loading one more page...")
-            state = state.copy(currentPage = state.currentPage + 1)
+            Log.d(TAG, "Loading one more page needed ...")
+            state = state.copy(currentPage = state.currentPage + 1, loading = true)
             onLoadMore(state.currentPage, totalItemCount, view)
-            state = state.copy(loading = true)
         }
     }
 
@@ -79,6 +80,7 @@ abstract class EndlessRecyclerViewScrollListener(
     }
 
     fun saveState() {
+        Log.d(TAG, "Saving state into the view model")
         viewModel.state.value = state
     }
 

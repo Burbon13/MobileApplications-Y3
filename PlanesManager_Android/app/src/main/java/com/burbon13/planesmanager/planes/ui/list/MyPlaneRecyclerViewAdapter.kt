@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 
 import com.burbon13.planesmanager.R
-import com.burbon13.planesmanager.core.TAG
+import com.burbon13.planesmanager.core.utils.extensions.TAG
 import com.burbon13.planesmanager.planes.model.Plane
 
 import kotlinx.android.synthetic.main.fragment_plane.view.*

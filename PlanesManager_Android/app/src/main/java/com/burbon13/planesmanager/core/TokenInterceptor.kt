@@ -1,6 +1,7 @@
 package com.burbon13.planesmanager.core
 
 import android.util.Log
+import com.burbon13.planesmanager.core.utils.extensions.TAG
 import okhttp3.Interceptor
 import okhttp3.Response
 

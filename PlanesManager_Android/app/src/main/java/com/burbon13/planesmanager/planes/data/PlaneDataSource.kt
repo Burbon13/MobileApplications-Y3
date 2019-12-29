@@ -2,7 +2,7 @@ package com.burbon13.planesmanager.planes.data
 
 import android.util.Log
 import com.burbon13.planesmanager.core.Api
-import com.burbon13.planesmanager.core.TAG
+import com.burbon13.planesmanager.core.utils.extensions.TAG
 import com.burbon13.planesmanager.planes.model.Plane
 import com.burbon13.planesmanager.core.Result
 import com.google.gson.JsonParser
@@ -32,17 +32,12 @@ class PlaneDataSource {
         return try {
             Result.Success(planeService.getPlanes())
         } catch (e: Exception) {
-            Log.d(TAG, "Exception occurred while retrieving planes: ${e.message}")
             if (e is HttpException) {
-                val errorJsonString = e.response()?.errorBody()?.string()
-                val errorMessage =
-                    JsonParser().parse(errorJsonString)
-                        .asJsonObject.get("issue")
-                        .asJsonArray.get(0)
-                        .asJsonObject.get("error")
-                        .asString
+                val errorMessage = getApiErrorMessage(e)
+                Log.d(TAG, "Exception occurred while retrieving planes: $errorMessage")
                 Result.Error(errorMessage)
             } else {
+                Log.d(TAG, "Exception occurred while retrieving planes: ${e.message}")
                 Result.Error("An error occurred, contact support if this persists")
             }
         }
@@ -57,7 +52,9 @@ class PlaneDataSource {
         } catch (e: Exception) {
             Log.d(TAG, "Exception occurred while retrieving planes: ${e.message}")
             if (e is HttpException) {
-                Result.Error(getApiErrorMessage(e))
+                val errorMessage = getApiErrorMessage(e)
+                Log.d(TAG, "Exception occurred while retrieving planes: $errorMessage")
+                Result.Error(errorMessage)
             } else {
                 Result.Error("An error occurred, contact support if this persists")
             }
@@ -69,10 +66,12 @@ class PlaneDataSource {
         return try {
             Result.Success(planeService.addPlane(plane))
         } catch (e: java.lang.Exception) {
-            Log.d(TAG, "Exception occurred while retrieving planes: ${e.message}")
             if (e is HttpException) {
-                Result.Error(getApiErrorMessage(e))
+                val errorMessage = getApiErrorMessage(e)
+                Log.d(TAG, "Exception occurred while adding planes $errorMessage")
+                Result.Error(errorMessage)
             } else {
+                Log.d(TAG, "Exception occurred while adding plane: ${e.message}")
                 Result.Error("An error occurred, contact support if this persist")
             }
         }

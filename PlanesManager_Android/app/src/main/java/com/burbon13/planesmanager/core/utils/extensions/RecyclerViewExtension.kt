@@ -5,7 +5,6 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.burbon13.planesmanager.core.TAG
 
 
 fun RecyclerView.setDivider(@DrawableRes drawableRes: Int) {

@@ -15,7 +15,7 @@ import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.burbon13.planesmanager.core.Result
 
 import com.burbon13.planesmanager.R
-import com.burbon13.planesmanager.core.TAG
+import com.burbon13.planesmanager.core.utils.extensions.TAG
 import com.burbon13.planesmanager.core.utils.extensions.afterTextChanged
 import kotlinx.android.synthetic.main.fragment_login.*
 
@@ -52,7 +52,7 @@ class LoginFragment : Fragment() {
 
     private fun setListeners() {
         viewModel.loginFormState.observe(this, Observer {
-            Log.v(TAG, "Login form state modified")
+            Log.v(TAG, "(Observed) Login form state modified")
             val loginState = it ?: return@Observer
             login.isEnabled = loginState.isDataValid
             if (loginState.usernameError != null) {
@@ -63,7 +63,7 @@ class LoginFragment : Fragment() {
             }
         })
         viewModel.loginResult.observe(this, Observer {
-            Log.d(TAG, "Login result modified")
+            Log.d(TAG, "(Observed) Login result modified")
             val loginResult = it ?: return@Observer
             loading.visibility = View.GONE
             if (loginResult.succeeded) {
@@ -78,21 +78,21 @@ class LoginFragment : Fragment() {
             }
         })
         usernameEditText.afterTextChanged {
-            Log.v(TAG, "Username login field modified")
+            Log.v(TAG, "(Observed) Username login field modified")
             viewModel.loginDataChanged(
                 username.text.toString(),
                 password.text.toString()
             )
         }
         passwordEditText.afterTextChanged {
-            Log.v(TAG, "Password login field modified")
+            Log.v(TAG, "(Observed) Password login field modified")
             viewModel.loginDataChanged(
                 username.text.toString(),
                 password.text.toString()
             )
         }
         loginButton.setOnClickListener {
-            Log.v(TAG, "Login button clicked")
+            Log.v(TAG, "(Observed) Login button clicked")
             loading.visibility = View.VISIBLE
             viewModel.login(username.text.toString(), password.text.toString())
         }
@@ -106,6 +106,7 @@ class LoginFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
+        Log.d(TAG, "onStop()")
         username.afterTextChanged {}
         password.afterTextChanged {}
         login.setOnClickListener(null)

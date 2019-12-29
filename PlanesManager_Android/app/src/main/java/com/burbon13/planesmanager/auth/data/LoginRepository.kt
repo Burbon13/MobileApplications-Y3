@@ -4,7 +4,7 @@ import android.util.Log
 import com.burbon13.planesmanager.auth.data.model.User
 import com.burbon13.planesmanager.core.Api
 import com.burbon13.planesmanager.core.Result
-import com.burbon13.planesmanager.core.TAG
+import com.burbon13.planesmanager.core.utils.extensions.TAG
 
 
 /**
@@ -12,22 +12,17 @@ import com.burbon13.planesmanager.core.TAG
  * maintains an in-memory cache of login status and user credentials information.
  */
 class LoginRepository(private val dataSource: LoginDataSource) {
-    var user: User? = null
-        private set
-
+    private var user: User? = null
     val isLoggedIn: Boolean
         get() = user != null
 
-    init {
-        user = null
-    }
-
     fun logout() {
-        user = null
         Log.d(TAG, "User ${user?.username} logged out")
+        user = null
     }
 
     suspend fun login(username: String, password: String): Result<TokenHolder> {
+        Log.d(TAG, "Login with credentials username=$username and password=$password")
         val user = User(username, password)
         val result = dataSource.login(user)
         if (result is Result.Success) {
@@ -40,7 +35,7 @@ class LoginRepository(private val dataSource: LoginDataSource) {
     }
 
     private fun setLoggedInUser(loggedInUser: User, tokenHolder: TokenHolder) {
-        Log.d(TAG, "Setting token for user ${user?.username}")
+        Log.d(TAG, "Setting token for user ${loggedInUser.username}")
         this.user = loggedInUser
         Api.tokenInterceptor.token = tokenHolder.token
     }

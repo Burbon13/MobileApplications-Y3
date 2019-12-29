@@ -1,4 +1,4 @@
-package com.burbon13.planesmanager.core
+package com.burbon13.planesmanager.core.utils.extensions
 
 
 val Any.TAG: String

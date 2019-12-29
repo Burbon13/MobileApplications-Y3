@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.burbon13.planesmanager.R
-import com.burbon13.planesmanager.core.TAG
+import com.burbon13.planesmanager.core.utils.extensions.TAG
 import com.burbon13.planesmanager.planes.data.PlaneDataSource
 import com.burbon13.planesmanager.planes.data.PlaneRepository
 import com.burbon13.planesmanager.planes.model.Plane
@@ -44,6 +44,7 @@ class PlaneFormViewModel : ViewModel() {
         fabricationYear: String,
         price: String
     ) {
+        Log.d(TAG, "Add new plane with tailNumber=$tailNumber")
         viewModelScope.launch {
             _processing.value = true
             _addPlaneResult.value = planeRepository.addPlane(

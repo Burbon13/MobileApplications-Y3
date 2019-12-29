@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.burbon13.planesmanager.R
 import com.burbon13.planesmanager.core.Result
-import com.burbon13.planesmanager.core.TAG
+import com.burbon13.planesmanager.core.utils.extensions.TAG
 import com.burbon13.planesmanager.core.utils.extensions.afterTextChanged
 import com.burbon13.planesmanager.planes.model.Plane
 import com.burbon13.planesmanager.planes.ui.shared.SharedViewModelResult
@@ -34,6 +34,7 @@ class PlaneFormFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate()")
         viewModel = ViewModelProviders.of(this).get(PlaneFormViewModel::class.java)
         sharedViewModelResult = activity?.run {
             ViewModelProviders.of(this)[SharedViewModelResult::class.java]
@@ -44,6 +45,7 @@ class PlaneFormFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d(TAG, "onCreateView()")
         val rootView = inflater.inflate(R.layout.fragment_plane_form, container, false)
 
         tailNumberEditText = rootView.findViewById(R.id.edit_text_tail_number)
@@ -68,28 +70,29 @@ class PlaneFormFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        Log.d(TAG, "onStart()")
         setListeners()
     }
 
     private fun setListeners() {
         tailNumberEditText.afterTextChanged {
-            Log.d(TAG, "Tail number field modified")
+            Log.v(TAG, "Tail number field modified")
             formFieldsChanged()
         }
         modelEditText.afterTextChanged {
-            Log.d(TAG, "Model field modified")
+            Log.v(TAG, "Model field modified")
             formFieldsChanged()
         }
         yearEditText.afterTextChanged {
-            Log.d(TAG, "Year field modified")
+            Log.v(TAG, "Year field modified")
             formFieldsChanged()
         }
         priceEditText.afterTextChanged {
-            Log.d(TAG, "Price field modified")
+            Log.v(TAG, "Price field modified")
             formFieldsChanged()
         }
         viewModel.planeFormState.observe(this, Observer {
-            Log.d(TAG, "PlaneFormState changed")
+            Log.v(TAG, "(Observed) PlaneFormState changed")
             val planeFormState = it ?: return@Observer
             submitButton.isEnabled = planeFormState.isDataValid
             if (planeFormState.tailNumberError != null) {
@@ -106,6 +109,7 @@ class PlaneFormFragment : Fragment() {
             }
         })
         viewModel.processing.observe(this, Observer {
+            Log.d(TAG, "(Observed) Plane processing")
             if (it) {
                 progressBar.visibility = View.VISIBLE
                 submitButton.isEnabled = false
@@ -115,15 +119,21 @@ class PlaneFormFragment : Fragment() {
             }
         })
         viewModel.addPlaneResult.observe(this, Observer {
-            Log.d(TAG, "addPlaneResult observed in PlaneFormFragment")
+            Log.d(TAG, "(Observed) addPlaneResult observed in PlaneFormFragment")
             val addPlaneResult = it
             if (addPlaneResult is Result.Success) {
+                Log.d(TAG, "Successful plane addition, setting addPlaneResult in view model")
                 sharedViewModelResult.addPlaneResult.value = Result.Success("Plane added")
                 activity?.runOnUiThread {
                     Toast.makeText(context, "Plane added successfully!", Toast.LENGTH_LONG).show()
                 }
+                Log.d(TAG, "Pop back stack!")
                 findNavController().popBackStack()
             } else if (addPlaneResult is Result.Error) {
+                Log.d(
+                    TAG,
+                    "Error (and adding to view model) on adding new plane: ${addPlaneResult.message}"
+                )
                 sharedViewModelResult.addPlaneResult.value = addPlaneResult
                 activity?.runOnUiThread {
                     Toast.makeText(context, addPlaneResult.message, Toast.LENGTH_LONG).show()
@@ -131,6 +141,7 @@ class PlaneFormFragment : Fragment() {
             }
         })
         submitButton.setOnClickListener {
+            Log.d(TAG, "(Observed) Submit button pressed")
             viewModel.addPlane(
                 tailNumberEditText.text.toString(),
                 Plane.Brand.valueOf(brandPicker.displayedValues[brandPicker.value]),
