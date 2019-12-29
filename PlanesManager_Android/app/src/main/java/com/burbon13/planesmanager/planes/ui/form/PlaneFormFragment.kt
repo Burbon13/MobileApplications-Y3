@@ -16,10 +16,13 @@ import com.burbon13.planesmanager.core.Result
 import com.burbon13.planesmanager.core.TAG
 import com.burbon13.planesmanager.core.utils.extensions.afterTextChanged
 import com.burbon13.planesmanager.planes.model.Plane
+import com.burbon13.planesmanager.planes.ui.shared.SharedViewModelResult
 
 
 class PlaneFormFragment : Fragment() {
     private lateinit var viewModel: PlaneFormViewModel
+    private lateinit var sharedViewModelResult: SharedViewModelResult
+
     private lateinit var tailNumberEditText: EditText
     private lateinit var brandPicker: NumberPicker
     private lateinit var modelEditText: EditText
@@ -32,7 +35,9 @@ class PlaneFormFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(PlaneFormViewModel::class.java)
-
+        sharedViewModelResult = activity?.run {
+            ViewModelProviders.of(this)[SharedViewModelResult::class.java]
+        } ?: throw Exception("Invalid Activity!")
     }
 
     override fun onCreateView(
@@ -110,13 +115,16 @@ class PlaneFormFragment : Fragment() {
             }
         })
         viewModel.addPlaneResult.observe(this, Observer {
+            Log.d(TAG, "addPlaneResult observed in PlaneFormFragment")
             val addPlaneResult = it
             if (addPlaneResult is Result.Success) {
+                sharedViewModelResult.addPlaneResult.value = Result.Success("Plane added")
                 activity?.runOnUiThread {
                     Toast.makeText(context, "Plane added successfully!", Toast.LENGTH_LONG).show()
                 }
                 findNavController().popBackStack()
             } else if (addPlaneResult is Result.Error) {
+                sharedViewModelResult.addPlaneResult.value = addPlaneResult
                 activity?.runOnUiThread {
                     Toast.makeText(context, addPlaneResult.message, Toast.LENGTH_LONG).show()
                 }

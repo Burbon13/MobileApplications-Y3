@@ -58,4 +58,11 @@ class PlanesViewModel : ViewModel() {
             _loading.value = false
         }
     }
+`
+    fun reloadList() {
+        Log.d(TAG, "Reload list")
+        _toastMessageMutableLiveData.value = "Refreshing"
+        _planeMutableLiveDate.value = listOf()
+        appendPlanesPage(0)
+    }
 }

@@ -75,11 +75,7 @@ abstract class EndlessRecyclerViewScrollListener(
     // Call this method whenever performing new searches
     fun resetState() {
         Log.d(TAG, "resetState() - performing new searches")
-        state = state.copy(
-            currentPage = state.startingPageIndex,
-            previousTotalItemCount = 0,
-            loading = true
-        )
+        state = EndlessScrollState()
     }
 
     fun saveState() {

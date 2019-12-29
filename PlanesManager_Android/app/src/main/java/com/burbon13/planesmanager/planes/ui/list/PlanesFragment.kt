@@ -18,11 +18,13 @@ import com.burbon13.planesmanager.core.TAG
 import com.burbon13.planesmanager.core.utils.scroll.EndlessRecyclerViewScrollListener
 import com.burbon13.planesmanager.core.utils.extensions.hideKeyboard
 import com.burbon13.planesmanager.core.utils.extensions.setDivider
+import com.burbon13.planesmanager.core.Result
 import com.burbon13.planesmanager.core.utils.scroll.EndlessScrollState
 import com.burbon13.planesmanager.core.utils.scroll.EndlessScrollViewModel
 import com.burbon13.planesmanager.core.utils.scroll.EndlessScrollViewModelFactory
 
 import com.burbon13.planesmanager.planes.model.Plane
+import com.burbon13.planesmanager.planes.ui.shared.SharedViewModelResult
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -35,6 +37,8 @@ class PlanesFragment : Fragment(),
 
     private lateinit var scrollViewModel: EndlessScrollViewModel
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
+
+    private lateinit var sharedViewModelResult: SharedViewModelResult
 
     private lateinit var loadingProgressBar: ProgressBar
     private lateinit var recyclerViewAdapter: MyPlaneRecyclerViewAdapter
@@ -49,6 +53,9 @@ class PlanesFragment : Fragment(),
         val scrollViewModelFactory = EndlessScrollViewModelFactory(EndlessScrollState())
         scrollViewModel = ViewModelProviders.of(this, scrollViewModelFactory)
             .get(EndlessScrollViewModel::class.java)
+        sharedViewModelResult = activity?.run {
+            ViewModelProviders.of(this)[SharedViewModelResult::class.java]
+        } ?: throw Exception("Invalid Activity!")
     }
 
     override fun onCreateView(
@@ -106,6 +113,7 @@ class PlanesFragment : Fragment(),
                 override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                     // Triggered only when new data needs to be appended to the list
                     // Add whatever code is needed to append new items to the bottom of the list
+                    Log.d(TAG, "EndlessRecyclerView onLoadMore()!!!")
                     loadNextDataFromApi(page)
                 }
             }
@@ -114,6 +122,14 @@ class PlanesFragment : Fragment(),
             Log.d(TAG, "Navigating from PlanesFragment to PlaneFormFragment")
             findNavController().navigate(R.id.action_planesFragment_to_planeFormFragment)
         }
+        sharedViewModelResult.addPlaneResult.observe(this, Observer {
+            Log.d(TAG, "Add plane new value observer ...")
+            if (it is Result.Success) {
+                reloadList()
+            } else {
+                Log.d(TAG, "Failure, nothing to do")
+            }
+        })
     }
 
     override fun onPause() {
@@ -136,5 +152,11 @@ class PlanesFragment : Fragment(),
     private fun loadNextDataFromApi(offset: Int) {
         Log.d(TAG, "Load data from next page with offset=$offset")
         viewModel.appendPlanesPage(offset)
+    }
+
+    private fun reloadList() {
+        Log.d(TAG, "Reload list")
+        scrollListener.resetState()
+        viewModel.reloadList()
     }
 }
