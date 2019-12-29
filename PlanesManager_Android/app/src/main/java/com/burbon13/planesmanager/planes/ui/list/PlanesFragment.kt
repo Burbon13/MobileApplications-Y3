@@ -15,9 +15,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.burbon13.planesmanager.R
 import com.burbon13.planesmanager.core.TAG
-import com.burbon13.planesmanager.core.utils.EndlessRecyclerViewScrollListener
+import com.burbon13.planesmanager.core.utils.scroll.EndlessRecyclerViewScrollListener
 import com.burbon13.planesmanager.core.utils.extensions.hideKeyboard
 import com.burbon13.planesmanager.core.utils.extensions.setDivider
+import com.burbon13.planesmanager.core.utils.scroll.EndlessScrollState
+import com.burbon13.planesmanager.core.utils.scroll.EndlessScrollViewModel
+import com.burbon13.planesmanager.core.utils.scroll.EndlessScrollViewModelFactory
 
 import com.burbon13.planesmanager.planes.model.Plane
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -29,6 +32,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class PlanesFragment : Fragment(),
     OnListFragmentInteractionListener {
     private lateinit var viewModel: PlanesViewModel
+    private lateinit var scrollViewModel: EndlessScrollViewModel
+
     private lateinit var loadingProgressBar: ProgressBar
     private lateinit var recyclerViewAdapter: MyPlaneRecyclerViewAdapter
     private lateinit var recyclerViewPlanes: RecyclerView
@@ -39,6 +44,9 @@ class PlanesFragment : Fragment(),
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate()")
         viewModel = ViewModelProviders.of(this).get(PlanesViewModel::class.java)
+        val scrollViewModelFactory = EndlessScrollViewModelFactory(EndlessScrollState())
+        scrollViewModel = ViewModelProviders.of(this, scrollViewModelFactory)
+            .get(EndlessScrollViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -92,7 +100,7 @@ class PlanesFragment : Fragment(),
             }
         })
         recyclerViewPlanes.addOnScrollListener(object :
-            EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            EndlessRecyclerViewScrollListener(scrollViewModel, linearLayoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
