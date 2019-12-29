@@ -32,7 +32,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class PlanesFragment : Fragment(),
     OnListFragmentInteractionListener {
     private lateinit var viewModel: PlanesViewModel
+
     private lateinit var scrollViewModel: EndlessScrollViewModel
+    private lateinit var scrollListener: EndlessRecyclerViewScrollListener
 
     private lateinit var loadingProgressBar: ProgressBar
     private lateinit var recyclerViewAdapter: MyPlaneRecyclerViewAdapter
@@ -99,18 +101,24 @@ class PlanesFragment : Fragment(),
                 loadingProgressBar.visibility = View.GONE
             }
         })
-        recyclerViewPlanes.addOnScrollListener(object :
-            EndlessRecyclerViewScrollListener(scrollViewModel, linearLayoutManager) {
-            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to the bottom of the list
-                loadNextDataFromApi(page)
+        scrollListener =
+            object : EndlessRecyclerViewScrollListener(scrollViewModel, linearLayoutManager) {
+                override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                    // Triggered only when new data needs to be appended to the list
+                    // Add whatever code is needed to append new items to the bottom of the list
+                    loadNextDataFromApi(page)
+                }
             }
-        })
+        recyclerViewPlanes.addOnScrollListener(scrollListener)
         addPlaneButton.setOnClickListener {
             Log.d(TAG, "Navigating from PlanesFragment to PlaneFormFragment")
             findNavController().navigate(R.id.action_planesFragment_to_planeFormFragment)
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        scrollListener.saveState()
     }
 
     override fun onStop() {

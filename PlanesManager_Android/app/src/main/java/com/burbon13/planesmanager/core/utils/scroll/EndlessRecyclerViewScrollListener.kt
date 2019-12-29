@@ -7,7 +7,7 @@ import com.burbon13.planesmanager.core.TAG
 
 
 abstract class EndlessRecyclerViewScrollListener(
-    viewModel: EndlessScrollViewModel,
+    private val viewModel: EndlessScrollViewModel,
     private val mLayoutManager: LinearLayoutManager
 ) :
     RecyclerView.OnScrollListener() {
@@ -66,8 +66,9 @@ abstract class EndlessRecyclerViewScrollListener(
         // threshold should reflect how many total columns there are too
         if (!state.loading && lastVisibleItemPosition + state.visibleThreshold > totalItemCount) {
             Log.d(TAG, "Loading one more page...")
-            onLoadMore(state.currentPage + 1, totalItemCount, view)
-            state = state.copy(currentPage = state.currentPage + 1, loading = true)
+            state = state.copy(currentPage = state.currentPage + 1)
+            onLoadMore(state.currentPage, totalItemCount, view)
+            state = state.copy(loading = true)
         }
     }
 
@@ -79,6 +80,10 @@ abstract class EndlessRecyclerViewScrollListener(
             previousTotalItemCount = 0,
             loading = true
         )
+    }
+
+    fun saveState() {
+        viewModel.state.value = state
     }
 
     // Defines the process for actually loading more data based on page
