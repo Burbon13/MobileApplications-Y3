@@ -50,17 +50,15 @@ class PlaneFormFragment : Fragment() {
 
         tailNumberEditText = rootView.findViewById(R.id.edit_text_tail_number)
         brandPicker = rootView.findViewById(R.id.number_picker_brand)
-        val brands = Plane.Brand.values().map { it.toString() }
         brandPicker.minValue = 0
-        brandPicker.maxValue = brands.size - 1
-        brandPicker.displayedValues = brands.toTypedArray()
+        brandPicker.maxValue = Plane.BrandList.size - 1
+        brandPicker.displayedValues = Plane.BrandList.toTypedArray()
         modelEditText = rootView.findViewById(R.id.edit_text_model)
         yearEditText = rootView.findViewById(R.id.edit_text_year)
         enginePicker = rootView.findViewById(R.id.number_picker_engine)
-        val engines = Plane.Engine.values().map { it.toString() }
         enginePicker.minValue = 0
-        enginePicker.maxValue = engines.size - 1
-        enginePicker.displayedValues = engines.toTypedArray()
+        enginePicker.maxValue = Plane.EngineList.size - 1
+        enginePicker.displayedValues = Plane.EngineList.toTypedArray()
         priceEditText = rootView.findViewById(R.id.edit_text_price)
         submitButton = rootView.findViewById(R.id.button_submit_plane)
         progressBar = rootView.findViewById(R.id.progress_bar_plane_form)

@@ -59,6 +59,11 @@ export class PlaneStore {
     async remove(props) {
         return this.store.remove(props);
     }
+
+    async countByBrand(brand) {
+        return this.store.count({brand: brand})
+
+    }
 }
 
 export default new PlaneStore({filename: './db/planes.json', autoload: true});

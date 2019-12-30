@@ -23,6 +23,10 @@ class PlaneDataSource {
         @Headers("Content-Type: application/json")
         @POST("/api/plane")
         suspend fun addPlane(@Body plane: Plane): Plane
+
+        @Headers("Content-Type: application/json")
+        @GET("/api/plane/brands/count/{brands_list}")
+        suspend fun getBrandsCount(@Path("brands_list") brandsList: String): Map<String, Int>
     }
 
     private val planeService: PlaneService = Api.retrofit.create(PlaneService::class.java)
@@ -74,6 +78,16 @@ class PlaneDataSource {
                 Log.d(TAG, "Exception occurred while adding plane: ${e.message}")
                 Result.Error("An error occurred, contact support if this persist")
             }
+        }
+    }
+
+    suspend fun getBrandsCount(): Result<Map<String, Int>> {
+        Log.d(TAG, "Retrieving all brand counts")
+        return try {
+            Result.Success(planeService.getBrandsCount(Plane.BrandList.joinToString(separator = ",")))
+        } catch (e: java.lang.Exception) {
+            Log.d(TAG, "Exception occurred while retrieving all brand counts: ${e.message}")
+            Result.Error("An error occurred, contact support if this persists")
         }
     }
 

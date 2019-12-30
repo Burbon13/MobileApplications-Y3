@@ -21,4 +21,9 @@ class PlaneRepository(private val planeDataSource: PlaneDataSource) {
         Log.d(TAG, "Add plane: $plane")
         return planeDataSource.addPlane(plane)
     }
+
+    suspend fun getBrandsCount(): Result<Map<String, Int>> {
+        Log.d(TAG, "Get brands count for all planes")
+        return planeDataSource.getBrandsCount()
+    }
 }

@@ -27,6 +27,20 @@ router.get('/page/:pageNumber', async (ctx) => {
     response.status = 200;
 });
 
+router.get('/brands/count/:brands', async (ctx) => {
+    const response = ctx.response;
+    const brandsList = ctx.params.brands.split(',');
+    let responseBody = {};
+
+    for (let index = 0; index < brandsList.length; index++) {
+        const brand = brandsList[index];
+        responseBody[brand] = (await planeStore.countByBrand(brand));
+    }
+
+    response.body = responseBody
+    response.status = 200;
+});
+
 const createPlane = async (plane, response) => {
     try {
         response.body = await planeStore.insert(plane);

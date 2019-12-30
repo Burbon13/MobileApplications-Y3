@@ -23,4 +23,9 @@ data class Plane(
         EMBRAER,
         BOMBARDIER
     }
+
+    companion object {
+        val EngineList = Engine.values().map { it.toString() }
+        val BrandList = Brand.values().map { it.toString() }
+    }
 }
