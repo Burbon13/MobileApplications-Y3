@@ -21,4 +21,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tail_number_label">Tail number:</string>
+    <string name="brand_label">Brand:</string>
+    <string name="model_label">Model:</string>
+    <string name="year_label">Year:</string>
+    <string name="engine_label">Engine:</string>
+    <string name="price_dollars_label">Price in $:</string>
+    <string name="geolocation_button">GEOLOCATION</string>
+    <string name="update_button">UPDATE</string>
 </resources>
