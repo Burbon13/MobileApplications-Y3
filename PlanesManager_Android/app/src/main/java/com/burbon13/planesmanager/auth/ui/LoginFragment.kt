@@ -44,14 +44,10 @@ class LoginFragment : Fragment() {
         return rootView
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "onStart()")
-        setListeners()
-    }
-
-    private fun setListeners() {
-        viewModel.loginFormState.observe(this, Observer {
+        viewModel.loginFormState.observe(viewLifecycleOwner, Observer {
             Log.v(TAG, "(Observed) Login form state modified")
             val loginState = it ?: return@Observer
             login.isEnabled = loginState.isDataValid
@@ -62,7 +58,7 @@ class LoginFragment : Fragment() {
                 password.error = getString(loginState.passwordError)
             }
         })
-        viewModel.loginResult.observe(this, Observer {
+        viewModel.loginResult.observe(viewLifecycleOwner, Observer {
             Log.d(TAG, "(Observed) Login result modified")
             val loginResult = it ?: return@Observer
             loading.visibility = View.GONE
@@ -75,6 +71,10 @@ class LoginFragment : Fragment() {
                 Toast.makeText(context, loginResult.message, Toast.LENGTH_LONG).show()
             }
         })
+    }
+
+    override fun onStart() {
+        super.onStart()
         usernameEditText.afterTextChanged {
             Log.v(TAG, "(Observed) Username login field modified")
             viewModel.loginDataChanged(

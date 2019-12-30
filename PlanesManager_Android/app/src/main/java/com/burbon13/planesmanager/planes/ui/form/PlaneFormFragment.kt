@@ -68,30 +68,9 @@ class PlaneFormFragment : Fragment() {
         return rootView
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.d(TAG, "onStart()")
-        setListeners()
-    }
-
-    private fun setListeners() {
-        tailNumberEditText.afterTextChanged {
-            Log.v(TAG, "Tail number field modified")
-            formFieldsChanged()
-        }
-        modelEditText.afterTextChanged {
-            Log.v(TAG, "Model field modified")
-            formFieldsChanged()
-        }
-        yearEditText.afterTextChanged {
-            Log.v(TAG, "Year field modified")
-            formFieldsChanged()
-        }
-        priceEditText.afterTextChanged {
-            Log.v(TAG, "Price field modified")
-            formFieldsChanged()
-        }
-        viewModel.planeFormState.observe(this, Observer {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel.planeFormState.observe(viewLifecycleOwner, Observer {
             Log.v(TAG, "(Observed) PlaneFormState changed")
             val planeFormState = it ?: return@Observer
             submitButton.isEnabled = planeFormState.isDataValid
@@ -108,7 +87,7 @@ class PlaneFormFragment : Fragment() {
                 priceEditText.error = getString(planeFormState.priceError)
             }
         })
-        viewModel.processing.observe(this, Observer {
+        viewModel.processing.observe(viewLifecycleOwner, Observer {
             Log.d(TAG, "(Observed) Plane processing")
             if (it) {
                 progressBar.visibility = View.VISIBLE
@@ -118,7 +97,7 @@ class PlaneFormFragment : Fragment() {
                 submitButton.isEnabled = true
             }
         })
-        viewModel.addPlaneResult.observe(this, Observer {
+        viewModel.addPlaneResult.observe(viewLifecycleOwner, Observer {
             Log.d(TAG, "(Observed) addPlaneResult observed in PlaneFormFragment")
             val addPlaneResult = it
             if (addPlaneResult is Result.Success) {
@@ -136,6 +115,28 @@ class PlaneFormFragment : Fragment() {
                 Toast.makeText(context, addPlaneResult.message, Toast.LENGTH_LONG).show()
             }
         })
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart()")
+        tailNumberEditText.afterTextChanged {
+            Log.v(TAG, "Tail number field modified")
+            formFieldsChanged()
+        }
+        modelEditText.afterTextChanged {
+            Log.v(TAG, "Model field modified")
+            formFieldsChanged()
+        }
+        yearEditText.afterTextChanged {
+            Log.v(TAG, "Year field modified")
+            formFieldsChanged()
+        }
+        priceEditText.afterTextChanged {
+            Log.v(TAG, "Price field modified")
+            formFieldsChanged()
+        }
+
         submitButton.setOnClickListener {
             Log.d(TAG, "(Observed) Submit button pressed")
             viewModel.addPlane(

@@ -84,28 +84,36 @@ class PlanesFragment : Fragment(),
         return rootView
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.d(TAG, "onStart()")
-        hideKeyboard()
-        setListeners()
-    }
-
-    private fun setListeners() {
-        viewModel.toastMessageLiveData.observe(this, Observer {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel.toastMessageLiveData.observe(viewLifecycleOwner, Observer {
             Log.d(TAG, "Toast changed, showing")
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         })
         viewModel.planeLiveData.observe(this, Observer {
             recyclerViewAdapter.planeList = it
         })
-        viewModel.loading.observe(this, Observer {
+        viewModel.loading.observe(viewLifecycleOwner, Observer {
             if (it) {
                 loadingProgressBar.visibility = View.VISIBLE
             } else {
                 loadingProgressBar.visibility = View.GONE
             }
         })
+        sharedViewModelResult.addPlaneResult.observe(viewLifecycleOwner, Observer {
+            Log.d(TAG, "Add plane new value observer ...")
+            if (it is Result.Success) {
+                reloadList()
+            } else {
+                Log.d(TAG, "Failure, nothing to do")
+            }
+        })
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart()")
+        hideKeyboard()
         scrollListener =
             object : EndlessRecyclerViewScrollListener(scrollViewModel, linearLayoutManager) {
                 override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
@@ -120,14 +128,6 @@ class PlanesFragment : Fragment(),
             Log.d(TAG, "Navigating from PlanesFragment to PlaneFormFragment")
             findNavController().navigate(R.id.action_planesFragment_to_planeFormFragment)
         }
-        sharedViewModelResult.addPlaneResult.observe(this, Observer {
-            Log.d(TAG, "Add plane new value observer ...")
-            if (it is Result.Success) {
-                reloadList()
-            } else {
-                Log.d(TAG, "Failure, nothing to do")
-            }
-        })
     }
 
     override fun onPause() {
