@@ -24,7 +24,8 @@ import com.burbon13.planesmanager.core.utils.scroll.EndlessScrollViewModel
 import com.burbon13.planesmanager.core.utils.scroll.EndlessScrollViewModelFactory
 
 import com.burbon13.planesmanager.planes.model.Plane
-import com.burbon13.planesmanager.planes.ui.shared.SharedViewModelResult
+import com.burbon13.planesmanager.planes.ui.form.PlaneFormResult
+import com.burbon13.planesmanager.planes.ui.shared.SharedPlaneFormViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -38,7 +39,7 @@ class PlanesFragment : Fragment(),
     private lateinit var scrollViewModel: EndlessScrollViewModel
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
 
-    private lateinit var sharedViewModelResult: SharedViewModelResult
+    private lateinit var sharedViewModelResult: SharedPlaneFormViewModel
 
     private lateinit var loadingProgressBar: ProgressBar
     private lateinit var recyclerViewAdapter: MyPlaneRecyclerViewAdapter
@@ -54,7 +55,7 @@ class PlanesFragment : Fragment(),
         scrollViewModel = ViewModelProviders.of(this, scrollViewModelFactory)
             .get(EndlessScrollViewModel::class.java)
         sharedViewModelResult = activity?.run {
-            ViewModelProviders.of(this)[SharedViewModelResult::class.java]
+            ViewModelProviders.of(this)[SharedPlaneFormViewModel::class.java]
         } ?: throw Exception("Invalid Activity!")
     }
 
@@ -86,10 +87,6 @@ class PlanesFragment : Fragment(),
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.toastMessageLiveData.observe(viewLifecycleOwner, Observer {
-            Log.d(TAG, "Toast changed, showing")
-            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-        })
         viewModel.planeLiveData.observe(this, Observer {
             recyclerViewAdapter.planeList = it
         })
@@ -103,7 +100,12 @@ class PlanesFragment : Fragment(),
         sharedViewModelResult.addPlaneResult.observe(viewLifecycleOwner, Observer {
             Log.d(TAG, "Add plane new value observer ...")
             if (it is Result.Success) {
-                reloadList()
+                if (it.data == PlaneFormResult.NEW_PLANE_ADDED) {
+                    Log.d(TAG, "Refreshing planes list")
+                    reloadList()
+                    sharedViewModelResult.addPlaneResult.value =
+                        Result.Success(PlaneFormResult.NO_ACTION)
+                }
             } else {
                 Log.d(TAG, "Failure, nothing to do")
             }

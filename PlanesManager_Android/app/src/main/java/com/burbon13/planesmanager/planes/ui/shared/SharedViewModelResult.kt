@@ -7,11 +7,11 @@ import com.burbon13.planesmanager.core.Result
 import com.burbon13.planesmanager.core.utils.extensions.TAG
 
 
-class SharedViewModelResult: ViewModel() {
-    val _addPlaneResult = MutableLiveData<Result<String>>()
-    val addPlaneResult: MutableLiveData<Result<String>>
-    get() {
-        Log.d(TAG, "GET ADD PLANE RESULT !!!LIVEDATA!!!")
-        return _addPlaneResult
-    }
+open class SharedViewModelResult<T : Any> : ViewModel() {
+    private val _addPlaneResult = MutableLiveData<Result<T>>()
+    val addPlaneResult: MutableLiveData<Result<T>>
+        get() {
+            Log.d(TAG, "GET ADD PLANE RESULT !!!LIVEDATA!!!")
+            return _addPlaneResult
+        }
 }

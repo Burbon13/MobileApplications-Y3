@@ -20,10 +20,6 @@ class PlaneFormViewModel : ViewModel() {
 
     val updatingPlane = MutableLiveData<Boolean>()
 
-    private val _toastMessage = MutableLiveData<String>()
-    val toastMessage: LiveData<String>
-        get() = _toastMessage
-
     private val _planeFormState = MutableLiveData<PlaneFormState>()
     val planeFormState: LiveData<PlaneFormState>
         get() = _planeFormState

@@ -16,12 +16,12 @@ import com.burbon13.planesmanager.core.Result
 import com.burbon13.planesmanager.core.utils.extensions.TAG
 import com.burbon13.planesmanager.core.utils.extensions.afterTextChanged
 import com.burbon13.planesmanager.planes.model.Plane
-import com.burbon13.planesmanager.planes.ui.shared.SharedViewModelResult
+import com.burbon13.planesmanager.planes.ui.shared.SharedPlaneFormViewModel
 
 
 class PlaneFormFragment : Fragment() {
     private lateinit var viewModel: PlaneFormViewModel
-    private lateinit var sharedViewModelResult: SharedViewModelResult
+    private lateinit var sharedViewModelResult: SharedPlaneFormViewModel
 
     private lateinit var tailNumberEditText: EditText
     private lateinit var brandPicker: NumberPicker
@@ -37,7 +37,7 @@ class PlaneFormFragment : Fragment() {
         Log.d(TAG, "onCreate()")
         viewModel = ViewModelProviders.of(this).get(PlaneFormViewModel::class.java)
         sharedViewModelResult = activity?.run {
-            ViewModelProviders.of(this)[SharedViewModelResult::class.java]
+            ViewModelProviders.of(this)[SharedPlaneFormViewModel::class.java]
         } ?: throw Exception("Invalid Activity!")
     }
 
@@ -102,7 +102,8 @@ class PlaneFormFragment : Fragment() {
             val addPlaneResult = it
             if (addPlaneResult is Result.Success) {
                 Log.d(TAG, "Successful plane addition, setting addPlaneResult in view model")
-                sharedViewModelResult.addPlaneResult.value = Result.Success("Plane added")
+                sharedViewModelResult.addPlaneResult.value =
+                    Result.Success(PlaneFormResult.NEW_PLANE_ADDED)
                 Toast.makeText(context, "Plane added successfully!", Toast.LENGTH_LONG).show()
                 Log.d(TAG, "Pop back stack!")
                 findNavController().popBackStack()
