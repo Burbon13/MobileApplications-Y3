@@ -94,9 +94,7 @@ class PlanesFragment : Fragment(),
     private fun setListeners() {
         viewModel.toastMessageLiveData.observe(this, Observer {
             Log.d(TAG, "Toast changed, showing")
-            activity?.runOnUiThread {
-                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-            }
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         })
         viewModel.planeLiveData.observe(this, Observer {
             recyclerViewAdapter.planeList = it

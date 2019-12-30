@@ -124,9 +124,7 @@ class PlaneFormFragment : Fragment() {
             if (addPlaneResult is Result.Success) {
                 Log.d(TAG, "Successful plane addition, setting addPlaneResult in view model")
                 sharedViewModelResult.addPlaneResult.value = Result.Success("Plane added")
-                activity?.runOnUiThread {
-                    Toast.makeText(context, "Plane added successfully!", Toast.LENGTH_LONG).show()
-                }
+                Toast.makeText(context, "Plane added successfully!", Toast.LENGTH_LONG).show()
                 Log.d(TAG, "Pop back stack!")
                 findNavController().popBackStack()
             } else if (addPlaneResult is Result.Error) {
@@ -135,9 +133,7 @@ class PlaneFormFragment : Fragment() {
                     "Error (and adding to view model) on adding new plane: ${addPlaneResult.message}"
                 )
                 sharedViewModelResult.addPlaneResult.value = addPlaneResult
-                activity?.runOnUiThread {
-                    Toast.makeText(context, addPlaneResult.message, Toast.LENGTH_LONG).show()
-                }
+                Toast.makeText(context, addPlaneResult.message, Toast.LENGTH_LONG).show()
             }
         })
         submitButton.setOnClickListener {

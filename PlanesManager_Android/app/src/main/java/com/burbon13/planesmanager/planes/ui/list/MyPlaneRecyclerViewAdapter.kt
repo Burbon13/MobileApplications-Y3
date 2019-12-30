@@ -51,7 +51,7 @@ class MyPlaneRecyclerViewAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        Log.d(TAG, "onCreateViewHolder()")
+        Log.v(TAG, "onCreateViewHolder()")
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_plane, parent, false)
         return ViewHolder(view)

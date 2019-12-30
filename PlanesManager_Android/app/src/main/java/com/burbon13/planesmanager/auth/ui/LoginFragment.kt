@@ -72,9 +72,7 @@ class LoginFragment : Fragment() {
                     .navigate(LoginFragmentDirections.actionLoginActivityToPlanesFragment())
             } else if (loginResult is Result.Error) {
                 Log.d(TAG, "Login failed, showing Toast message")
-                activity?.runOnUiThread {
-                    Toast.makeText(context, loginResult.message, Toast.LENGTH_LONG).show()
-                }
+                Toast.makeText(context, loginResult.message, Toast.LENGTH_LONG).show()
             }
         })
         usernameEditText.afterTextChanged {
