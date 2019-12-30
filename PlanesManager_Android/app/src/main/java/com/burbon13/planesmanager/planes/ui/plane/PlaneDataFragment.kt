@@ -1,6 +1,8 @@
 package com.burbon13.planesmanager.planes.ui.plane
 
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -14,22 +16,29 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.burbon13.planesmanager.R
 import com.burbon13.planesmanager.core.Result
 import com.burbon13.planesmanager.core.utils.extensions.TAG
+import com.burbon13.planesmanager.planes.ui.shared.SharedPlaneFormViewModel
 import kotlinx.android.synthetic.main.fragment_plane_data.*
 import java.lang.Exception
 
 
 class PlaneDataFragment : Fragment() {
     private lateinit var viewModel: PlaneDataViewModel
+    private lateinit var sharedViewModel: SharedPlaneFormViewModel
     private val args: PlaneDataFragmentArgs by navArgs()
+    private var tailNumber: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(PlaneDataViewModel::class.java)
         viewModel.loadPlane(args.planeTailNumber)
+        sharedViewModel = activity?.run {
+            ViewModelProviders.of(this)[SharedPlaneFormViewModel::class.java]
+        } ?: throw Exception("Invalid Activity!")
     }
 
     override fun onCreateView(
@@ -55,6 +64,7 @@ class PlaneDataFragment : Fragment() {
                 Log.d(TAG, "Plane loaded successfully")
                 val plane = it.data
                 tail_number_value.text = plane.tailNumber
+                tailNumber = plane.tailNumber
                 brand_value.text = plane.brand?.toString()
                 model_value.text = plane.model
                 engine_value.text = plane.engine?.toString()
@@ -68,6 +78,23 @@ class PlaneDataFragment : Fragment() {
                 Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
             }
             progress_bar_plane_data.visibility = View.GONE
+        })
+        viewModel.planeDeletion.observe(viewLifecycleOwner, Observer {
+            if (it is Result.Success) {
+                Log.d(TAG, "Plane deletion successful, view model notification")
+                sharedViewModel.planeDeleted()
+                Log.d(TAG, "Toast message")
+                Toast.makeText(context, "Plane deleted", Toast.LENGTH_LONG).show()
+                Log.d(TAG, "POP BACK STACK")
+                findNavController().popBackStack()
+            } else if (it is Result.Error) {
+                Log.d(TAG, "Plane deletion failed, showing toast message")
+                Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                geolocation_button.isEnabled = true
+                update_button.isEnabled = true
+                button_delete_plane.isEnabled = true
+                progress_bar_plane_data.visibility = View.GONE
+            }
         })
     }
 
@@ -106,7 +133,15 @@ class PlaneDataFragment : Fragment() {
 
         }
         button_delete_plane.setOnClickListener {
-
+            showDialog(tailNumber ?: "") {
+                geolocation_button.isEnabled = false
+                update_button.isEnabled = false
+                button_delete_plane.isEnabled = false
+                progress_bar_plane_data.visibility = View.VISIBLE
+                tailNumber?.let {
+                    viewModel.deletePlane(it)
+                }
+            }
         }
     }
 
@@ -115,5 +150,19 @@ class PlaneDataFragment : Fragment() {
         update_button.setOnClickListener(null)
         geolocation_button.setOnClickListener(null)
         button_delete_plane.setOnClickListener(null)
+    }
+
+    private fun showDialog(tailNumber: String, yesFunction: () -> Unit) {
+        val dialogBuilder = AlertDialog.Builder(context)
+        dialogBuilder.setTitle("Delete plane $tailNumber")
+        dialogBuilder.setMessage("Are you sure you want to delete this plane?")
+        val dialogClickListener = DialogInterface.OnClickListener { _, which ->
+            if (which == DialogInterface.BUTTON_POSITIVE) {
+                yesFunction()
+            }
+        }
+        dialogBuilder.setPositiveButton("YES", dialogClickListener)
+        dialogBuilder.setNegativeButton("NO", dialogClickListener)
+        dialogBuilder.create().show()
     }
 }

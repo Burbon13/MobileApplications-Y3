@@ -100,8 +100,7 @@ class PlaneFormFragment : Fragment() {
             val addPlaneResult = it
             if (addPlaneResult is Result.Success) {
                 Log.d(TAG, "Successful plane addition, setting addPlaneResult in view model")
-                sharedViewModelResult.addPlaneResult.value =
-                    Result.Success(PlaneFormResult.NEW_PLANE_ADDED)
+                sharedViewModelResult.planeAdded()
                 Toast.makeText(context, "Plane added successfully!", Toast.LENGTH_LONG).show()
                 Log.d(TAG, "Pop back stack!")
                 findNavController().popBackStack()
@@ -110,7 +109,6 @@ class PlaneFormFragment : Fragment() {
                     TAG,
                     "Error (and adding to view model) on adding new plane: ${addPlaneResult.message}"
                 )
-                sharedViewModelResult.addPlaneResult.value = addPlaneResult
                 Toast.makeText(context, addPlaneResult.message, Toast.LENGTH_LONG).show()
             }
         })

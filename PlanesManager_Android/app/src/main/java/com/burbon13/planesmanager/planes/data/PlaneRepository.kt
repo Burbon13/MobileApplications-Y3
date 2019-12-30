@@ -31,4 +31,9 @@ class PlaneRepository(private val planeDataSource: PlaneDataSource) {
         Log.d(TAG, "Get brands count for all planes")
         return planeDataSource.getBrandsCount()
     }
+
+    suspend fun deletePlane(tailNumber: String): Result<Boolean> {
+        Log.d(TAG, "Deleting plane with tailNumber=$tailNumber")
+        return planeDataSource.deletePlane(tailNumber)
+    }
 }

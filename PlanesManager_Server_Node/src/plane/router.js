@@ -78,8 +78,8 @@ router.put('/:id', async (ctx) => {
     }
 });
 
-router.del('/:id', async (ctx) => {
-    await planeStore.remove({_id: ctx.params.id});
+router.del('/:tailNumber', async (ctx) => {
+    await planeStore.remove({tailNumber: ctx.params.tailNumber});
     ctx.response.status = 204;
 });
 

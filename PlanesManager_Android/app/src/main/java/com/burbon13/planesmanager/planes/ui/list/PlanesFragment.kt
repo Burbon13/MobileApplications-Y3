@@ -23,8 +23,7 @@ import com.burbon13.planesmanager.core.utils.scroll.EndlessScrollViewModel
 import com.burbon13.planesmanager.core.utils.scroll.EndlessScrollViewModelFactory
 
 import com.burbon13.planesmanager.planes.model.Plane
-import com.burbon13.planesmanager.planes.ui.form.PlaneFormResult
-import com.burbon13.planesmanager.planes.ui.plane.PlaneDataFragmentArgs
+import com.burbon13.planesmanager.planes.ui.form.PlaneActionResult
 import com.burbon13.planesmanager.planes.ui.shared.SharedPlaneFormViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -103,17 +102,18 @@ class PlanesFragment : Fragment(),
                 loadingProgressBar.visibility = View.GONE
             }
         })
-        sharedViewModelResult.addPlaneResult.observe(viewLifecycleOwner, Observer {
-            Log.d(TAG, "Add plane new value observer ...")
+        sharedViewModelResult.planeActionResult.observe(viewLifecycleOwner, Observer {
+            Log.d(TAG, "(Observed) Plane action")
             if (it is Result.Success) {
-                if (it.data == PlaneFormResult.NEW_PLANE_ADDED) {
+                if (it.data == PlaneActionResult.PLANE_ADDED ||
+                    it.data == PlaneActionResult.PLANE_DELETED
+                ) {
+                    sharedViewModelResult.resetState()
                     Log.d(TAG, "Refreshing planes list")
                     reloadList()
-                    sharedViewModelResult.addPlaneResult.value =
-                        Result.Success(PlaneFormResult.NO_ACTION)
                 }
             } else {
-                Log.d(TAG, "Failure, nothing to do")
+                Log.e(TAG, "Failure, nothing to do")
             }
         })
     }

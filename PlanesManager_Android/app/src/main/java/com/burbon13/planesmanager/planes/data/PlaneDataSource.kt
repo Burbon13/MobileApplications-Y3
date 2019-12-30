@@ -7,11 +7,13 @@ import com.burbon13.planesmanager.planes.model.Plane
 import com.burbon13.planesmanager.core.Result
 import com.google.gson.JsonParser
 import retrofit2.HttpException
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Headers
 import retrofit2.http.Body
 import retrofit2.http.POST
+import retrofit2.http.DELETE
 
 
 class PlaneDataSource {
@@ -35,6 +37,10 @@ class PlaneDataSource {
         @Headers("Content-Type: application/json")
         @GET("/api/plane/brands/count/{brands_list}")
         suspend fun getBrandsCount(@Path("brands_list") brandsList: String): Map<String, Int>
+
+        @Headers("Content-Type: application/json")
+        @DELETE("/api/plane/{tail_number}")
+        suspend fun deletePlane(@Path("tail_number") tailNumber: String): Response<Unit>
     }
 
     private val planeService: PlaneService = Api.retrofit.create(PlaneService::class.java)
@@ -120,6 +126,28 @@ class PlaneDataSource {
             Result.Error(errorMessage)
         } catch (e: java.lang.Exception) {
             Log.e(TAG, "Exception occurred while retrieving brand counts: ${e.message}")
+            Result.Error("An error occurred, contact support if this persists")
+        }
+    }
+
+    suspend fun deletePlane(tailNumber: String): Result<Boolean> {
+        Log.d(TAG, "Deleting plane with tailNumber=$tailNumber")
+        return try {
+            planeService.deletePlane(tailNumber)
+            Log.d(TAG, "Plane with tailNumber=$tailNumber deleted successfully")
+            Result.Success(true)
+        } catch (e: HttpException) {
+            val errorMessage = getApiErrorMessage(e)
+            Log.e(
+                TAG,
+                "Error occurred while deleting plane with tailNumber=$tailNumber: $errorMessage"
+            )
+            Result.Error(errorMessage)
+        } catch (e: java.lang.Exception) {
+            Log.e(
+                TAG,
+                "Error occurred while deleting plane with tailNumber=$tailNumber: ${e.message}"
+            )
             Result.Error("An error occurred, contact support if this persists")
         }
     }

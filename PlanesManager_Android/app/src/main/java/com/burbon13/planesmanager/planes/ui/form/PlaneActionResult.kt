@@ -1,7 +1,8 @@
 package com.burbon13.planesmanager.planes.ui.form
 
 
-enum class PlaneFormResult {
-    NEW_PLANE_ADDED,
+enum class PlaneActionResult {
+    PLANE_ADDED,
+    PLANE_DELETED,
     NO_ACTION
 }
