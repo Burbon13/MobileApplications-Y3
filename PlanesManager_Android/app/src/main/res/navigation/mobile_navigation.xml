@@ -25,10 +25,18 @@
         <action
             android:id="@+id/action_planesFragment_to_planeFormFragment"
             app:destination="@id/planeFormFragment" />
+        <action
+            android:id="@+id/action_planesFragment_to_statsFragment"
+            app:destination="@id/statsFragment" />
     </fragment>
     <fragment
         android:id="@+id/planeFormFragment"
         android:name="com.burbon13.planesmanager.planes.ui.form.PlaneFormFragment"
         android:label="Plane Form"
         tools:layout="@layout/fragment_plane_form" />
+    <fragment
+        android:id="@+id/statsFragment"
+        android:name="com.burbon13.planesmanager.planes.ui.stats.StatsFragment"
+        android:label="Planes Brand Stats"
+        tools:layout="@layout/fragment_stats" />
 </navigation>

@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -45,7 +44,11 @@ class PlanesFragment : Fragment(),
     private lateinit var recyclerViewAdapter: MyPlaneRecyclerViewAdapter
     private lateinit var recyclerViewPlanes: RecyclerView
     private lateinit var linearLayoutManager: LinearLayoutManager
+
+    private var isFabMenuOpen = false
+    private lateinit var floatingActionButtonExpand: FloatingActionButton
     private lateinit var addPlaneButton: FloatingActionButton
+    private lateinit var planeStatsButton: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,7 +83,9 @@ class PlanesFragment : Fragment(),
 
         loadingProgressBar = rootView.findViewById(R.id.loading_progress_bar)
 
+        floatingActionButtonExpand = rootView.findViewById(R.id.floating_btn)
         addPlaneButton = rootView.findViewById(R.id.floating_btn_plane_form)
+        planeStatsButton = rootView.findViewById(R.id.floating_btn_plane_stats)
 
         return rootView
     }
@@ -126,9 +131,22 @@ class PlanesFragment : Fragment(),
                 }
             }
         recyclerViewPlanes.addOnScrollListener(scrollListener)
+        floatingActionButtonExpand.setOnClickListener {
+            if (!isFabMenuOpen) {
+                Log.d(TAG, "Opening floating action button menu")
+                openFabMenu()
+            } else {
+                Log.d(TAG, "Closing floating action button menu")
+                closeFabMenu()
+            }
+        }
         addPlaneButton.setOnClickListener {
             Log.d(TAG, "Navigating from PlanesFragment to PlaneFormFragment")
             findNavController().navigate(R.id.action_planesFragment_to_planeFormFragment)
+        }
+        planeStatsButton.setOnClickListener{
+            Log.d(TAG, "Navigation from PlanesFragment to StatsFragment")
+            findNavController().navigate(R.id.action_planesFragment_to_statsFragment)
         }
     }
 
@@ -140,6 +158,7 @@ class PlanesFragment : Fragment(),
     override fun onStop() {
         super.onStop()
         recyclerViewPlanes.clearOnScrollListeners()
+        floatingActionButtonExpand.setOnClickListener(null)
         addPlaneButton.setOnClickListener(null)
     }
 
@@ -158,5 +177,17 @@ class PlanesFragment : Fragment(),
         Log.d(TAG, "Reload list")
         scrollListener.resetState()
         viewModel.reloadList()
+    }
+
+    private fun openFabMenu() {
+        isFabMenuOpen = true
+        addPlaneButton.animate().translationY(-resources.getDimension(R.dimen.standard_65))
+        planeStatsButton.animate().translationY(-resources.getDimension(R.dimen.standard_120))
+    }
+
+    private fun closeFabMenu() {
+        isFabMenuOpen = false
+        addPlaneButton.animate().translationY(0f)
+        planeStatsButton.animate().translationY(0f)
     }
 }
