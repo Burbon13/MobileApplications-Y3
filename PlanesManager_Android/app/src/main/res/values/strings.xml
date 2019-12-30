@@ -30,4 +30,12 @@
     <string name="geolocation_button">GEOLOCATION</string>
     <string name="update_button">UPDATE</string>
     <string name="delete_button">DELETE</string>
+    <string name="cancel_button">CANCEL</string>
+    <string name="tail_number">Tail Number</string>
+    <string name="model">Model</string>
+    <string name="year">Year</string>
+    <string name="price">Price</string>
+    <string name="plane_update_hint">Click on the plane values to change them!</string>
+    <string name="brand">Brand</string>
+    <string name="engine">Engine</string>
 </resources>

@@ -39,4 +39,8 @@ class PlaneDataViewModel : ViewModel() {
             _planeDeletion.postValue(planeRepository.deletePlane(tailNumber))
         }
     }
+
+    fun updatePlane(newPlane: Plane) {
+
+    }
 }

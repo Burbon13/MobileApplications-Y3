@@ -11,12 +11,14 @@ import com.burbon13.planesmanager.planes.data.PlaneDataSource
 import com.burbon13.planesmanager.planes.data.PlaneRepository
 import com.burbon13.planesmanager.planes.model.Plane
 import com.burbon13.planesmanager.core.Result
+import com.burbon13.planesmanager.planes.model.PlaneValidator
 import kotlinx.coroutines.launch
 import java.util.*
 
 
 class PlaneFormViewModel : ViewModel() {
     private val planeRepository = PlaneRepository(PlaneDataSource())
+    private val planeValidator = PlaneValidator()
 
     val updatingPlane = MutableLiveData<Boolean>()
 
@@ -74,16 +76,16 @@ class PlaneFormViewModel : ViewModel() {
         var yearError: Int? = null
         var priceError: Int? = null
 
-        if (!isTailNumberValid(tailNumber)) {
+        if (!planeValidator.isTailNumberValid(tailNumber)) {
             tailError = R.string.invalid_tail_number
             validData = false
         }
-        if (!isModelValid(model)) {
+        if (!planeValidator.isModelValid(model)) {
             modelError = R.string.invalid_model
             validData = false
         }
         try {
-            if (!isFabricationYearValid(fabricationYear.toInt())) {
+            if (!planeValidator.isFabricationYearValid(fabricationYear.toInt())) {
                 yearError = R.string.invalid_fabrication_year
                 validData = false
             }
@@ -92,7 +94,7 @@ class PlaneFormViewModel : ViewModel() {
             validData = false
         }
         try {
-            if (!isPriceValid(price.toLong())) {
+            if (!planeValidator.isPriceValid(price.toLong())) {
                 priceError = R.string.invalid_price
                 validData = false
             }
@@ -103,21 +105,5 @@ class PlaneFormViewModel : ViewModel() {
 
         _planeFormState.value =
             PlaneFormState(tailError, modelError, yearError, priceError, validData)
-    }
-
-    private fun isTailNumberValid(tailNumber: String): Boolean {
-        return tailNumber.length > 4
-    }
-
-    private fun isModelValid(model: String): Boolean {
-        return model.length > 2
-    }
-
-    private fun isFabricationYearValid(fabricationYear: Int): Boolean {
-        return fabricationYear > 1950 && fabricationYear < Calendar.getInstance().get(Calendar.YEAR)
-    }
-
-    private fun isPriceValid(price: Long): Boolean {
-        return price > 0
     }
 }
