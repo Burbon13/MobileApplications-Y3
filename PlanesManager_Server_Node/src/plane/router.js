@@ -9,8 +9,8 @@ router.get('/', async (ctx) => {
     response.status = 200;
 });
 
-router.get('/:id', async (ctx) => {
-    const plane = await planeStore.findOne({_id: ctx.params.id});
+router.get('/:tailNumber', async (ctx) => {
+    const plane = await planeStore.findOne({tailNumber: ctx.params.tailNumber});
     const response = ctx.response;
     if (plane) {
         response.body = plane;

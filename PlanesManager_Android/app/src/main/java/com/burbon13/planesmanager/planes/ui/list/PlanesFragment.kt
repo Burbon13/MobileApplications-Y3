@@ -24,6 +24,7 @@ import com.burbon13.planesmanager.core.utils.scroll.EndlessScrollViewModelFactor
 
 import com.burbon13.planesmanager.planes.model.Plane
 import com.burbon13.planesmanager.planes.ui.form.PlaneFormResult
+import com.burbon13.planesmanager.planes.ui.plane.PlaneDataFragmentArgs
 import com.burbon13.planesmanager.planes.ui.shared.SharedPlaneFormViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -145,7 +146,7 @@ class PlanesFragment : Fragment(),
             isFabMenuOpen = false
             findNavController().navigate(R.id.action_planesFragment_to_planeFormFragment)
         }
-        planeStatsButton.setOnClickListener{
+        planeStatsButton.setOnClickListener {
             Log.d(TAG, "Navigation from PlanesFragment to StatsFragment")
             isFabMenuOpen = false
             findNavController().navigate(R.id.action_planesFragment_to_statsFragment)
@@ -165,7 +166,18 @@ class PlanesFragment : Fragment(),
     }
 
     override fun onListFragmentInteraction(item: Plane?) {
-        Log.i(TAG, "Plane touched")
+        item?.let {
+            Log.i(
+                TAG,
+                "Plane with tailNumber=${item.tailNumber} touched; navigating to PlaneDataFragment"
+            )
+            isFabMenuOpen = false
+            findNavController().navigate(
+                PlanesFragmentDirections.actionPlanesFragmentToPlaneDataFragment(
+                    item.tailNumber
+                )
+            )
+        }
     }
 
     // Append the next page of data into the adapter

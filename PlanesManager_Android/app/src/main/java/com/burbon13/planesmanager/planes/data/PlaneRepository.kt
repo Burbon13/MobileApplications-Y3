@@ -7,6 +7,11 @@ import com.burbon13.planesmanager.core.utils.extensions.TAG
 
 
 class PlaneRepository(private val planeDataSource: PlaneDataSource) {
+    suspend fun getPlane(tailNumber: String): Result<Plane> {
+        Log.d(TAG, "Get plane with tailNumber=$tailNumber")
+        return planeDataSource.getPlane(tailNumber)
+    }
+
     suspend fun getAllPlanes(): Result<List<Plane>> {
         Log.d(TAG, "Get all planes")
         return planeDataSource.getPlanes()

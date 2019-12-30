@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_planesFragment_to_statsFragment"
             app:destination="@id/statsFragment" />
+        <action
+            android:id="@+id/action_planesFragment_to_planeDataFragment"
+            app:destination="@id/planeDataFragment" />
     </fragment>
     <fragment
         android:id="@+id/planeFormFragment"
@@ -39,4 +42,13 @@
         android:name="com.burbon13.planesmanager.planes.ui.stats.StatsFragment"
         android:label="Planes Brand Stats"
         tools:layout="@layout/fragment_stats" />
+    <fragment
+        android:id="@+id/planeDataFragment"
+        android:name="com.burbon13.planesmanager.planes.ui.plane.PlaneDataFragment"
+        android:label="Plane Info"
+        tools:layout="@layout/fragment_plane_data" >
+        <argument
+            android:name="planeTailNumber"
+            app:argType="string" />
+    </fragment>
 </navigation>
