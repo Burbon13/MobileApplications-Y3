@@ -224,3 +224,4 @@
 {"tailNumber":"KLM-36","brand":"ATR","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"ycBeOc8D1I1hud27"}
 {"tailNumber":"KLM-145","brand":"ATR","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"yjamUxtTzCWt0XoG"}
 {"brand":"ATR","engine":"TURBOPROP","fabricationYear":2000,"model":"TTTT","price":123123,"tailNumber":"AAAA9","_id":"zaFllJExZ0vR9myb"}
+{"brand":"BOMBARDIER","engine":"TURBOPROP","fabricationYear":1995,"model":"XXTYV","price":25000000,"tailNumber":"AAAMERGR","_id":"4VVUSCHA9uAv3RIm"}

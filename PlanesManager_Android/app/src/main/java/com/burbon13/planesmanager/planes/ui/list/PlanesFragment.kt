@@ -142,10 +142,12 @@ class PlanesFragment : Fragment(),
         }
         addPlaneButton.setOnClickListener {
             Log.d(TAG, "Navigating from PlanesFragment to PlaneFormFragment")
+            isFabMenuOpen = false
             findNavController().navigate(R.id.action_planesFragment_to_planeFormFragment)
         }
         planeStatsButton.setOnClickListener{
             Log.d(TAG, "Navigation from PlanesFragment to StatsFragment")
+            isFabMenuOpen = false
             findNavController().navigate(R.id.action_planesFragment_to_statsFragment)
         }
     }
