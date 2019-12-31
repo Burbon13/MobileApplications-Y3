@@ -101,6 +101,7 @@ class PlaneDataFragment : Fragment() {
                 updateButton.isEnabled = true
                 deleteButton.isEnabled = true
                 locationAndCancelButton.text = getString(R.string.geolocation_button)
+                updateHintTextView.visibility = View.GONE
                 updateMode = false
             } else if (it is Result.Error) {
                 Log.e(TAG, "Error Result received")
