@@ -54,7 +54,6 @@ class ConnectivityReceiver : BroadcastReceiver() {
         return result
     }
 
-
     interface ConnectivityReceiverListener {
         fun onNetworkConnectionChanged(isConnected: Boolean)
     }
