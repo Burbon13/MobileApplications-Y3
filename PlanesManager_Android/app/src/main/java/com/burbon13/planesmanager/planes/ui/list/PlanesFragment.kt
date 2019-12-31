@@ -106,7 +106,8 @@ class PlanesFragment : Fragment(),
             Log.d(TAG, "(Observed) Plane action")
             if (it is Result.Success) {
                 if (it.data == PlaneActionResult.PLANE_ADDED ||
-                    it.data == PlaneActionResult.PLANE_DELETED
+                    it.data == PlaneActionResult.PLANE_DELETED ||
+                    it.data == PlaneActionResult.PLANE_UPDATED
                 ) {
                     sharedViewModelResult.resetState()
                     Log.d(TAG, "Refreshing planes list")

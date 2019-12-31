@@ -14,6 +14,7 @@ import retrofit2.http.Headers
 import retrofit2.http.Body
 import retrofit2.http.POST
 import retrofit2.http.DELETE
+import retrofit2.http.PUT
 
 
 class PlaneDataSource {
@@ -41,6 +42,10 @@ class PlaneDataSource {
         @Headers("Content-Type: application/json")
         @DELETE("/api/plane/{tail_number}")
         suspend fun deletePlane(@Path("tail_number") tailNumber: String): Response<Unit>
+
+        @Headers("Content-Type: application/json")
+        @PUT("/api/plane")
+        suspend fun updatePlane(@Body plane: Plane): Plane
     }
 
     private val planeService: PlaneService = Api.retrofit.create(PlaneService::class.java)
@@ -147,6 +152,26 @@ class PlaneDataSource {
             Log.e(
                 TAG,
                 "Error occurred while deleting plane with tailNumber=$tailNumber: ${e.message}"
+            )
+            Result.Error("An error occurred, contact support if this persists")
+        }
+    }
+
+    suspend fun updatePlane(newPlane: Plane): Result<Plane> {
+        Log.d(TAG, "Updating plane=$newPlane")
+        return try {
+            Result.Success(planeService.updatePlane(newPlane))
+        } catch (e: HttpException) {
+            val errorMessage = getApiErrorMessage(e)
+            Log.e(
+                TAG,
+                "Error occurred while updating plane=$newPlane: $errorMessage"
+            )
+            Result.Error(errorMessage)
+        } catch (e: java.lang.Exception) {
+            Log.e(
+                TAG,
+                "Error occurred while updating plane=$newPlane: ${e.message}"
             )
             Result.Error("An error occurred, contact support if this persists")
         }

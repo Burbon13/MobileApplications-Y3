@@ -31,6 +31,7 @@ class PlaneDataFragment : Fragment() {
     private lateinit var sharedViewModel: SharedPlaneFormViewModel
     private val args: PlaneDataFragmentArgs by navArgs()
     private lateinit var plane: Plane
+    private var planeAlreadyExists = false
     private val planeValidator = PlaneValidator()
 
     private lateinit var locationAndCancelButton: Button
@@ -90,11 +91,17 @@ class PlaneDataFragment : Fragment() {
             Log.d(TAG, "(Observed) Plane result loaded")
             if (it is Result.Success) {
                 Log.d(TAG, "Plane loaded successfully")
+                if (planeAlreadyExists) {
+                    sharedViewModel.planeUpdated()
+                }
                 plane = it.data
+                planeAlreadyExists = true
                 setTextViewsToPlaneData()
                 locationAndCancelButton.isEnabled = true
                 updateButton.isEnabled = true
                 deleteButton.isEnabled = true
+                locationAndCancelButton.text = getString(R.string.geolocation_button)
+                updateMode = false
             } else if (it is Result.Error) {
                 Log.e(TAG, "Error Result received")
                 Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
@@ -165,7 +172,6 @@ class PlaneDataFragment : Fragment() {
                 showPickerDialogForResult(
                     brandTextView.text.toString(),
                     getString(R.string.brand),
-                    "",
                     Plane.BrandList,
                     brandTextView
                 )
@@ -201,7 +207,6 @@ class PlaneDataFragment : Fragment() {
                 showPickerDialogForResult(
                     engineTextView.text.toString(),
                     getString(R.string.engine),
-                    "",
                     Plane.EngineList,
                     engineTextView
                 )
@@ -305,13 +310,11 @@ class PlaneDataFragment : Fragment() {
     private fun showPickerDialogForResult(
         initialValue: String,
         title: String,
-        conditions: String,
         choices: List<String>,
         destinationTextView: TextView
     ) {
         val dialogBuilder = AlertDialog.Builder(context)
         dialogBuilder.setTitle(title)
-        dialogBuilder.setMessage(conditions)
         val picker = NumberPicker(context)
         picker.minValue = 0
         picker.maxValue = choices.size - 1
@@ -367,7 +370,11 @@ class PlaneDataFragment : Fragment() {
             updateButton.isEnabled = false
             viewModel.updatePlane(newPlane)
         } catch (e: Exception) {
-
+            Log.e(TAG, "Error occurred: ${e.message}")
+            updateMode = true
+            progressBar.visibility = View.GONE
+            locationAndCancelButton.isEnabled = true
+            updateButton.isEnabled = true
         }
     }
 }

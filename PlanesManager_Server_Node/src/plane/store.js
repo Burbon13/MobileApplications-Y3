@@ -25,6 +25,25 @@ export class PlaneStore {
     }
 
     async insert(plane) {
+        this.validatePlane();
+        return this.store.insert(plane);
+    };
+
+    async update(props, plane) {
+        this.validatePlane(plane);
+        return this.store.update(props, plane);
+    }
+
+    async remove(props) {
+        return this.store.remove(props);
+    }
+
+    async countByBrand(brand) {
+        return this.store.count({brand: brand})
+
+    }
+
+    validatePlane(plane) {
         let tailNumber = plane.tailNumber;
         if (!tailNumber) {
             throw new Error('Missing tail_number property');
@@ -49,20 +68,6 @@ export class PlaneStore {
         if (!price) {
             throw new Error('Missing price property');
         }
-        return this.store.insert(plane);
-    };
-
-    async update(props, plane) {
-        return this.store.update(props, plane);
-    }
-
-    async remove(props) {
-        return this.store.remove(props);
-    }
-
-    async countByBrand(brand) {
-        return this.store.count({brand: brand})
-
     }
 }
 

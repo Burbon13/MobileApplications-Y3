@@ -16,4 +16,8 @@ class SharedPlaneFormViewModel : SharedViewModelResult<PlaneActionResult>() {
     fun planeAdded() {
         super.planeActionResult.value = Result.Success(PlaneActionResult.PLANE_ADDED)
     }
+
+    fun planeUpdated() {
+        super.planeActionResult.value = Result.Success(PlaneActionResult.PLANE_UPDATED)
+    }
 }

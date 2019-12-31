@@ -8,7 +8,6 @@
 {"tailNumber":"KLM-57","brand":"AIRBUS","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"1eLuD7snX4DK4UMT"}
 {"tailNumber":"KLM-200","brand":"AIRBUS","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"1sWjt6sXDHZjqAHf"}
 {"tailNumber":"KLM-46","brand":"AIRBUS","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"27MOI3JqXfjlGC3b"}
-{"brand":"AIRBUS","engine":"TURBOPROP","fabricationYear":2000,"model":"dbdh","price":1,"tailNumber":"Ahdhdhdh","_id":"2IfmTZqvdS4p8zWZ"}
 {"tailNumber":"KLM-154","brand":"AIRBUS","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"2MMVLMIu8tUadLKo"}
 {"tailNumber":"KLM-190","brand":"AIRBUS","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"2TwY6cHuE1BFRJJv"}
 {"tailNumber":"KLM-110","brand":"BOMBARDIER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"2VWmJrlnhoAXCByc"}
@@ -16,9 +15,7 @@
 {"tailNumber":"KLM-98","brand":"BOMBARDIER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"3UcUDvDy6jlUhByF"}
 {"tailNumber":"KLM-195","brand":"BOMBARDIER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"3Z7eSWYw5GJRE0cd"}
 {"tailNumber":"KLM-184","brand":"BOMBARDIER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"4Pi3DtCMv20sxdtd"}
-{"brand":"BOMBARDIER","engine":"TURBOPROP","fabricationYear":1995,"model":"XXTYV","price":25000000,"tailNumber":"AAAMERGR","_id":"4VVUSCHA9uAv3RIm"}
 {"tailNumber":"KLM-115","brand":"BOMBARDIER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"4fizMFQXCDLdRy2L"}
-{"brand":"BOMBARDIER","engine":"RAMJET","fabricationYear":2000,"model":"hdhd","price":6565,"tailNumber":"AAA7d","_id":"5EOmlsL4EqCjqMUF"}
 {"tailNumber":"KLM-196","brand":"BOMBARDIER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"5ax4cFDjkOjHAOYe"}
 {"tailNumber":"KLM-139","brand":"BOMBARDIER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"6R5R5lXT2AAbK6yH"}
 {"tailNumber":"KLM-1","brand":"BOMBARDIER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"6YPkL2b9Ip4UmyIZ"}
@@ -51,7 +48,6 @@
 {"tailNumber":"KLM-163","brand":"EMBRAER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"C6GB3Omof87Oaw8c"}
 {"tailNumber":"KLM-124","brand":"EMBRAER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"C8eJieCg71oUrrll"}
 {"tailNumber":"KLM-25","brand":"EMBRAER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"CApW2IpvEZvfBhzJ"}
-{"brand":"ATR","engine":"TURBOPROP","fabricationYear":2000,"model":"aaa","price":20000000,"tailNumber":"AAA9VAI","_id":"CBELPPnUwrP5NzHr"}
 {"tailNumber":"KLM-199","brand":"EMBRAER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"CL5gwJjjpHisfOJb"}
 {"tailNumber":"KLM-133","brand":"EMBRAER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"CkMpNMsQBUp5vtVv"}
 {"tailNumber":"KLM-107","brand":"EMBRAER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"CwbJ4BxCECmTC1h4"}
@@ -59,7 +55,6 @@
 {"tailNumber":"KLM-7","brand":"EMBRAER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"DuJJ2UrnAusyfU8h"}
 {"tailNumber":"KLM-136","brand":"EMBRAER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"E9VXzrqDI9EpCBy3"}
 {"tailNumber":"KLM-106","brand":"EMBRAER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"EGtTwS1wFd3xws3T"}
-{"brand":"EMBRAER","engine":"TURBOPROP","fabricationYear":2000,"model":"abv","price":258000000,"tailNumber":"ABCABC","_id":"EP9elbIcnsHPvwhY"}
 {"tailNumber":"KLM-194","brand":"EMBRAER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"Ed0VUvY85HK4bI7B"}
 {"tailNumber":"KLM-10","brand":"EMBRAER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"EfiZtJr231jlsyxb"}
 {"tailNumber":"KLM-50","brand":"EMBRAER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"F0HI2YFfD0zybJ79"}
@@ -71,7 +66,6 @@
 {"tailNumber":"KLM-130","brand":"BOEING","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"HTH8kVnGd6jExAve"}
 {"tailNumber":"KLM-140","brand":"BOEING","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"I9ZZaIpdCjYBAFtX"}
 {"tailNumber":"KLM-99","brand":"BOEING","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"IA6UiCpMNfbZGeNw"}
-{"brand":"BOEING","engine":"RAMJET","fabricationYear":2000,"model":"A900","price":25200012,"tailNumber":"AAAA2","_id":"ID3iAiitl4k4sGNA"}
 {"tailNumber":"KLM-16","brand":"BOEING","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"IQWQgku91J3Jbh7K"}
 {"tailNumber":"KLM-128","brand":"BOEING","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"IT0zrxbBujKihym0"}
 {"tailNumber":"KLM-80","brand":"BOEING","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"IZuHBEgvYKiGPfHc"}
@@ -103,13 +97,9 @@
 {"tailNumber":"KLM-71","brand":"AIRBUS","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"PdJ6rcBV049657mq"}
 {"tailNumber":"KLM-100","brand":"AIRBUS","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"PlUql3jh4JwzoNXz"}
 {"tailNumber":"KLM-76","brand":"AIRBUS","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"Q8dSdmXR3tcklX9B"}
-{"brand":"AIRBUS","engine":"RAMJET","fabricationYear":2000,"model":"HAHA","price":1221231,"tailNumber":"AAAA3","_id":"Qpd3Ipxm2WCVZLs2"}
 {"tailNumber":"KLM-56","brand":"AIRBUS","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"RIIB4c2FZDszTMdD"}
 {"tailNumber":"KLM-121","brand":"AIRBUS","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"RLODFhYPdd1LimhJ"}
-{"brand":"AIRBUS","engine":"TURBOPROP","fabricationYear":2000,"model":"ATT","price":1231232,"tailNumber":"AAAATTT","_id":"RRC5I9uia4E9fHKq"}
-{"brand":"AIRBUS","engine":"TURBOPROP","fabricationYear":2005,"model":"A380","price":850444222,"tailNumber":"ABTESTING","_id":"Rm78nbYOcACgnvmr"}
 {"tailNumber":"KLM-153","brand":"AIRBUS","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"SK1xvGOZQENOYGxu"}
-{"brand":"AIRBUS","engine":"TURBOPROP","fabricationYear":2000,"model":"avccc","price":69000000,"tailNumber":"AAAAMERGE","_id":"SaMyVyDofxDM5W6d"}
 {"tailNumber":"KLM-20","brand":"AIRBUS","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"SjSP2HtOtyXmW6St"}
 {"tailNumber":"KLM-143","brand":"AIRBUS","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"SqgtFLLYyVXUSMZE"}
 {"tailNumber":"KLM-84","brand":"AIRBUS","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"SqvAaiH8dECpXVZg"}
@@ -126,7 +116,6 @@
 {"tailNumber":"KLM-28","brand":"AIRBUS","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"VxiVF6txeZOIwo7a"}
 {"tailNumber":"KLM-35","brand":"AIRBUS","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"WOx6XcYLy6U8KW2e"}
 {"tailNumber":"KLM-87","brand":"AIRBUS","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"WzW0ckV4943HsUjK"}
-{"brand":"AIRBUS","engine":"TURBOPROP","fabricationYear":2000,"model":"TYY","price":500000000,"tailNumber":"AAAACFGTTT","_id":"X0ZUi6uiJTxvku50"}
 {"tailNumber":"KLM-58","brand":"AIRBUS","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"XHmIX0HaAyyGQVyR"}
 {"tailNumber":"KLM-169","brand":"AIRBUS","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"XMjOnq6PzLahy23A"}
 {"tailNumber":"KLM-122","brand":"AIRBUS","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"XWrawuc4z8QvLjbe"}
@@ -154,7 +143,6 @@
 {"tailNumber":"KLM-33","brand":"ATR","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"c3oeGKZdZy1VF8ab"}
 {"brand":"BOMBARDIER","engine":"TURBOFAN","fabricationYear":2008,"model":"BOMBA","price":8500666,"tailNumber":"XXXINDIA","_id":"c8YwUqEAPpvgBEmF"}
 {"tailNumber":"KLM-127","brand":"ATR","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"ce7xiXWBxUe42XNc"}
-{"brand":"AIRBUS","engine":"TURBOPROP","fabricationYear":2000,"model":"xxx","price":2,"tailNumber":"ADHDH","_id":"dEQWyRDmj86wUtBR"}
 {"tailNumber":"KLM-81","brand":"ATR","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"dHVVMQuNGiMy41dG"}
 {"tailNumber":"KLM-129","brand":"ATR","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"e5ZyaRFbBOxKtc4x"}
 {"tailNumber":"KLM-155","brand":"ATR","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"eTJ4eschYbeBew7r"}
@@ -167,20 +155,14 @@
 {"tailNumber":"KLM-22","brand":"BOEING","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"fYyh36RQAD9cvqy2"}
 {"tailNumber":"KLM-175","brand":"BOEING","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"fbdKEkzyKviTjAgZ"}
 {"tailNumber":"KLM-125","brand":"BOEING","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"gehXW3xOjKDRc0As"}
-{"brand":"BOEING","engine":"TURBOPROP","fabricationYear":2016,"model":"Frumos","price":65000000,"tailNumber":"AAA8SALUTARE","_id":"gpFydXrc0TGRrYPq"}
-{"brand":"BOEING","engine":"TURBOPROP","fabricationYear":2010,"model":"ADIOF","price":95000000,"tailNumber":"AAAA5","_id":"hO93S0OEHowQtPL0"}
 {"tailNumber":"KLM-113","brand":"BOEING","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"hObclAQ6FozfQHW5"}
-{"brand":"BOMBARDIER","engine":"RAMJET","fabricationYear":2009,"model":"TEBAT","price":123456789,"tailNumber":"BOULE","_id":"i2IILvBmB6Umg4hb"}
 {"tailNumber":"KLM-112","brand":"BOEING","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"ipKcJGNAJnxFq79M"}
 {"tailNumber":"KLM-5","brand":"BOEING","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"jNm4LXMcQKrFy43w"}
 {"tailNumber":"KLM-156","brand":"BOEING","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"jSG01Q1AszawWYNx"}
-{"brand":"BOEING","engine":"TURBOJET","fabricationYear":2000,"model":"BBB","price":25555555,"tailNumber":"AAAAAA","_id":"jh1eKtpVFtB4Vbll"}
 {"brand":"AIRBUS","engine":"TURBOFAN","fabricationYear":2010,"model":"a555","price":258123158,"tailNumber":"BTESTB","_id":"k5c9crtvHK8oPj7d"}
-{"brand":"BOEING","engine":"TURBOPROP","fabricationYear":2000,"model":"tuuu","price":599559,"tailNumber":"AAA9TU","_id":"kbgIR1Kk5zPdDsBP"}
 {"tailNumber":"KLM-170","brand":"BOEING","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"kh104qOsUOtiVAxl"}
 {"tailNumber":"KLM-151","brand":"EMBRAER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"kx4iyRpyqWX437o6"}
 {"tailNumber":"KLM-64","brand":"EMBRAER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"lBPJCgqQDPOGtrpI"}
-{"tailNumber":"KLM-105","brand":"BOEING","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"mD8QMmNa66xqHt67"}
 {"tailNumber":"KLM-37","brand":"EMBRAER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"mcAkHNXkV8Lx7NvY"}
 {"tailNumber":"KLM-75","brand":"BOEING","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"nB4uZcFjMlIRGDGo"}
 {"tailNumber":"KLM-161","brand":"EMBRAER","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"nf2RE84MGaUz8sEr"}
@@ -224,25 +206,10 @@
 {"tailNumber":"KLM-172","brand":"ATR","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"yX6CT5n7ahfQY6Qf"}
 {"tailNumber":"KLM-36","brand":"ATR","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"ycBeOc8D1I1hud27"}
 {"tailNumber":"KLM-145","brand":"ATR","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"yjamUxtTzCWt0XoG"}
-{"brand":"EMBRAER","engine":"TURBOPROP","fabricationYear":2000,"model":"TTY","price":26000000,"tailNumber":"AAAAASEX","_id":"ypJsAi45sPTkxKD8"}
-{"brand":"ATR","engine":"TURBOPROP","fabricationYear":2000,"model":"TTTT","price":123123,"tailNumber":"AAAA9","_id":"zaFllJExZ0vR9myb"}
-{"$$deleted":true,"_id":"gpFydXrc0TGRrYPq"}
-{"$$deleted":true,"_id":"kbgIR1Kk5zPdDsBP"}
-{"$$deleted":true,"_id":"zaFllJExZ0vR9myb"}
-{"$$deleted":true,"_id":"CBELPPnUwrP5NzHr"}
-{"$$deleted":true,"_id":"ypJsAi45sPTkxKD8"}
-{"$$deleted":true,"_id":"Rm78nbYOcACgnvmr"}
-{"$$deleted":true,"_id":"5EOmlsL4EqCjqMUF"}
-{"$$deleted":true,"_id":"ID3iAiitl4k4sGNA"}
-{"$$deleted":true,"_id":"X0ZUi6uiJTxvku50"}
-{"$$deleted":true,"_id":"hO93S0OEHowQtPL0"}
-{"$$deleted":true,"_id":"4VVUSCHA9uAv3RIm"}
-{"$$deleted":true,"_id":"Qpd3Ipxm2WCVZLs2"}
-{"$$deleted":true,"_id":"jh1eKtpVFtB4Vbll"}
-{"$$deleted":true,"_id":"SaMyVyDofxDM5W6d"}
-{"$$deleted":true,"_id":"EP9elbIcnsHPvwhY"}
-{"$$deleted":true,"_id":"2IfmTZqvdS4p8zWZ"}
-{"$$deleted":true,"_id":"dEQWyRDmj86wUtBR"}
-{"$$deleted":true,"_id":"i2IILvBmB6Umg4hb"}
-{"$$deleted":true,"_id":"mD8QMmNa66xqHt67"}
-{"$$deleted":true,"_id":"RRC5I9uia4E9fHKq"}
+{"tailNumber":"AHAHAHA","brand":"BOEING","model":"SEX-XXX","fabricationYear":2005,"engine":"TURBOJET","price":233000500,"_id":"xJfdur5KhGStU9eI"}
+{"tailNumber":"AHAHAHA","brand":"BOEING","model":"SEX-XXX","fabricationYear":2005,"engine":"TURBOJET","price":233000500,"_id":"xJfdur5KhGStU9eI"}
+{"tailNumber":"AHAHAHA","brand":"BOEINGG","model":"SEX-XXX","fabricationYear":2005,"engine":"TURBOJET","price":233000500,"_id":"xJfdur5KhGStU9eI"}
+{"brand":"BOMBARDIER","engine":"RAMJET","fabricationYear":2009,"model":"747-800bomba","price":3431000505,"tailNumber":"KLM-101","_id":"vo5ZCD8coBdu52DK"}
+{"brand":"BOEING","engine":"TURBOJET","fabricationYear":2016,"model":"737 MAX8","price":258123158,"tailNumber":"BTESTB","_id":"k5c9crtvHK8oPj7d"}
+{"brand":"BOEING","engine":"TURBOJET","fabricationYear":2016,"model":"737 MAX8","price":258123158,"tailNumber":"BTESTB","_id":"k5c9crtvHK8oPj7d"}
+{"brand":"AIRBUS","engine":"TURBOJET","fabricationYear":2002,"model":"747-800","price":3431000505,"tailNumber":"KLM-100","_id":"PlUql3jh4JwzoNXz"}

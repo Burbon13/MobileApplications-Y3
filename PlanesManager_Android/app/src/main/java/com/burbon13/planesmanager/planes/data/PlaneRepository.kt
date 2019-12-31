@@ -36,4 +36,9 @@ class PlaneRepository(private val planeDataSource: PlaneDataSource) {
         Log.d(TAG, "Deleting plane with tailNumber=$tailNumber")
         return planeDataSource.deletePlane(tailNumber)
     }
+
+    suspend fun updatePlane(newPlane: Plane): Result<Plane> {
+        Log.d(TAG, "Updating plane=$newPlane")
+        return planeDataSource.updatePlane(newPlane)
+    }
 }

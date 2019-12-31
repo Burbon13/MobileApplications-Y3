@@ -41,6 +41,9 @@ class PlaneDataViewModel : ViewModel() {
     }
 
     fun updatePlane(newPlane: Plane) {
-
+        Log.d(TAG, "Updating plane=$newPlane")
+        viewModelScope.launch(Dispatchers.IO) {
+            _plane.postValue(planeRepository.updatePlane(newPlane))
+        }
     }
 }

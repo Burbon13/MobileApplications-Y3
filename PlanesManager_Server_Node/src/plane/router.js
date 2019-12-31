@@ -53,28 +53,19 @@ const createPlane = async (plane, response) => {
 
 router.post('/', async (ctx) => await createPlane(ctx.request.body, ctx.response));
 
-router.put('/:id', async (ctx) => {
+router.put('/', async (ctx) => {
     const plane = ctx.request.body;
     console.log(plane);
-    const id = ctx.params.id;
-    const planeId = plane._id;
+    const tailNumber = plane.tailNumber;
     const response = ctx.response;
-    if (planeId && planeId !== id) {
-        response.body = {issue: [{error: 'Param id and body _id should be the same'}]};
-        response.status = 400;
-        return;
-    }
-    if (!planeId) {
-        await createPlane(plane, response);
+
+    const updatedCount = await planeStore.update({tailNumber: tailNumber}, plane);
+    if (updatedCount === 1) {
+        response.body = plane;
+        response.status = 200;
     } else {
-        const updatedCount = await planeStore.update({_id: id}, plane);
-        if (updatedCount === 1) {
-            response.body = plane;
-            response.status = 200;
-        } else {
-            response.body = {issue: [{error: 'Resource no longer exists'}]};
-            response.status = 405;
-        }
+        response.body = {issue: [{error: 'Resource no longer exists'}]};
+        response.status = 405;
     }
 });
 
