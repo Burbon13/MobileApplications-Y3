@@ -3,6 +3,44 @@ import planeStore from './store';
 
 export const router = new Router();
 
+const airpots = [
+    // Dublin
+    {
+        x: 53.4264513,
+        y: -6.2520985
+    },
+    // Otopeni
+    {
+        x: 44.5707306,
+        y: 26.0822236
+    },
+    // JFK
+    {
+        x: 40.6413111,
+        y: -73.7803278
+    },
+    // Schipol
+    {
+        x: 52.3255019,
+        y: 4.6872441
+    },
+    // Berlin Tegel
+    {
+        x: 52.5570019,
+        y: 13.2874535
+    },
+    // LAX
+    {
+        x: 33.9415889,
+        y: -118.4107187
+    },
+    // Heathrow
+    {
+        x: 51.4700223,
+        y: -0.4564842
+    }
+];
+
 router.get('/', async (ctx) => {
     const response = ctx.response;
     response.body = await planeStore.find({});
@@ -17,6 +55,20 @@ router.get('/:tailNumber', async (ctx) => {
         response.status = 200;
     } else {
         response.status = 404;
+        response.body = {issue: [{error: "Plane not found"}]};
+    }
+});
+
+router.get('/position/:tailNumber', async (ctx) => {
+    console.log('Return random airport');
+    const plane = await planeStore.findOne({tailNumber: ctx.params.tailNumber});
+    const response = ctx.response;
+    if (!plane) {
+        response.status = 404;
+        response.body = {issue: [{error: "Plane not found"}]};
+    } else {
+        response.body = airpots[Math.floor(Math.random() * airpots.length)];
+        response.status = 200;
     }
 });
 

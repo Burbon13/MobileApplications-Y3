@@ -4,6 +4,7 @@ import android.util.Log
 import com.burbon13.planesmanager.planes.model.Plane
 import com.burbon13.planesmanager.core.Result
 import com.burbon13.planesmanager.core.utils.extensions.TAG
+import com.burbon13.planesmanager.planes.model.Geolocation
 
 
 class PlaneRepository(private val planeDataSource: PlaneDataSource) {
@@ -40,5 +41,10 @@ class PlaneRepository(private val planeDataSource: PlaneDataSource) {
     suspend fun updatePlane(newPlane: Plane): Result<Plane> {
         Log.d(TAG, "Updating plane=$newPlane")
         return planeDataSource.updatePlane(newPlane)
+    }
+
+    suspend fun getPlaneGeolocation(tailNumber: String): Result<Geolocation> {
+        Log.d(TAG, "Retrieving geolocation for plane with tailNumber=$tailNumber")
+        return planeDataSource.getPlaneGeolocation(tailNumber)
     }
 }

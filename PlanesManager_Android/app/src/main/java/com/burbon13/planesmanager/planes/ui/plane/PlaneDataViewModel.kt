@@ -10,6 +10,7 @@ import com.burbon13.planesmanager.core.Result
 import com.burbon13.planesmanager.core.utils.extensions.TAG
 import com.burbon13.planesmanager.planes.data.PlaneDataSource
 import com.burbon13.planesmanager.planes.data.PlaneRepository
+import com.burbon13.planesmanager.planes.model.Geolocation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -25,6 +26,9 @@ class PlaneDataViewModel : ViewModel() {
     val planeDeletion: LiveData<Result<Boolean>>
         get() = _planeDeletion
 
+    private val _planeGeolocation = MutableLiveData<Result<Geolocation>>()
+    val planeGeolocation: LiveData<Result<Geolocation>>
+        get() = _planeGeolocation
 
     fun loadPlane(tailNumber: String) {
         Log.d(TAG, "Loading plane with tailNumber=$tailNumber")
@@ -44,6 +48,13 @@ class PlaneDataViewModel : ViewModel() {
         Log.d(TAG, "Updating plane=$newPlane")
         viewModelScope.launch(Dispatchers.IO) {
             _plane.postValue(planeRepository.updatePlane(newPlane))
+        }
+    }
+
+    fun getPlaneGeolocation(tailNumber: String) {
+        Log.d(TAG, "Loading geolocation for tailNumber=$tailNumber")
+        viewModelScope.launch(Dispatchers.IO) {
+            _planeGeolocation.postValue(planeRepository.getPlaneGeolocation(tailNumber))
         }
     }
 }

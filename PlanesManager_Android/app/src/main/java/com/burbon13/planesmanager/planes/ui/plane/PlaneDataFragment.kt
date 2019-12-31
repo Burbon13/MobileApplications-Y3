@@ -55,6 +55,7 @@ class PlaneDataFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(PlaneDataViewModel::class.java)
         viewModel.loadPlane(args.planeTailNumber)
+        viewModel.getPlaneGeolocation(args.planeTailNumber)
         sharedViewModel = activity?.run {
             ViewModelProviders.of(this)[SharedPlaneFormViewModel::class.java]
         } ?: throw Exception("Invalid Activity!")
@@ -135,7 +136,22 @@ class PlaneDataFragment : Fragment() {
         super.onStart()
         locationAndCancelButton.setOnClickListener {
             if (!updateMode) {
-                openGoogleMapsIntent()
+                when (val geolocationResult = viewModel.planeGeolocation.value) {
+                    is Result.Success -> {
+                        val geolocation = geolocationResult.data
+                        openGoogleMapsIntent(geolocation.x, geolocation.y)
+                    }
+                    is Result.Error -> {
+                        Toast.makeText(
+                            context,
+                            "Geolocation error: ${geolocationResult.message}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    else -> {
+                        Toast.makeText(context, "Geolocation not loaded", Toast.LENGTH_LONG).show()
+                    }
+                }
             } else {
                 cancelUpdate()
             }
@@ -250,8 +266,8 @@ class PlaneDataFragment : Fragment() {
         dialogBuilder.create().show()
     }
 
-    private fun openGoogleMapsIntent() {
-        val gmmIntentUri = Uri.parse("geo:53.4269764,-6.2593187")
+    private fun openGoogleMapsIntent(x: Double, y: Double) {
+        val gmmIntentUri = Uri.parse("geo:$x,$y")
         val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
         mapIntent.setPackage("com.google.android.apps.maps")
         try {

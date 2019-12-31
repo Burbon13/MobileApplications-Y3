@@ -5,6 +5,7 @@ import com.burbon13.planesmanager.core.Api
 import com.burbon13.planesmanager.core.utils.extensions.TAG
 import com.burbon13.planesmanager.planes.model.Plane
 import com.burbon13.planesmanager.core.Result
+import com.burbon13.planesmanager.planes.model.Geolocation
 import com.google.gson.JsonParser
 import retrofit2.HttpException
 import retrofit2.Response
@@ -46,6 +47,10 @@ class PlaneDataSource {
         @Headers("Content-Type: application/json")
         @PUT("/api/plane")
         suspend fun updatePlane(@Body plane: Plane): Plane
+
+        @Headers("Content-Type: application/json")
+        @GET("/api/plane/position/{tail_number}")
+        suspend fun getPlaneGeolocation(@Path("tail_number") tailNumber: String): Geolocation
     }
 
     private val planeService: PlaneService = Api.retrofit.create(PlaneService::class.java)
@@ -172,6 +177,26 @@ class PlaneDataSource {
             Log.e(
                 TAG,
                 "Error occurred while updating plane=$newPlane: ${e.message}"
+            )
+            Result.Error("An error occurred, contact support if this persists")
+        }
+    }
+
+    suspend fun getPlaneGeolocation(tailNumber: String): Result<Geolocation> {
+        Log.d(TAG, "Retrieving geolocation for plane with tailNumber=$tailNumber")
+        return try {
+            Result.Success(planeService.getPlaneGeolocation(tailNumber))
+        } catch (e: HttpException) {
+            val errorMessage = getApiErrorMessage(e)
+            Log.e(
+                TAG,
+                "Error occurred while retrieving geolocation for tailNumber=$tailNumber: $errorMessage"
+            )
+            Result.Error(errorMessage)
+        } catch (e: java.lang.Exception) {
+            Log.e(
+                TAG,
+                "Error occurred while retrieving geolocation for tailNumber=$tailNumber: ${e.message}"
             )
             Result.Error("An error occurred, contact support if this persists")
         }
