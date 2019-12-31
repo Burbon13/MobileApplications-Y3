@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.burbon13.planesmanager.planes.data.PlaneDataSource
+import com.burbon13.planesmanager.planes.data.remote.PlaneDataSource
 import com.burbon13.planesmanager.planes.data.PlaneRepository
 import com.burbon13.planesmanager.core.Result
 import com.github.mikephil.charting.data.PieEntry

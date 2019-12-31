@@ -1,4 +1,4 @@
-package com.burbon13.planesmanager.planes.data
+package com.burbon13.planesmanager.planes.data.remote
 
 import android.util.Log
 import com.burbon13.planesmanager.core.Api
@@ -53,7 +53,8 @@ class PlaneDataSource {
         suspend fun getPlaneGeolocation(@Path("tail_number") tailNumber: String): Geolocation
     }
 
-    private val planeService: PlaneService = Api.retrofit.create(PlaneService::class.java)
+    private val planeService: PlaneService = Api.retrofit.create(
+        PlaneService::class.java)
 
     suspend fun getPlane(tailNumber: String): Result<Plane> {
         Log.d(TAG, "Retrieving plane with tailNumber=$tailNumber")

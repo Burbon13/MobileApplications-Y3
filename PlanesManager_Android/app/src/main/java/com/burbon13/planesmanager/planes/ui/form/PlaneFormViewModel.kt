@@ -7,13 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.burbon13.planesmanager.R
 import com.burbon13.planesmanager.core.utils.extensions.TAG
-import com.burbon13.planesmanager.planes.data.PlaneDataSource
+import com.burbon13.planesmanager.planes.data.remote.PlaneDataSource
 import com.burbon13.planesmanager.planes.data.PlaneRepository
 import com.burbon13.planesmanager.planes.model.Plane
 import com.burbon13.planesmanager.core.Result
 import com.burbon13.planesmanager.planes.model.PlaneValidator
 import kotlinx.coroutines.launch
-import java.util.*
 
 
 class PlaneFormViewModel : ViewModel() {
