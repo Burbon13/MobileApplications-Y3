@@ -37,7 +37,7 @@ router.get('/brands/count/:brands', async (ctx) => {
         responseBody[brand] = (await planeStore.countByBrand(brand));
     }
 
-    response.body = responseBody
+    response.body = responseBody;
     response.status = 200;
 });
 

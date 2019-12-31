@@ -25,7 +25,7 @@ export class PlaneStore {
     }
 
     async insert(plane) {
-        this.validatePlane();
+        this.validatePlane(plane);
         return this.store.insert(plane);
     };
 

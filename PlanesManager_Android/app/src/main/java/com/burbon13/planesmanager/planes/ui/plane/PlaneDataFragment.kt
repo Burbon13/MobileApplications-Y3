@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -13,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -93,6 +95,9 @@ class PlaneDataFragment : Fragment() {
                 Log.d(TAG, "Plane loaded successfully")
                 if (planeAlreadyExists) {
                     sharedViewModel.planeUpdated()
+                    deleteTextViewsBackground()
+                    updateMode = false
+                    locationAndCancelButton.text = getString(R.string.geolocation_button)
                 }
                 plane = it.data
                 planeAlreadyExists = true
@@ -100,9 +105,7 @@ class PlaneDataFragment : Fragment() {
                 locationAndCancelButton.isEnabled = true
                 updateButton.isEnabled = true
                 deleteButton.isEnabled = true
-                locationAndCancelButton.text = getString(R.string.geolocation_button)
                 updateHintTextView.visibility = View.GONE
-                updateMode = false
             } else if (it is Result.Error) {
                 Log.e(TAG, "Error Result received")
                 Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
@@ -156,21 +159,10 @@ class PlaneDataFragment : Fragment() {
             }
 
         }
-        tailNumberTextView.setOnClickListener {
-            if (updateMode) {
-                showEditTextDialogForResult(
-                    tailNumberTextView.text.toString(),
-                    getString(R.string.tail_number),
-                    getString(R.string.invalid_tail_number),
-                    tailNumberTextView
-                ) {
-                    planeValidator.isTailNumberValid(it)
-                }
-            }
-        }
         brandTextView.setOnClickListener {
             if (updateMode) {
                 showPickerDialogForResult(
+                    { plane.brand.toString() },
                     brandTextView.text.toString(),
                     getString(R.string.brand),
                     Plane.BrandList,
@@ -181,6 +173,7 @@ class PlaneDataFragment : Fragment() {
         modelTextView.setOnClickListener {
             if (updateMode) {
                 showEditTextDialogForResult(
+                    { plane.model },
                     modelTextView.text.toString(),
                     getString(R.string.model),
                     getString(R.string.invalid_model),
@@ -193,6 +186,7 @@ class PlaneDataFragment : Fragment() {
         yearTextView.setOnClickListener {
             if (updateMode) {
                 showEditTextDialogForResult(
+                    { plane.fabricationYear.toString() },
                     yearTextView.text.toString(),
                     getString(R.string.year),
                     getString(R.string.invalid_fabrication_year),
@@ -206,6 +200,7 @@ class PlaneDataFragment : Fragment() {
         engineTextView.setOnClickListener {
             if (updateMode) {
                 showPickerDialogForResult(
+                    { plane.engine.toString() },
                     engineTextView.text.toString(),
                     getString(R.string.engine),
                     Plane.EngineList,
@@ -216,6 +211,7 @@ class PlaneDataFragment : Fragment() {
         priceTextView.setOnClickListener {
             if (updateMode) {
                 showEditTextDialogForResult(
+                    { plane.price.toString() },
                     priceTextView.text.toString(),
                     getString(R.string.price),
                     getString(R.string.invalid_price),
@@ -233,6 +229,11 @@ class PlaneDataFragment : Fragment() {
         updateButton.setOnClickListener(null)
         locationAndCancelButton.setOnClickListener(null)
         deleteButton.setOnClickListener(null)
+        brandTextView.setOnClickListener(null)
+        modelTextView.setOnClickListener(null)
+        yearTextView.setOnClickListener(null)
+        engineTextView.setOnClickListener(null)
+        priceTextView.setOnClickListener(null)
     }
 
     private fun showDeletionDialog(tailNumber: String, yesFunction: () -> Unit) {
@@ -280,7 +281,8 @@ class PlaneDataFragment : Fragment() {
     }
 
     private fun showEditTextDialogForResult(
-        initialValue: String,
+        initialValue: () -> String,
+        lastValue: String,
         title: String,
         conditions: String,
         destinationTextView: TextView,
@@ -292,12 +294,14 @@ class PlaneDataFragment : Fragment() {
         dialogBuilder.setMessage(conditions)
         val editText = EditText(context)
         editText.inputType = inputType
-        editText.setText(initialValue)
+        editText.setText(lastValue)
         dialogBuilder.setView(editText)
         val dialogClickListener = DialogInterface.OnClickListener { _, which ->
             if (which == DialogInterface.BUTTON_POSITIVE) {
                 if (validator(editText.text.toString())) {
-                    destinationTextView.text = editText.text
+                    val newValue = editText.text.toString()
+                    destinationTextView.text = newValue
+                    changeEditedViewBackground(initialValue(), newValue, destinationTextView)
                 } else {
                     Toast.makeText(context, conditions, Toast.LENGTH_LONG).show()
                 }
@@ -309,7 +313,8 @@ class PlaneDataFragment : Fragment() {
     }
 
     private fun showPickerDialogForResult(
-        initialValue: String,
+        initialValue: () -> String,
+        lastValue: String,
         title: String,
         choices: List<String>,
         destinationTextView: TextView
@@ -320,10 +325,13 @@ class PlaneDataFragment : Fragment() {
         picker.minValue = 0
         picker.maxValue = choices.size - 1
         picker.displayedValues = choices.toTypedArray()
+        picker.value = choices.indexOf(lastValue)
         dialogBuilder.setView(picker)
         val dialogClickListener = DialogInterface.OnClickListener { _, which ->
             if (which == DialogInterface.BUTTON_POSITIVE) {
-                destinationTextView.text = picker.displayedValues[picker.value]
+                val newValue = picker.displayedValues[picker.value]
+                destinationTextView.text = newValue
+                changeEditedViewBackground(initialValue(), newValue, destinationTextView)
             }
         }
         dialogBuilder.setPositiveButton("CHANGE", dialogClickListener)
@@ -345,6 +353,15 @@ class PlaneDataFragment : Fragment() {
         deleteButton.isEnabled = false
         locationAndCancelButton.text = getString(R.string.cancel_button)
         updateHintTextView.visibility = View.VISIBLE
+        markTextViewsAsNotEdited()
+    }
+
+    private fun markTextViewsAsNotEdited() {
+        changeToNotEditedViewBackground(brandTextView)
+        changeToNotEditedViewBackground(modelTextView)
+        changeToNotEditedViewBackground(yearTextView)
+        changeToNotEditedViewBackground(engineTextView)
+        changeToNotEditedViewBackground(priceTextView)
     }
 
     private fun cancelUpdate() {
@@ -353,6 +370,15 @@ class PlaneDataFragment : Fragment() {
         locationAndCancelButton.text = getString(R.string.geolocation_button)
         updateHintTextView.visibility = View.GONE
         updateMode = false
+        deleteTextViewsBackground()
+    }
+
+    private fun deleteTextViewsBackground() {
+        deleteViewBackground(brandTextView)
+        deleteViewBackground(modelTextView)
+        deleteViewBackground(yearTextView)
+        deleteViewBackground(engineTextView)
+        deleteViewBackground(priceTextView)
     }
 
     private fun updatePlane() {
@@ -376,6 +402,36 @@ class PlaneDataFragment : Fragment() {
             progressBar.visibility = View.GONE
             locationAndCancelButton.isEnabled = true
             updateButton.isEnabled = true
+        }
+    }
+
+    private fun changeToNotEditedViewBackground(view: View) {
+        changeEditedViewBackground("", "", view)
+    }
+
+    private fun changeEditedViewBackground(
+        initialValue: String = "",
+        newValue: String = "",
+        view: View
+    ) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            if (newValue != initialValue) {
+                view.background =
+                    ResourcesCompat.getDrawable(resources, R.drawable.shape_edited, null)
+            } else {
+                view.background =
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.shape_not_edited,
+                        null
+                    )
+            }
+        }
+    }
+
+    private fun deleteViewBackground(view: View) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            view.background = null
         }
     }
 }
