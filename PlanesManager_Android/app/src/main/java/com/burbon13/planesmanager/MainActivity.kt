@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
         if (!isConnected) {
             val messageToUser = "You are offline now."
             mSnackBar = Snackbar.make(
-                findViewById(R.id.drawer_layout),
+                coordinator_layout,
                 messageToUser,
                 Snackbar.LENGTH_LONG
             )
