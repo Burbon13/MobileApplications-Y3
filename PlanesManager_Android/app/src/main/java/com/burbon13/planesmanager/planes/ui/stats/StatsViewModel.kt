@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 
 
 class StatsViewModel : ViewModel() {
-    private val planeRepository = PlaneRepository(PlaneDataSource())
 
     private val _brandsCountMap = MutableLiveData<Result<ArrayList<PieEntry>>>()
     val brandCountMap: LiveData<Result<ArrayList<PieEntry>>>
@@ -25,7 +24,7 @@ class StatsViewModel : ViewModel() {
 
     private fun loadBrandsCount() {
         viewModelScope.launch(Dispatchers.IO) {
-            val brandsCountResult = planeRepository.getBrandsCount()
+            val brandsCountResult = PlaneRepository.getBrandsCount()
             if (brandsCountResult is Result.Success) {
                 val brandsCountMap = brandsCountResult.data
                 val pieEntryList = ArrayList<PieEntry>()

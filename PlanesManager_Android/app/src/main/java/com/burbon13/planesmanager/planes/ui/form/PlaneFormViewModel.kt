@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 
 
 class PlaneFormViewModel : ViewModel() {
-    private val planeRepository = PlaneRepository(PlaneDataSource())
     private val planeValidator = PlaneValidator()
 
     val updatingPlane = MutableLiveData<Boolean>()
@@ -44,7 +43,7 @@ class PlaneFormViewModel : ViewModel() {
         Log.d(TAG, "Add new plane with tailNumber=$tailNumber")
         viewModelScope.launch {
             _processing.value = true
-            _addPlaneResult.value = planeRepository.addPlane(
+            _addPlaneResult.value = PlaneRepository.addPlane(
                 Plane(
                     tailNumber,
                     brand,

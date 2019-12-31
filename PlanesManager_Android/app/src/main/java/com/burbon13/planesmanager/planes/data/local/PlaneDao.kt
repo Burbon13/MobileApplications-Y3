@@ -11,7 +11,7 @@ interface PlaneDao {
     fun getAll(): LiveData<List<Plane>>
 
     @Query("SELECT * FROM planes WHERE tailNumber=:tailNumber")
-    fun getByTailNumber(tailNumber: String): LiveData<Plane>
+    fun getByTailNumber(tailNumber: String): Plane
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(plane: Plane)
@@ -19,9 +19,15 @@ interface PlaneDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(plane: Plane)
 
-    @Delete
-    suspend fun delete(plane: Plane)
+    @Query("DELETE FROM planes WHERE tailNumber=:tailNumber")
+    suspend fun delete(tailNumber: String)
 
     @Query("DELETE FROM planes")
     suspend fun deleteAll()
+
+    @Query("SELECT * FROM planes ORDER BY tailNumber ASC LIMIT :limit OFFSET :offset")
+    suspend fun getPage(limit: Int, offset: Int): List<Plane>
+
+    @Query("SELECT COUNT(*) FROM planes WHERE brand=:brand")
+    suspend fun getBrandCount(brand: String): Int
 }

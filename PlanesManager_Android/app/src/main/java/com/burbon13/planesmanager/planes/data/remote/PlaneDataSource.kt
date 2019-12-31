@@ -18,7 +18,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.PUT
 
 
-class PlaneDataSource {
+object PlaneDataSource {
     interface PlaneService {
         @Headers("Content-Type: application/json")
         @GET("/api/plane")

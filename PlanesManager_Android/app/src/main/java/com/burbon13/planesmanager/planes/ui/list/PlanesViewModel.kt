@@ -16,8 +16,6 @@ import kotlinx.coroutines.withContext
 
 
 class PlanesViewModel : ViewModel() {
-    private val planeRepository = PlaneRepository(PlaneDataSource())
-
     private val _planeMutableLiveDate = MutableLiveData<List<Plane>>()
     val planeLiveData: LiveData<List<Plane>>
         get() = _planeMutableLiveDate
@@ -31,8 +29,11 @@ class PlanesViewModel : ViewModel() {
         get() = _loading
 
     init {
-        _planeMutableLiveDate.value = listOf()
-        appendPlanesPage(0)
+        viewModelScope.launch(Dispatchers.IO) {
+            PlaneRepository.refresh()
+            _planeMutableLiveDate.postValue(listOf())
+            appendPlanesPage(0)
+        }
     }
 
     fun appendPlanesPage(pageOffset: Int) {
@@ -41,7 +42,7 @@ class PlanesViewModel : ViewModel() {
             _loading.value = true
             var newPlanesResult: Result<List<Plane>>? = null
             withContext(Dispatchers.IO) {
-                newPlanesResult = planeRepository.getPagePlanes(pageOffset)
+                newPlanesResult = PlaneRepository.getPagePlanes(pageOffset)
             }
             if (newPlanesResult is Result.Success) {
                 Log.d(TAG, "Planes page with offset=$pageOffset retrieved successfully")

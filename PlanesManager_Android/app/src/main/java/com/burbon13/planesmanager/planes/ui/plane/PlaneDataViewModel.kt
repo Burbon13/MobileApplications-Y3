@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 
 
 class PlaneDataViewModel : ViewModel() {
-    private val planeRepository = PlaneRepository(PlaneDataSource())
 
     private val _plane = MutableLiveData<Result<Plane>>()
     val plane: LiveData<Result<Plane>>
@@ -33,28 +32,33 @@ class PlaneDataViewModel : ViewModel() {
     fun loadPlane(tailNumber: String) {
         Log.d(TAG, "Loading plane with tailNumber=$tailNumber")
         viewModelScope.launch(Dispatchers.IO) {
-            _plane.postValue(planeRepository.getPlane(tailNumber))
+            val plane = PlaneRepository.getPlane(tailNumber)
+            if (plane != null) {
+                _plane.postValue(Result.Success(plane))
+            } else {
+                _plane.postValue(Result.Error("Error loading plane"))
+            }
         }
     }
 
     fun deletePlane(tailNumber: String) {
         Log.d(TAG, "Deleting plane with tailNumber=$tailNumber")
         viewModelScope.launch(Dispatchers.IO) {
-            _planeDeletion.postValue(planeRepository.deletePlane(tailNumber))
+            _planeDeletion.postValue(PlaneRepository.deletePlane(tailNumber))
         }
     }
 
     fun updatePlane(newPlane: Plane) {
         Log.d(TAG, "Updating plane=$newPlane")
         viewModelScope.launch(Dispatchers.IO) {
-            _plane.postValue(planeRepository.updatePlane(newPlane))
+            _plane.postValue(PlaneRepository.updatePlane(newPlane))
         }
     }
 
     fun getPlaneGeolocation(tailNumber: String) {
         Log.d(TAG, "Loading geolocation for tailNumber=$tailNumber")
         viewModelScope.launch(Dispatchers.IO) {
-            _planeGeolocation.postValue(planeRepository.getPlaneGeolocation(tailNumber))
+            _planeGeolocation.postValue(PlaneRepository.getPlaneGeolocation(tailNumber))
         }
     }
 }
