@@ -6,25 +6,34 @@ import com.burbon13.planesmanager.core.MyApp
 import com.burbon13.planesmanager.core.utils.extensions.TAG
 
 
+/**
+ * Class which stores the session token used for the API calls
+ */
 object LoginSharedPreferences {
-    private val sharedPreferences = MyApp.context?.getSharedPreferences(
-        "com.burbon13.planesmanager.shared.pref",
-        Context.MODE_PRIVATE
-    )
+    private const val SESSION_TOKEN_KEY = "session_token"
+    private const val SHARED_PREFERENCES_ID = "com.burbon13.planesmanager.shared.pref"
 
+    private val sharedPreferences = MyApp.context?.getSharedPreferences(
+        SHARED_PREFERENCES_ID,
+        Context.MODE_PRIVATE
+    ) ?: throw LoginSharedPreferencesException("Cannot access shared preferences")
+
+    /**
+     * @return the session token if exists, null otherwise
+     */
     fun getSessionToken(): String? {
-        val sessionToken = sharedPreferences?.getString("session_token", null)
-        Log.d(TAG, "Retrieving session token from shared preferences: $sessionToken")
+        val sessionToken = sharedPreferences.getString(SESSION_TOKEN_KEY, null)
+        Log.d(TAG, "Retrieved session token from shared preferences: $sessionToken")
         return sessionToken
     }
 
     fun saveSessionToken(sessionToken: String) {
-        Log.d(TAG, "Saving session token in shared preferences")
-        sharedPreferences?.edit()?.putString("session_token", sessionToken)?.apply()
+        Log.d(TAG, "Saving session token in shared preferences: $sessionToken")
+        sharedPreferences.edit().putString(SESSION_TOKEN_KEY, sessionToken).apply()
     }
 
     fun deleteSessionToken() {
         Log.d(TAG, "Deleting session token")
-        sharedPreferences?.edit()?.remove("session_token")?.apply()
+        sharedPreferences.edit().remove(SESSION_TOKEN_KEY).apply()
     }
 }

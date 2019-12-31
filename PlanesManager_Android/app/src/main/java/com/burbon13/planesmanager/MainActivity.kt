@@ -40,14 +40,6 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
             nav_view,
             navController
         )
-        supportFragmentManager.addOnBackStackChangedListener {
-            Log.d(TAG, "addOnBackStackChangedListener() called ...")
-            if (supportFragmentManager.backStackEntryCount > 0) {
-                supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            } else {
-                supportActionBar?.setDisplayHomeAsUpEnabled(false)
-            }
-        }
         registerReceiver(
             ConnectivityReceiver(),
             IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
