@@ -30,6 +30,7 @@ class LoginFragment : Fragment() {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate()")
         viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+        viewModel.checkAlreadyLogin()
     }
 
     override fun onCreateView(
@@ -94,12 +95,6 @@ class LoginFragment : Fragment() {
             loading.visibility = View.VISIBLE
             viewModel.login(username.text.toString(), password.text.toString())
         }
-    }
-
-    // TODO: Delete in the end
-    override fun onResume() {
-        super.onResume()
-        viewModel.login("a@a.com", "aaa")
     }
 
     override fun onStop() {

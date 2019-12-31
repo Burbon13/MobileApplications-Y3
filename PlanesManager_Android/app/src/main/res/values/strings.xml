@@ -38,4 +38,5 @@
     <string name="plane_update_hint">Click on the plane values to change them!</string>
     <string name="brand">Brand</string>
     <string name="engine">Engine</string>
+    <string name="logout">Logout</string>
 </resources>

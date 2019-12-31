@@ -5,11 +5,14 @@ import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.burbon13.planesmanager.auth.data.LoginRepository
 import com.burbon13.planesmanager.core.utils.extensions.TAG
 import com.burbon13.planesmanager.core.utils.receivers.ConnectivityReceiver
 import com.google.android.material.snackbar.BaseTransientBottomBar
@@ -64,6 +67,19 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
         showConnectionSnackBarMessage(isConnected)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_action_bar, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.logout_button) {
+            Log.d(TAG, "Logout")
+            logout()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun showConnectionSnackBarMessage(isConnected: Boolean) {
         if (!isConnected) {
             val messageToUser = "You are offline now."
@@ -77,5 +93,10 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
         } else {
             mSnackBar?.dismiss()
         }
+    }
+
+    private fun logout() {
+        LoginRepository.logout()
+        finish()
     }
 }

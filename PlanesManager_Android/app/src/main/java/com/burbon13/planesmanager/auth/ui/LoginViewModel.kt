@@ -9,7 +9,7 @@ import com.burbon13.planesmanager.auth.data.LoginRepository
 import androidx.lifecycle.viewModelScope
 
 import com.burbon13.planesmanager.R
-import com.burbon13.planesmanager.auth.data.LoginDataSource
+import com.burbon13.planesmanager.auth.data.remote.LoginDataSource
 import com.burbon13.planesmanager.auth.data.TokenHolder
 import com.burbon13.planesmanager.core.Result
 import com.burbon13.planesmanager.core.utils.extensions.TAG
@@ -17,8 +17,6 @@ import kotlinx.coroutines.launch
 
 
 class LoginViewModel : ViewModel() {
-    private val loginRepository = LoginRepository(LoginDataSource())
-
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
 
@@ -28,7 +26,7 @@ class LoginViewModel : ViewModel() {
     fun login(username: String, password: String) {
         Log.d(TAG, "Login username:$username password:$password")
         viewModelScope.launch {
-            _loginResult.value = loginRepository.login(username, password)
+            _loginResult.value = LoginRepository.login(username, password)
         }
     }
 
@@ -40,6 +38,17 @@ class LoginViewModel : ViewModel() {
             _loginForm.value = LoginFormState(passwordError = R.string.invalid_password)
         } else {
             _loginForm.value = LoginFormState(isDataValid = true)
+        }
+    }
+
+    fun checkAlreadyLogin() {
+        Log.d(TAG, "Checking if user already logged in")
+        val existingToken = LoginRepository.userLoggedIn()
+        if(existingToken != null) {
+            Log.d(TAG, "User already logged in")
+            val tokenHolder = TokenHolder(existingToken)
+            LoginRepository.setLoggedInUser(tokenHolder)
+            _loginResult.value = Result.Success(tokenHolder)
         }
     }
 
