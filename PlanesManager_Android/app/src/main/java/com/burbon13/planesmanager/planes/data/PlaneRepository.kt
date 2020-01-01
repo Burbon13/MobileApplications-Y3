@@ -21,6 +21,7 @@ object PlaneRepository {
         Log.d(TAG, "Synchronizing data from remote location")
         return try {
             val planesResult = PlaneDataSource.getPlanes()
+            planeDao.deleteAll()
             if (planesResult is Result.Success) {
                 val planes = planesResult.data
                 for (plane in planes) {
