@@ -1,4 +1,4 @@
-{"tailNumber":"N721AQ","brand":"AIRBUS","model":"A380","fabricationYear":2008,"engine":"TURBOJET","price":543000505,"_id":"0BH2Z1a9L6mD3tI1"}
+{"brand":"AIRBUS","engine":"TURBOJET","fabricationYear":2009,"model":"A380","price":543000505,"tailNumber":"N721AQ","_id":"0BH2Z1a9L6mD3tI1"}
 {"tailNumber":"N575LX","brand":"BOEING","model":"747-800","fabricationYear":1995,"engine":"TURBOJET","price":383100505,"_id":"0Ewl8SnYY1FqT1jg"}
 {"tailNumber":"N973MF","brand":"AIRBUS","model":"A350","fabricationYear":2014,"engine":"TURBOJET","price":243100505,"_id":"0Rn4aH67RzbTjG0H"}
 {"tailNumber":"M576DU","brand":"BOEING","model":"757","fabricationYear":2005,"engine":"TURBOJET","price":233100505,"_id":"0XwfTE8868rCg0AR"}
@@ -7,6 +7,3 @@
 {"tailNumber":"TG4F42","brand":"BOMBARDIER","model":"Q400","fabricationYear":2001,"engine":"TURBOPROP","price":44310505,"_id":"1Q328wFRtoKutaGm"}
 {"tailNumber":"TG4F41","brand":"ATR","model":"42","fabricationYear":2000,"engine":"TURBOPROP","price":24310505,"_id":"1Q3H8wFRtoKu1aGm"}
 {"tailNumber":"TG4F43","brand":"ATR","model":"72","fabricationYear":2002,"engine":"TURBOPROP","price":34310505,"_id":"1Q3H8wFRtoKu3aGm"}
-{"brand":"BOMBARDIER","engine":"TURBOPROP","fabricationYear":2000,"model":"BBY","price":155000,"tailNumber":"XU537","_id":"3B7azEEG6zvrg2XB"}
-{"$$deleted":true,"_id":"3B7azEEG6zvrg2XB"}
-{"brand":"AIRBUS","engine":"TURBOJET","fabricationYear":2009,"model":"A380","price":543000505,"tailNumber":"N721AQ","_id":"0BH2Z1a9L6mD3tI1"}
