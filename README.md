@@ -1,8 +1,18 @@
-## Planes Manager - keep track of your fleet!
+# Planes Manager - keep track of your fleet!
 
 A project used to manage your personal fleet of planes.
 
-### Contents
+### Android screenshots
+
+<img src="/screenshots/a5.jpeg" width="250">
+<img src="/screenshots/a3.jpeg" width="250">
+<img src="/screenshots/a1.jpeg" width="250">
+<img src="/screenshots/a8.jpeg" width="250">
+<img src="/screenshots/a6.jpeg" width="250">
+<img src="/screenshots/a7.jpeg" width="250">
+<img src="/screenshots/a2.jpeg" width="250">
+
+## Contents
 
 - **PlanesManager\_Server_Node** Server built with Node.js
 - **PlanesManager_Android** Client mobile application built using Android with Kotlin
