@@ -1,7 +1,7 @@
 package com.burbon13.planesmanager.planes.model
 
 import java.lang.Exception
-import java.util.*
+import java.util.Calendar
 
 
 class PlaneValidator {

@@ -22,11 +22,13 @@ import kotlinx.android.synthetic.main.activity_navigation.*
 
 class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityReceiverListener {
     private lateinit var navController: NavController
-    private var mSnackBar: Snackbar? = null
+    private var snackbar: Snackbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate()")
         setContentView(R.layout.activity_navigation)
+        Log.d(TAG, "Setting up the navigation controller")
         navController = findNavController(R.id.my_nav_host_fragment)
         setupActionBarWithNavController(
             navController, AppBarConfiguration(
@@ -40,6 +42,7 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
             nav_view,
             navController
         )
+        Log.d(TAG, "Registering the ConnectivityReceiver")
         registerReceiver(
             ConnectivityReceiver(),
             IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
@@ -48,46 +51,52 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
 
     override fun onResume() {
         super.onResume()
+        Log.d(TAG, "onResume()")
         ConnectivityReceiver.connectivityReceiverListener = this
     }
 
     override fun onSupportNavigateUp(): Boolean {
+        Log.d(TAG, "onSupportNavigateUp()")
         return navController.navigateUp()
     }
 
     override fun onNetworkConnectionChanged(isConnected: Boolean) {
-        showConnectionSnackBarMessage(isConnected)
+        Log.d(TAG, "onNetworkConnectionChanged() -> $isConnected")
+        updateConnectionSnackBar(isConnected)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        Log.d(TAG, "onCreateOptionsMenu()")
         menuInflater.inflate(R.menu.menu_action_bar, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.logout_button) {
+        if (item.itemId == R.id.logout_button) {
             Log.d(TAG, "Logout")
             logout()
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun showConnectionSnackBarMessage(isConnected: Boolean) {
+    private fun updateConnectionSnackBar(isConnected: Boolean) {
+        Log.d(TAG, "updateConnectionSnackBar")
         if (!isConnected) {
             val messageToUser = "You are offline now."
-            mSnackBar = Snackbar.make(
+            snackbar = Snackbar.make(
                 coordinator_layout,
                 messageToUser,
                 Snackbar.LENGTH_LONG
             )
-            mSnackBar?.duration = BaseTransientBottomBar.LENGTH_INDEFINITE
-            mSnackBar?.show()
+            snackbar?.duration = BaseTransientBottomBar.LENGTH_INDEFINITE
+            snackbar?.show()
         } else {
-            mSnackBar?.dismiss()
+            snackbar?.dismiss()
         }
     }
 
     private fun logout() {
+        Log.d(TAG, "logout()")
         LoginRepository.logout()
         finish()
     }

@@ -8,6 +8,10 @@ import android.net.NetworkCapabilities
 import android.os.Build
 
 
+/**
+ * Class that receives and handles broadcast intents regarding the internet connectivity of the
+ * phone.
+ */
 class ConnectivityReceiver : BroadcastReceiver() {
     companion object {
         var connectivityReceiverListener: ConnectivityReceiverListener? = null

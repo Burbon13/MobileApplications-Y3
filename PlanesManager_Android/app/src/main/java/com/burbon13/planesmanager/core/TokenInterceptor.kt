@@ -7,6 +7,10 @@ import okhttp3.Response
 
 
 class TokenInterceptor : Interceptor {
+    companion object {
+        private const val AUTH_HEADER_NAME = "Authorization"
+    }
+
     var token: String? = null
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -19,7 +23,7 @@ class TokenInterceptor : Interceptor {
         }
         Log.d(TAG, "Exiting token, adding Authorization header")
         val requestBuilder = original.newBuilder()
-            .addHeader("Authorization", "Bearer $token")
+            .addHeader(AUTH_HEADER_NAME, "Bearer $token")
             .url(originalUrl)
         val request = requestBuilder.build()
         return chain.proceed(request)

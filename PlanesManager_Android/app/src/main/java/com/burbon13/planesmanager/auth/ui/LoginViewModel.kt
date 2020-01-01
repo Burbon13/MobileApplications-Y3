@@ -9,7 +9,6 @@ import com.burbon13.planesmanager.auth.data.LoginRepository
 import androidx.lifecycle.viewModelScope
 
 import com.burbon13.planesmanager.R
-import com.burbon13.planesmanager.auth.data.remote.LoginDataSource
 import com.burbon13.planesmanager.auth.data.TokenHolder
 import com.burbon13.planesmanager.core.Result
 import com.burbon13.planesmanager.core.utils.extensions.TAG
@@ -17,11 +16,13 @@ import kotlinx.coroutines.launch
 
 
 class LoginViewModel : ViewModel() {
-    private val _loginForm = MutableLiveData<LoginFormState>()
-    val loginFormState: LiveData<LoginFormState> = _loginForm
+    private val _loginFormState = MutableLiveData<LoginFormState>()
+    val loginFormState: LiveData<LoginFormState>
+        get() = _loginFormState
 
     private val _loginResult = MutableLiveData<Result<TokenHolder>>()
-    val loginResult: LiveData<Result<TokenHolder>> = _loginResult
+    val loginResult: LiveData<Result<TokenHolder>>
+        get() = _loginResult
 
     fun login(username: String, password: String) {
         Log.d(TAG, "Login username:$username password:$password")
@@ -33,18 +34,18 @@ class LoginViewModel : ViewModel() {
     fun loginDataChanged(username: String, password: String) {
         Log.v(TAG, "Login data changed")
         if (!isUserNameValid(username)) {
-            _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
+            _loginFormState.value = LoginFormState(usernameError = R.string.invalid_username)
         } else if (!isPasswordValid(password)) {
-            _loginForm.value = LoginFormState(passwordError = R.string.invalid_password)
+            _loginFormState.value = LoginFormState(passwordError = R.string.invalid_password)
         } else {
-            _loginForm.value = LoginFormState(isDataValid = true)
+            _loginFormState.value = LoginFormState(isDataValid = true)
         }
     }
 
     fun checkAlreadyLogin() {
         Log.d(TAG, "Checking if user already logged in")
         val existingToken = LoginRepository.userLoggedIn()
-        if(existingToken != null) {
+        if (existingToken != null) {
             Log.d(TAG, "User already logged in")
             val tokenHolder = TokenHolder(existingToken)
             LoginRepository.setLoggedInUser(tokenHolder)

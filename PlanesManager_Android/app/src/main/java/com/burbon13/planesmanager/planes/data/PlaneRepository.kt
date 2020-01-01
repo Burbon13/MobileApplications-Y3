@@ -6,7 +6,6 @@ import com.burbon13.planesmanager.core.MyApp
 import com.burbon13.planesmanager.planes.model.Plane
 import com.burbon13.planesmanager.core.Result
 import com.burbon13.planesmanager.core.utils.extensions.TAG
-import com.burbon13.planesmanager.planes.data.local.PlaneDao
 import com.burbon13.planesmanager.planes.data.local.PlanesDatabase
 import com.burbon13.planesmanager.planes.data.remote.PlaneDataSource
 import com.burbon13.planesmanager.planes.model.Geolocation
@@ -14,7 +13,9 @@ import java.lang.Exception
 
 
 object PlaneRepository {
-    private val planeDao = PlanesDatabase.getDatabase(MyApp.context!!).planeDao()
+    private val planeDao = PlanesDatabase.getDatabase(
+        MyApp.context ?: throw Exception("Unable to retrieve Application context")
+    ).planeDao()
 
     suspend fun refresh(): Result<Boolean> {
         Log.d(TAG, "Synchronizing data from remote location")
@@ -90,7 +91,7 @@ object PlaneRepository {
         Log.d(TAG, "Updating plane=$newPlane")
         return try {
             val updateResult = PlaneDataSource.updatePlane(newPlane)
-            if(updateResult is Result.Success) {
+            if (updateResult is Result.Success) {
                 planeDao.update(newPlane)
             }
             updateResult

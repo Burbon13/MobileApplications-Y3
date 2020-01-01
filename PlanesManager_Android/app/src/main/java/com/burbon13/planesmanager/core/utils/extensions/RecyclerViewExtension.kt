@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 
 
+/**
+ * Inserts divider lines between the RecyclerView items.
+ */
 fun RecyclerView.setDivider(@DrawableRes drawableRes: Int) {
     Log.d(TAG, "Setting divider for RecyclerView")
     val divider = DividerItemDecoration(

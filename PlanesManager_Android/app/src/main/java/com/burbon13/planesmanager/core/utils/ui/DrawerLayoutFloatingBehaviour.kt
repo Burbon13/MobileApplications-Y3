@@ -9,7 +9,7 @@ import com.google.android.material.snackbar.Snackbar
 
 
 /**
- * CoordinatorLayout to make Snackbar push view upwards
+ * CoordinatorLayout to make the Snackbar push the main view upwards
  */
 class DrawerLayoutFloatingBehaviour : CoordinatorLayout.Behavior<DrawerLayout> {
 

@@ -23,12 +23,12 @@ object LoginSharedPreferences {
      */
     fun getSessionToken(): String? {
         val sessionToken = sharedPreferences.getString(SESSION_TOKEN_KEY, null)
-        Log.d(TAG, "Retrieved session token from shared preferences: $sessionToken")
+        Log.d(TAG, "Retrieved session token $sessionToken from shared preferences")
         return sessionToken
     }
 
     fun saveSessionToken(sessionToken: String) {
-        Log.d(TAG, "Saving session token in shared preferences: $sessionToken")
+        Log.d(TAG, "Saving session token $sessionToken in shared preferences")
         sharedPreferences.edit().putString(SESSION_TOKEN_KEY, sessionToken).apply()
     }
 

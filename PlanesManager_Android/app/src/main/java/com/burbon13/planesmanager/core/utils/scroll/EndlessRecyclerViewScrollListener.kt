@@ -13,19 +13,6 @@ abstract class EndlessRecyclerViewScrollListener(
     RecyclerView.OnScrollListener() {
     private var state = viewModel.state.value ?: EndlessScrollState()
 
-    fun getLastVisibleItem(lastVisibleItemPositions: IntArray): Int {
-        var maxSize = 0
-        for (i in lastVisibleItemPositions.indices) {
-            if (i == 0) {
-                maxSize = lastVisibleItemPositions[i]
-            } else if (lastVisibleItemPositions[i] > maxSize) {
-                maxSize = lastVisibleItemPositions[i]
-            }
-        }
-        Log.v(TAG, "getLastVisibleItem() -> $maxSize")
-        return maxSize
-    }
-
     // This happens many times a second during a scroll, so be wary of the code you place here.
     // We are given a few useful parameters to help us work out if we need to load some more data,
     // but first we check if we are waiting for the previous load to finish.

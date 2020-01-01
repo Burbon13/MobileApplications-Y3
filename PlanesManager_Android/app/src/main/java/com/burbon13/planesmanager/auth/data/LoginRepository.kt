@@ -13,8 +13,6 @@ import com.burbon13.planesmanager.core.utils.extensions.TAG
  * maintains an in-memory cache of login status and user credentials information.
  */
 object LoginRepository {
-    private val TOKEN_KEY = "com.burbon13.planesmanager.token"
-
     /**
      * Verifies if a session token is saved
      * @return the session token if exits, null otherwise
@@ -26,8 +24,7 @@ object LoginRepository {
 
     suspend fun login(username: String, password: String): Result<TokenHolder> {
         Log.d(TAG, "Login with credentials username=$username and password=$password")
-        val user = User(username, password)
-        val result = LoginDataSource.login(user)
+        val result = LoginDataSource.login(User(username, password))
         if (result is Result.Success) {
             Log.d(TAG, "User $username logged in successfully")
             setLoggedInUser(result.data)
@@ -38,6 +35,7 @@ object LoginRepository {
     }
 
     fun setLoggedInUser(tokenHolder: TokenHolder) {
+        Log.d(TAG, "Setting token value in tokenInterceptor to ${tokenHolder.token}")
         Api.tokenInterceptor.token = tokenHolder.token
         Log.d(TAG, "Saving token ${tokenHolder.token} to shared preferences")
         LoginSharedPreferences.saveSessionToken(tokenHolder.token)
