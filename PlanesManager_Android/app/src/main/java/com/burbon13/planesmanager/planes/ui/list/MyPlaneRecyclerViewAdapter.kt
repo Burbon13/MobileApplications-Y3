@@ -32,11 +32,6 @@ class MyPlaneRecyclerViewAdapter(
         get() = mValues
     private var mShowLoading = false
 
-    companion object {
-        private const val VIEW_TYPE_LOADING = 1
-        private const val VIEW_TYPE_NORMAL = 2
-    }
-
     private val mOnClickListener: View.OnClickListener
 
     init {
