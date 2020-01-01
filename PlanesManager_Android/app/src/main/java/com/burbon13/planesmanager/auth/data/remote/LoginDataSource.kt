@@ -12,6 +12,7 @@ import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import java.lang.Exception
+import kotlin.coroutines.suspendCoroutine
 
 
 /**
@@ -28,15 +29,10 @@ object LoginDataSource {
 
     suspend fun login(user: User): Result<TokenHolder> {
         Log.d(TAG, "$user login attempt")
-        return try {
-            Result.Success(authService.login(user))
-        } catch (e: HttpException) {
-            val errorMessage = ApiUtils.extractErrorMessage(e)
-            Log.d(TAG, "Exception occurred during login attempt for user=$user: $errorMessage")
-            Result.Error(errorMessage)
-        } catch (e: Exception) {
-            Log.d(TAG, "Exception occurred during login attempt for user=$user: ${e.message}")
-            Result.Error("Authentication error occurred")
-        }
+        return ApiUtils.retrieveResult(
+            { authService.login(user) },
+            "Exception occurred during login attempt for user=$user",
+            "Authentication error occurred"
+        )
     }
 }

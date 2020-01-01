@@ -5,9 +5,8 @@ import com.burbon13.planesmanager.core.Api
 import com.burbon13.planesmanager.core.utils.extensions.TAG
 import com.burbon13.planesmanager.planes.model.Plane
 import com.burbon13.planesmanager.core.Result
+import com.burbon13.planesmanager.core.utils.api.ApiUtils
 import com.burbon13.planesmanager.planes.model.Geolocation
-import com.google.gson.JsonParser
-import retrofit2.HttpException
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -54,165 +53,81 @@ object PlaneDataSource {
     }
 
     private val planeService: PlaneService = Api.retrofit.create(
-        PlaneService::class.java)
+        PlaneService::class.java
+    )
 
     suspend fun getPlane(tailNumber: String): Result<Plane> {
         Log.d(TAG, "Retrieving plane with tailNumber=$tailNumber")
-        return try {
-            Result.Success(planeService.getPlane(tailNumber))
-        } catch (e: HttpException) {
-            val errorMessage = getApiErrorMessage(e)
-            Log.e(
-                TAG,
-                "Exception occurred while retrieving plane with tailNumber=$tailNumber: $errorMessage"
-            )
-            Result.Error(errorMessage)
-        } catch (e: Exception) {
-            Log.e(
-                TAG,
-                "Exception occurred while retrieving plane with tailNumber=$tailNumber: ${e.message}"
-            )
-            Result.Error("An error occurred, contact support if this persists")
-        }
+        return ApiUtils.retrieveResult(
+            { planeService.getPlane(tailNumber) },
+            "Exception occurred while retrieving plane with tailNumber=$tailNumber",
+            "An error occurred"
+        )
     }
 
     suspend fun getPlanes(): Result<List<Plane>> {
         Log.d(TAG, "Retrieving all planes")
-        return try {
-            Result.Success(planeService.getPlanes())
-        } catch (e: HttpException) {
-            val errorMessage = getApiErrorMessage(e)
-            Log.e(TAG, "Exception occurred while retrieving planes: $errorMessage")
-            Result.Error(errorMessage)
-        } catch (e: Exception) {
-            Log.e(TAG, "Exception occurred while retrieving planes: ${e.message}")
-            Result.Error("An error occurred, contact support if this persists")
-        }
+        return ApiUtils.retrieveResult(
+            { planeService.getPlanes() },
+            "Exception occurred while retrieving all planes",
+            "An error occurred"
+        )
     }
-
 
     suspend fun getPlanesPage(pageOffset: Int): Result<List<Plane>> {
         Log.d(TAG, "Retrieving planes page with offset=$pageOffset")
-        return try {
-            val planesPage = planeService.getPlanesPage(pageOffset)
-            Log.d(TAG, "Retrieved ${planesPage.size} planes for page with offset $pageOffset")
-            Result.Success(planesPage)
-        } catch (e: HttpException) {
-            val errorMessage = getApiErrorMessage(e)
-            Log.e(
-                TAG,
-                "Exception occurred while retrieving page with offset $pageOffset: $errorMessage"
-            )
-            Result.Error(errorMessage)
-        } catch (e: java.lang.Exception) {
-            Log.e(
-                TAG,
-                "Exception occurred while retrieving page with offset $pageOffset: ${e.message}"
-            )
-            Result.Error("An error occurred, contact support if this persists")
-        }
+        return ApiUtils.retrieveResult(
+            { planeService.getPlanesPage(pageOffset) },
+            "Exception occurred while retrieving planes page=$pageOffset",
+            "An error occurred"
+        )
     }
 
     suspend fun addPlane(plane: Plane): Result<Plane> {
-        Log.d(TAG, "Adding new plane to server: $plane")
-        return try {
-            Result.Success(planeService.addPlane(plane))
-        } catch (e: HttpException) {
-            val errorMessage = getApiErrorMessage(e)
-            Log.e(TAG, "Exception occurred while adding new plane=$plane: $errorMessage")
-            Result.Error(errorMessage)
-        } catch (e: java.lang.Exception) {
-            Log.e(TAG, "Exception occurred while adding new plane=$plane: ${e.message}")
-            Result.Error("An error occurred, contact support if this persists")
-        }
+        Log.d(TAG, "Adding new plane=$plane")
+        return ApiUtils.retrieveResult(
+            { planeService.addPlane(plane) },
+            "Exception occurred while saving new plane=$plane",
+            "An error occurred"
+        )
     }
 
     suspend fun getBrandsCount(): Result<Map<String, Int>> {
         Log.d(TAG, "Retrieving all brand counts")
-        return try {
-            Result.Success(planeService.getBrandsCount(Plane.BrandList.joinToString(separator = ",")))
-        } catch (e: HttpException) {
-            val errorMessage = getApiErrorMessage(e)
-            Log.e(TAG, "Exception occurred while retrieving brand counts: $errorMessage")
-            Result.Error(errorMessage)
-        } catch (e: java.lang.Exception) {
-            Log.e(TAG, "Exception occurred while retrieving brand counts: ${e.message}")
-            Result.Error("An error occurred, contact support if this persists")
-        }
+        return ApiUtils.retrieveResult(
+            { planeService.getBrandsCount(Plane.BrandList.joinToString(separator = ",")) },
+            "Exception occurred while retrieving brand counts",
+            "An error occurred"
+        )
     }
 
     suspend fun deletePlane(tailNumber: String): Result<Boolean> {
         Log.d(TAG, "Deleting plane with tailNumber=$tailNumber")
-        return try {
-            planeService.deletePlane(tailNumber)
-            Log.d(TAG, "Plane with tailNumber=$tailNumber deleted successfully")
-            Result.Success(true)
-        } catch (e: HttpException) {
-            val errorMessage = getApiErrorMessage(e)
-            Log.e(
-                TAG,
-                "Error occurred while deleting plane with tailNumber=$tailNumber: $errorMessage"
-            )
-            Result.Error(errorMessage)
-        } catch (e: java.lang.Exception) {
-            Log.e(
-                TAG,
-                "Error occurred while deleting plane with tailNumber=$tailNumber: ${e.message}"
-            )
-            Result.Error("An error occurred, contact support if this persists")
-        }
+        return ApiUtils.retrieveResult(
+            {
+                planeService.deletePlane(tailNumber)
+                true
+            },
+            "Exception occurred while deleting plane with tailNumber=$tailNumber",
+            "An error occurred"
+        )
     }
 
     suspend fun updatePlane(newPlane: Plane): Result<Plane> {
         Log.d(TAG, "Updating plane=$newPlane")
-        return try {
-            Result.Success(planeService.updatePlane(newPlane))
-        } catch (e: HttpException) {
-            val errorMessage = getApiErrorMessage(e)
-            Log.e(
-                TAG,
-                "Error occurred while updating plane=$newPlane: $errorMessage"
-            )
-            Result.Error(errorMessage)
-        } catch (e: java.lang.Exception) {
-            Log.e(
-                TAG,
-                "Error occurred while updating plane=$newPlane: ${e.message}"
-            )
-            Result.Error("An error occurred, contact support if this persists")
-        }
+        return ApiUtils.retrieveResult(
+            { planeService.updatePlane(newPlane) },
+            "Exception occurred while updating plane=$newPlane",
+            "An error occurred"
+        )
     }
 
     suspend fun getPlaneGeolocation(tailNumber: String): Result<Geolocation> {
         Log.d(TAG, "Retrieving geolocation for plane with tailNumber=$tailNumber")
-        return try {
-            Result.Success(planeService.getPlaneGeolocation(tailNumber))
-        } catch (e: HttpException) {
-            val errorMessage = getApiErrorMessage(e)
-            Log.e(
-                TAG,
-                "Error occurred while retrieving geolocation for tailNumber=$tailNumber: $errorMessage"
-            )
-            Result.Error(errorMessage)
-        } catch (e: java.lang.Exception) {
-            Log.e(
-                TAG,
-                "Error occurred while retrieving geolocation for tailNumber=$tailNumber: ${e.message}"
-            )
-            Result.Error("An error occurred, contact support if this persists")
-        }
-    }
-
-    private fun getApiErrorMessage(e: HttpException): String {
-        val errorJsonString = e.response()?.errorBody()?.string()
-        return try {
-            JsonParser().parse(errorJsonString)
-                .asJsonObject.get("issue")
-                .asJsonArray.get(0)
-                .asJsonObject.get("error")
-                .asString
-        } catch (e: java.lang.Exception) {
-            "SERVER ERROR"
-        }
+        return ApiUtils.retrieveResult(
+            { planeService.getPlaneGeolocation(tailNumber) },
+            "Exception occurred while retrieving plane geolocation with tailNumber=$tailNumber",
+            "An error occurred"
+        )
     }
 }
