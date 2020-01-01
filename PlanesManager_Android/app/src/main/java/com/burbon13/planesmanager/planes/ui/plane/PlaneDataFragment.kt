@@ -29,12 +29,13 @@ import java.lang.Exception
 
 
 class PlaneDataFragment : Fragment() {
-    private lateinit var viewModel: PlaneDataViewModel
-    private lateinit var sharedViewModel: SharedPlaneFormViewModel
-    private val args: PlaneDataFragmentArgs by navArgs()
-    private lateinit var plane: Plane
+    private lateinit var planeDataViewModel: PlaneDataViewModel
+    private lateinit var sharedPlaneFormViewModel: SharedPlaneFormViewModel
+    private lateinit var loadedPlane: Plane
     private var planeAlreadyExists = false
     private val planeValidator = PlaneValidator()
+
+    private val args: PlaneDataFragmentArgs by navArgs()
 
     private lateinit var locationAndCancelButton: Button
     private lateinit var updateButton: Button
@@ -53,16 +54,17 @@ class PlaneDataFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(PlaneDataViewModel::class.java)
-        viewModel.loadPlane(args.planeTailNumber)
-        viewModel.getPlaneGeolocation(args.planeTailNumber)
-        sharedViewModel = activity?.run {
+        planeDataViewModel = ViewModelProviders.of(this).get(PlaneDataViewModel::class.java)
+        planeDataViewModel.loadPlane(args.planeTailNumber)
+        planeDataViewModel.getPlaneGeolocation(args.planeTailNumber)
+        sharedPlaneFormViewModel = activity?.run {
             ViewModelProviders.of(this)[SharedPlaneFormViewModel::class.java]
-        } ?: throw Exception("Invalid Activity!")
+        } ?: throw Exception("Unable to retrieve activity!")
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_plane_data, container, false)
@@ -90,17 +92,17 @@ class PlaneDataFragment : Fragment() {
     @Suppress("UNNECESSARY_SAFE_CALL")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.plane.observe(viewLifecycleOwner, Observer {
+        planeDataViewModel.plane.observe(viewLifecycleOwner, Observer {
             Log.d(TAG, "(Observed) Plane result loaded")
             if (it is Result.Success) {
                 Log.d(TAG, "Plane loaded successfully")
                 if (planeAlreadyExists) {
-                    sharedViewModel.planeUpdated()
+                    sharedPlaneFormViewModel.planeUpdated()
                     deleteTextViewsBackground()
                     updateMode = false
                     locationAndCancelButton.text = getString(R.string.geolocation_button)
                 }
-                plane = it.data
+                loadedPlane = it.data
                 planeAlreadyExists = true
                 setTextViewsToPlaneData()
                 locationAndCancelButton.isEnabled = true
@@ -110,13 +112,17 @@ class PlaneDataFragment : Fragment() {
             } else if (it is Result.Error) {
                 Log.e(TAG, "Error Result received")
                 Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                if (planeAlreadyExists) {
+                    locationAndCancelButton.isEnabled = true
+                    updateButton.isEnabled = true
+                }
             }
             progressBar.visibility = View.GONE
         })
-        viewModel.planeDeletion.observe(viewLifecycleOwner, Observer {
+        planeDataViewModel.planeDeletionResult.observe(viewLifecycleOwner, Observer {
             if (it is Result.Success) {
                 Log.d(TAG, "Plane deletion successful, view model notification")
-                sharedViewModel.planeDeleted()
+                sharedPlaneFormViewModel.planeDeleted()
                 Log.d(TAG, "Toast message")
                 Toast.makeText(context, "Plane deleted", Toast.LENGTH_LONG).show()
                 Log.d(TAG, "POP BACK STACK")
@@ -136,7 +142,7 @@ class PlaneDataFragment : Fragment() {
         super.onStart()
         locationAndCancelButton.setOnClickListener {
             if (!updateMode) {
-                when (val geolocationResult = viewModel.planeGeolocation.value) {
+                when (val geolocationResult = planeDataViewModel.planeGeolocationResult.value) {
                     is Result.Success -> {
                         val geolocation = geolocationResult.data
                         openGoogleMapsIntent(geolocation.x, geolocation.y)
@@ -164,21 +170,21 @@ class PlaneDataFragment : Fragment() {
             }
         }
         deleteButton.setOnClickListener {
-            showDeletionDialog(plane.tailNumber) {
+            showDeletionDialog(loadedPlane.tailNumber) {
                 locationAndCancelButton.isEnabled = false
                 updateButton.isEnabled = false
                 deleteButton.isEnabled = false
                 progressBar.visibility = View.VISIBLE
-                plane.tailNumber?.let {
-                    viewModel.deletePlane(it)
+                loadedPlane.tailNumber?.let {
+                    planeDataViewModel.deletePlane(it)
                 }
             }
 
         }
         brandTextView.setOnClickListener {
             if (updateMode) {
-                showPickerDialogForResult(
-                    { plane.brand.toString() },
+                showPickerDialog(
+                    { loadedPlane.brand.toString() },
                     brandTextView.text.toString(),
                     getString(R.string.brand),
                     Plane.BrandList,
@@ -188,8 +194,8 @@ class PlaneDataFragment : Fragment() {
         }
         modelTextView.setOnClickListener {
             if (updateMode) {
-                showEditTextDialogForResult(
-                    { plane.model },
+                showEditTextDialog(
+                    { loadedPlane.model },
                     modelTextView.text.toString(),
                     getString(R.string.model),
                     getString(R.string.invalid_model),
@@ -201,8 +207,8 @@ class PlaneDataFragment : Fragment() {
         }
         yearTextView.setOnClickListener {
             if (updateMode) {
-                showEditTextDialogForResult(
-                    { plane.fabricationYear.toString() },
+                showEditTextDialog(
+                    { loadedPlane.fabricationYear.toString() },
                     yearTextView.text.toString(),
                     getString(R.string.year),
                     getString(R.string.invalid_fabrication_year),
@@ -215,8 +221,8 @@ class PlaneDataFragment : Fragment() {
         }
         engineTextView.setOnClickListener {
             if (updateMode) {
-                showPickerDialogForResult(
-                    { plane.engine.toString() },
+                showPickerDialog(
+                    { loadedPlane.engine.toString() },
                     engineTextView.text.toString(),
                     getString(R.string.engine),
                     Plane.EngineList,
@@ -226,8 +232,8 @@ class PlaneDataFragment : Fragment() {
         }
         priceTextView.setOnClickListener {
             if (updateMode) {
-                showEditTextDialogForResult(
-                    { plane.price.toString() },
+                showEditTextDialog(
+                    { loadedPlane.price.toString() },
                     priceTextView.text.toString(),
                     getString(R.string.price),
                     getString(R.string.invalid_price),
@@ -252,13 +258,13 @@ class PlaneDataFragment : Fragment() {
         priceTextView.setOnClickListener(null)
     }
 
-    private fun showDeletionDialog(tailNumber: String, yesFunction: () -> Unit) {
+    private fun showDeletionDialog(tailNumber: String, onPositiveAction: () -> Unit) {
         val dialogBuilder = AlertDialog.Builder(context)
         dialogBuilder.setTitle("Delete plane $tailNumber")
         dialogBuilder.setMessage("Are you sure you want to delete this plane?")
         val dialogClickListener = DialogInterface.OnClickListener { _, which ->
             if (which == DialogInterface.BUTTON_POSITIVE) {
-                yesFunction()
+                onPositiveAction()
             }
         }
         dialogBuilder.setPositiveButton("YES", dialogClickListener)
@@ -296,7 +302,7 @@ class PlaneDataFragment : Fragment() {
         }
     }
 
-    private fun showEditTextDialogForResult(
+    private fun showEditTextDialog(
         initialValue: () -> String,
         lastValue: String,
         title: String,
@@ -328,7 +334,7 @@ class PlaneDataFragment : Fragment() {
         dialogBuilder.create().show()
     }
 
-    private fun showPickerDialogForResult(
+    private fun showPickerDialog(
         initialValue: () -> String,
         lastValue: String,
         title: String,
@@ -356,12 +362,12 @@ class PlaneDataFragment : Fragment() {
     }
 
     private fun setTextViewsToPlaneData() {
-        tailNumberTextView.text = plane.tailNumber
-        brandTextView.text = plane.brand?.toString()
-        modelTextView.text = plane.model
-        engineTextView.text = plane.engine?.toString()
-        yearTextView.text = plane.fabricationYear?.toString()
-        priceTextView.text = plane.price?.toString()
+        tailNumberTextView.text = loadedPlane.tailNumber
+        brandTextView.text = loadedPlane.brand?.toString()
+        modelTextView.text = loadedPlane.model
+        engineTextView.text = loadedPlane.engine?.toString()
+        yearTextView.text = loadedPlane.fabricationYear?.toString()
+        priceTextView.text = loadedPlane.price?.toString()
     }
 
     private fun startUpdate() {
@@ -370,14 +376,6 @@ class PlaneDataFragment : Fragment() {
         locationAndCancelButton.text = getString(R.string.cancel_button)
         updateHintTextView.visibility = View.VISIBLE
         markTextViewsAsNotEdited()
-    }
-
-    private fun markTextViewsAsNotEdited() {
-        changeToNotEditedViewBackground(brandTextView)
-        changeToNotEditedViewBackground(modelTextView)
-        changeToNotEditedViewBackground(yearTextView)
-        changeToNotEditedViewBackground(engineTextView)
-        changeToNotEditedViewBackground(priceTextView)
     }
 
     private fun cancelUpdate() {
@@ -389,17 +387,22 @@ class PlaneDataFragment : Fragment() {
         deleteTextViewsBackground()
     }
 
-    private fun deleteTextViewsBackground() {
-        deleteViewBackground(brandTextView)
-        deleteViewBackground(modelTextView)
-        deleteViewBackground(yearTextView)
-        deleteViewBackground(engineTextView)
-        deleteViewBackground(priceTextView)
+    private fun updatePlane() {
+        retrievePlaneDataFromTextViews()?.let { newPlane ->
+            progressBar.visibility = View.VISIBLE
+            locationAndCancelButton.isEnabled = false
+            updateButton.isEnabled = false
+            planeDataViewModel.updatePlane(newPlane)
+        } ?: Toast.makeText(
+            context,
+            "Unable to retrieve edited plane data",
+            Toast.LENGTH_LONG
+        ).show()
     }
 
-    private fun updatePlane() {
-        try {
-            val newPlane = Plane(
+    private fun retrievePlaneDataFromTextViews(): Plane? {
+        return try {
+            Plane(
                 tailNumberTextView.text.toString(),
                 Plane.Brand.valueOf(brandTextView.text.toString()),
                 modelTextView.text.toString(),
@@ -407,22 +410,29 @@ class PlaneDataFragment : Fragment() {
                 Plane.Engine.valueOf(engineTextView.text.toString()),
                 priceTextView.text.toString().toLong()
             )
-            updateMode = false
-            progressBar.visibility = View.VISIBLE
-            locationAndCancelButton.isEnabled = false
-            updateButton.isEnabled = false
-            viewModel.updatePlane(newPlane)
         } catch (e: Exception) {
-            Log.e(TAG, "Error occurred: ${e.message}")
-            updateMode = true
-            progressBar.visibility = View.GONE
-            locationAndCancelButton.isEnabled = true
-            updateButton.isEnabled = true
+            null
         }
+    }
+
+    private fun markTextViewsAsNotEdited() {
+        changeToNotEditedViewBackground(brandTextView)
+        changeToNotEditedViewBackground(modelTextView)
+        changeToNotEditedViewBackground(yearTextView)
+        changeToNotEditedViewBackground(engineTextView)
+        changeToNotEditedViewBackground(priceTextView)
     }
 
     private fun changeToNotEditedViewBackground(view: View) {
         changeEditedViewBackground("", "", view)
+    }
+
+    private fun deleteTextViewsBackground() {
+        deleteViewBackground(brandTextView)
+        deleteViewBackground(modelTextView)
+        deleteViewBackground(yearTextView)
+        deleteViewBackground(engineTextView)
+        deleteViewBackground(priceTextView)
     }
 
     private fun changeEditedViewBackground(

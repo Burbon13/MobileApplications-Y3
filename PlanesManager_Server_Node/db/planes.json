@@ -206,3 +206,12 @@
 {"tailNumber":"KLM-145","brand":"ATR","model":"747-800","fabricationYear":2002,"engine":"TURBOJET","price":3431000505,"_id":"yjamUxtTzCWt0XoG"}
 {"brand":"ATR","engine":"TURBOFAN","fabricationYear":2006,"model":"M72","price":2330005,"tailNumber":"AHAHAHA","_id":"xJfdur5KhGStU9eI"}
 {"brand":"AIRBUS","engine":"TURBOJET","fabricationYear":2014,"model":"A350","price":288584914,"tailNumber":"CACTTTUS","_id":"slN7QMX2UMEN7Yd3"}
+{"$$deleted":true,"_id":"AzJvNG9mSnYT6qVq"}
+{"brand":"AIRBUS","engine":"TURBOJET","fabricationYear":2002,"model":"A380 Ultimate","price":650000000,"tailNumber":"AHXTY","_id":"N1jEs0rMQLFtID43"}
+{"brand":"AIRBUS","engine":"TURBOJET","fabricationYear":2003,"model":"A380 Ultimate","price":651000000,"tailNumber":"AHXTY","_id":"N1jEs0rMQLFtID43"}
+{"$$deleted":true,"_id":"xJfdur5KhGStU9eI"}
+{"brand":"EMBRAER","engine":"TURBOJET","fabricationYear":2002,"model":"747-800","price":3431000505,"tailNumber":"KLM-10","_id":"EfiZtJr231jlsyxb"}
+{"$$deleted":true,"_id":"6YPkL2b9Ip4UmyIZ"}
+{"brand":"AIRBUS","engine":"TURBOJET","fabricationYear":2005,"model":"A319","price":185000,"tailNumber":"AAFff","_id":"dcgnmxqrW2ZvaPhG"}
+{"brand":"BOEING","engine":"TURBOPROP","fabricationYear":2000,"model":"ttt","price":69,"tailNumber":"Attttt","_id":"GMUmgeBZCkVn02ws"}
+{"brand":"BOEING","engine":"TURBOPROP","fabricationYear":2000,"model":"ttt","price":69000000,"tailNumber":"Attttt","_id":"GMUmgeBZCkVn02ws"}

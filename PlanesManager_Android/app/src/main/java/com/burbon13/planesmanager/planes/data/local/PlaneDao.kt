@@ -15,7 +15,7 @@ interface PlaneDao {
     fun getAll(): LiveData<List<Plane>>
 
     @Query("SELECT * FROM planes WHERE tailNumber=:tailNumber")
-    fun getByTailNumber(tailNumber: String): Plane
+    fun getByTailNumber(tailNumber: String): Plane?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(plane: Plane)

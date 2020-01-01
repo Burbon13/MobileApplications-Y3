@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.burbon13.planesmanager.planes.model.Plane
 import com.burbon13.planesmanager.core.Result
 import com.burbon13.planesmanager.core.utils.extensions.TAG
-import com.burbon13.planesmanager.planes.data.remote.PlaneDataSource
 import com.burbon13.planesmanager.planes.data.PlaneRepository
 import com.burbon13.planesmanager.planes.model.Geolocation
 import kotlinx.coroutines.Dispatchers
@@ -21,13 +20,13 @@ class PlaneDataViewModel : ViewModel() {
     val plane: LiveData<Result<Plane>>
         get() = _plane
 
-    private val _planeDeletion = MutableLiveData<Result<Boolean>>()
-    val planeDeletion: LiveData<Result<Boolean>>
-        get() = _planeDeletion
+    private val _planeDeletionResult = MutableLiveData<Result<Boolean>>()
+    val planeDeletionResult: LiveData<Result<Boolean>>
+        get() = _planeDeletionResult
 
-    private val _planeGeolocation = MutableLiveData<Result<Geolocation>>()
-    val planeGeolocation: LiveData<Result<Geolocation>>
-        get() = _planeGeolocation
+    private val _planeGeolocationResult = MutableLiveData<Result<Geolocation>>()
+    val planeGeolocationResult: LiveData<Result<Geolocation>>
+        get() = _planeGeolocationResult
 
     fun loadPlane(tailNumber: String) {
         Log.d(TAG, "Loading plane with tailNumber=$tailNumber")
@@ -44,7 +43,7 @@ class PlaneDataViewModel : ViewModel() {
     fun deletePlane(tailNumber: String) {
         Log.d(TAG, "Deleting plane with tailNumber=$tailNumber")
         viewModelScope.launch(Dispatchers.IO) {
-            _planeDeletion.postValue(PlaneRepository.deletePlane(tailNumber))
+            _planeDeletionResult.postValue(PlaneRepository.deletePlane(tailNumber))
         }
     }
 
@@ -58,7 +57,7 @@ class PlaneDataViewModel : ViewModel() {
     fun getPlaneGeolocation(tailNumber: String) {
         Log.d(TAG, "Loading geolocation for tailNumber=$tailNumber")
         viewModelScope.launch(Dispatchers.IO) {
-            _planeGeolocation.postValue(PlaneRepository.getPlaneGeolocation(tailNumber))
+            _planeGeolocationResult.postValue(PlaneRepository.getPlaneGeolocation(tailNumber))
         }
     }
 }

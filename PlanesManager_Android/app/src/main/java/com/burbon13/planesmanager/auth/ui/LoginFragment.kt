@@ -43,6 +43,7 @@ class LoginFragment : Fragment() {
         usernameEditText = rootView.findViewById(R.id.username)
         passwordEditText = rootView.findViewById(R.id.password)
         loginButton = rootView.findViewById(R.id.login)
+        loadingProgressBar = rootView.findViewById(R.id.loading)
         return rootView
     }
 

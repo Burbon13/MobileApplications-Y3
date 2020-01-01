@@ -19,28 +19,28 @@ import kotlinx.android.synthetic.main.fragment_plane.view.*
  * specified [OnListFragmentInteractionListener].
  */
 class MyPlaneRecyclerViewAdapter(
-    private var mValues: List<Plane>,
-    private val mListener: OnListFragmentInteractionListener?
+    private var planesList: List<Plane>,
+    private val onListFragmentInteractionListener: OnListFragmentInteractionListener?
 ) : RecyclerView.Adapter<MyPlaneRecyclerViewAdapter.ViewHolder>() {
 
     var planeList: List<Plane>
         set(value) {
-            mValues = value
+            planesList = value
             Log.d(TAG, "Notify plane list data set changed")
             notifyDataSetChanged()
         }
-        get() = mValues
+        get() = planesList
 
     private val mOnClickListener: View.OnClickListener
 
     init {
         Log.d(TAG, "Initializing MyPlaneRecyclerViewAdapter")
         Log.d(TAG, "Setting click listener on plane items")
-        mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as Plane
+        mOnClickListener = View.OnClickListener { view ->
+            val item = view.tag as Plane
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
-            mListener?.onListFragmentInteraction(item)
+            onListFragmentInteractionListener?.onListFragmentInteraction(item)
         }
     }
 
@@ -51,22 +51,33 @@ class MyPlaneRecyclerViewAdapter(
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = mValues[position]
-        Log.v(TAG, "onBindViewHolder() for position=$position: $item")
-        holder.planeBrandView.text = item.brand?.toString()
-        holder.planeModelView.text = item.model
-        holder.planePriceView.text = "US$${item.price / 1000000} milion"
-        holder.planeYearView.text = item.fabricationYear?.toString()
-        holder.planeTailNumberView.text = item.tailNumber
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        val plane = planesList[position]
+        Log.v(TAG, "onBindViewHolder() for position=$position: $plane")
+        viewHolder.planeBrandView.text = plane.brand?.toString()
+        viewHolder.planeModelView.text = plane.model
+        viewHolder.planePriceView.text = getPriceText(plane.price)
+        viewHolder.planeYearView.text = plane.fabricationYear?.toString()
+        viewHolder.planeTailNumberView.text = plane.tailNumber
 
-        with(holder.planeView) {
-            tag = item
+        with(viewHolder.planeView) {
+            tag = plane
             setOnClickListener(mOnClickListener)
         }
     }
 
-    override fun getItemCount(): Int = mValues.size
+    override fun getItemCount(): Int = planesList.size
+
+    private fun getPriceText(price: Long): String {
+        if (price == null) {
+            return "N/A"
+        }
+        return when (true) {
+            price >= 1000000 -> "US$${price / 1000000} million"
+            price >= 1000 -> "US$${price / 1000} K"
+            else -> "US$$price"
+        }
+    }
 
     inner class ViewHolder(val planeView: View) : RecyclerView.ViewHolder(planeView) {
         val planeBrandView: TextView = planeView.plane_brand

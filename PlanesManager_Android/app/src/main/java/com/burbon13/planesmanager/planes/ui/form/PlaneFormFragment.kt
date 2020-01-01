@@ -20,7 +20,7 @@ import com.burbon13.planesmanager.planes.ui.shared.SharedPlaneFormViewModel
 
 
 class PlaneFormFragment : Fragment() {
-    private lateinit var viewModel: PlaneFormViewModel
+    private lateinit var planeFormViewModel: PlaneFormViewModel
     private lateinit var sharedViewModelResult: SharedPlaneFormViewModel
 
     private lateinit var tailNumberEditText: EditText
@@ -35,10 +35,10 @@ class PlaneFormFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate()")
-        viewModel = ViewModelProviders.of(this).get(PlaneFormViewModel::class.java)
+        planeFormViewModel = ViewModelProviders.of(this).get(PlaneFormViewModel::class.java)
         sharedViewModelResult = activity?.run {
             ViewModelProviders.of(this)[SharedPlaneFormViewModel::class.java]
-        } ?: throw Exception("Invalid Activity!")
+        } ?: throw Exception("Unable to retrieve the activity")
     }
 
     override fun onCreateView(
@@ -68,7 +68,8 @@ class PlaneFormFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.planeFormState.observe(viewLifecycleOwner, Observer {
+        Log.d(TAG, "onActivityCreated()")
+        planeFormViewModel.planeFormState.observe(viewLifecycleOwner, Observer {
             Log.v(TAG, "(Observed) PlaneFormState changed")
             val planeFormState = it ?: return@Observer
             submitButton.isEnabled = planeFormState.isDataValid
@@ -85,8 +86,8 @@ class PlaneFormFragment : Fragment() {
                 priceEditText.error = getString(planeFormState.priceError)
             }
         })
-        viewModel.processing.observe(viewLifecycleOwner, Observer {
-            Log.d(TAG, "(Observed) Plane processing")
+        planeFormViewModel.processing.observe(viewLifecycleOwner, Observer {
+            Log.d(TAG, "(Observed) Plane processing -> $it")
             if (it) {
                 progressBar.visibility = View.VISIBLE
                 submitButton.isEnabled = false
@@ -95,7 +96,7 @@ class PlaneFormFragment : Fragment() {
                 submitButton.isEnabled = true
             }
         })
-        viewModel.addPlaneResult.observe(viewLifecycleOwner, Observer {
+        planeFormViewModel.addPlaneResult.observe(viewLifecycleOwner, Observer {
             Log.d(TAG, "(Observed) addPlaneResult observed in PlaneFormFragment")
             val addPlaneResult = it
             if (addPlaneResult is Result.Success) {
@@ -107,7 +108,7 @@ class PlaneFormFragment : Fragment() {
             } else if (addPlaneResult is Result.Error) {
                 Log.d(
                     TAG,
-                    "Error (and adding to view model) on adding new plane: ${addPlaneResult.message}"
+                    "Error on adding new plane: ${addPlaneResult.message}"
                 )
                 Toast.makeText(context, addPlaneResult.message, Toast.LENGTH_LONG).show()
             }
@@ -133,10 +134,9 @@ class PlaneFormFragment : Fragment() {
             Log.v(TAG, "Price field modified")
             formFieldsChanged()
         }
-
         submitButton.setOnClickListener {
             Log.d(TAG, "(Observed) Submit button pressed")
-            viewModel.addPlane(
+            planeFormViewModel.addPlane(
                 tailNumberEditText.text.toString(),
                 Plane.Brand.valueOf(brandPicker.displayedValues[brandPicker.value]),
                 modelEditText.text.toString(),
@@ -148,7 +148,7 @@ class PlaneFormFragment : Fragment() {
     }
 
     private fun formFieldsChanged() {
-        viewModel.planeFormStateChanged(
+        planeFormViewModel.planeFormStateChanged(
             tailNumberEditText.text.toString(),
             modelEditText.text.toString(),
             yearEditText.text.toString(),

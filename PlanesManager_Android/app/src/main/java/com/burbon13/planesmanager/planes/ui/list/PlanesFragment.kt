@@ -33,57 +33,56 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
  */
 class PlanesFragment : Fragment(),
     OnListFragmentInteractionListener {
-    private lateinit var viewModel: PlanesViewModel
-
+    private lateinit var planesViewModel: PlanesViewModel
     private lateinit var scrollViewModel: EndlessScrollViewModel
-    private lateinit var scrollListener: EndlessRecyclerViewScrollListener
-
     private lateinit var sharedViewModelResult: SharedPlaneFormViewModel
 
-    private lateinit var loadingProgressBar: ProgressBar
-    private lateinit var recyclerViewAdapter: MyPlaneRecyclerViewAdapter
-    private lateinit var recyclerViewPlanes: RecyclerView
+    private lateinit var scrollListener: EndlessRecyclerViewScrollListener
+
+    private lateinit var progressBar: ProgressBar
+    private lateinit var planesRecyclerViewAdapter: MyPlaneRecyclerViewAdapter
+    private lateinit var planesRecyclerView: RecyclerView
     private lateinit var linearLayoutManager: LinearLayoutManager
 
-    private var isFabMenuOpen = false
-    private lateinit var floatingActionButtonExpand: FloatingActionButton
+    private var isFloatingMenuOpen = false
+    private lateinit var menuButton: FloatingActionButton
     private lateinit var addPlaneButton: FloatingActionButton
     private lateinit var planeStatsButton: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate()")
-        viewModel = ViewModelProviders.of(this).get(PlanesViewModel::class.java)
-        val scrollViewModelFactory = EndlessScrollViewModelFactory(EndlessScrollState())
-        scrollViewModel = ViewModelProviders.of(this, scrollViewModelFactory)
-            .get(EndlessScrollViewModel::class.java)
+        planesViewModel = ViewModelProviders.of(this).get(PlanesViewModel::class.java)
+        scrollViewModel =
+            ViewModelProviders.of(this, EndlessScrollViewModelFactory(EndlessScrollState()))
+                .get(EndlessScrollViewModel::class.java)
         sharedViewModelResult = activity?.run {
             ViewModelProviders.of(this)[SharedPlaneFormViewModel::class.java]
-        } ?: throw Exception("Invalid Activity!")
+        } ?: throw Exception("Unable to retrieve activity!")
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         Log.d(TAG, "onCreateView()")
         val rootView = inflater.inflate(R.layout.fragment_plane_list, container, false)
 
-        recyclerViewPlanes = rootView.findViewById(R.id.recycler_view_planes)
-        recyclerViewPlanes.setDivider(R.drawable.recycler_view_divider)
+        planesRecyclerView = rootView.findViewById(R.id.recycler_view_planes)
+        planesRecyclerView.setDivider(R.drawable.recycler_view_divider)
 
         linearLayoutManager = LinearLayoutManager(context)
-        recyclerViewPlanes.layoutManager = linearLayoutManager
+        planesRecyclerView.layoutManager = linearLayoutManager
 
-        recyclerViewAdapter = MyPlaneRecyclerViewAdapter(
+        planesRecyclerViewAdapter = MyPlaneRecyclerViewAdapter(
             listOf(),
             this@PlanesFragment as OnListFragmentInteractionListener
         )
-        recyclerViewPlanes.adapter = recyclerViewAdapter
+        planesRecyclerView.adapter = planesRecyclerViewAdapter
 
-        loadingProgressBar = rootView.findViewById(R.id.loading_progress_bar)
-
-        floatingActionButtonExpand = rootView.findViewById(R.id.floating_btn)
+        progressBar = rootView.findViewById(R.id.loading_progress_bar)
+        menuButton = rootView.findViewById(R.id.floating_btn)
         addPlaneButton = rootView.findViewById(R.id.floating_btn_plane_form)
         planeStatsButton = rootView.findViewById(R.id.floating_btn_plane_stats)
 
@@ -92,29 +91,24 @@ class PlanesFragment : Fragment(),
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.planeLiveData.observe(this, Observer {
-            recyclerViewAdapter.planeList = it
+        planesViewModel.planeLiveData.observe(this, Observer {
+            planesRecyclerViewAdapter.planeList = it
         })
-        viewModel.loading.observe(viewLifecycleOwner, Observer {
+        planesViewModel.loading.observe(viewLifecycleOwner, Observer {
             if (it) {
-                loadingProgressBar.visibility = View.VISIBLE
+                progressBar.visibility = View.VISIBLE
             } else {
-                loadingProgressBar.visibility = View.GONE
+                progressBar.visibility = View.GONE
             }
         })
         sharedViewModelResult.planeActionResult.observe(viewLifecycleOwner, Observer {
             Log.d(TAG, "(Observed) Plane action")
             if (it is Result.Success) {
-                if (it.data == PlaneActionResult.PLANE_ADDED ||
-                    it.data == PlaneActionResult.PLANE_DELETED ||
-                    it.data == PlaneActionResult.PLANE_UPDATED
-                ) {
+                if (it.data != PlaneActionResult.NO_ACTION) {
                     sharedViewModelResult.resetState()
                     Log.d(TAG, "Refreshing planes list")
                     reloadList()
                 }
-            } else {
-                Log.e(TAG, "Failure, nothing to do")
             }
         })
     }
@@ -126,15 +120,13 @@ class PlanesFragment : Fragment(),
         scrollListener =
             object : EndlessRecyclerViewScrollListener(scrollViewModel, linearLayoutManager) {
                 override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                    // Triggered only when new data needs to be appended to the list
-                    // Add whatever code is needed to append new items to the bottom of the list
                     Log.d(TAG, "EndlessRecyclerView onLoadMore()!!!")
                     loadNextDataFromApi(page)
                 }
             }
-        recyclerViewPlanes.addOnScrollListener(scrollListener)
-        floatingActionButtonExpand.setOnClickListener {
-            if (!isFabMenuOpen) {
+        planesRecyclerView.addOnScrollListener(scrollListener)
+        menuButton.setOnClickListener {
+            if (!isFloatingMenuOpen) {
                 Log.d(TAG, "Opening floating action button menu")
                 openFabMenu()
             } else {
@@ -144,12 +136,12 @@ class PlanesFragment : Fragment(),
         }
         addPlaneButton.setOnClickListener {
             Log.d(TAG, "Navigating from PlanesFragment to PlaneFormFragment")
-            isFabMenuOpen = false
+            isFloatingMenuOpen = false
             findNavController().navigate(R.id.action_planesFragment_to_planeFormFragment)
         }
         planeStatsButton.setOnClickListener {
             Log.d(TAG, "Navigation from PlanesFragment to StatsFragment")
-            isFabMenuOpen = false
+            isFloatingMenuOpen = false
             findNavController().navigate(R.id.action_planesFragment_to_statsFragment)
         }
     }
@@ -161,9 +153,10 @@ class PlanesFragment : Fragment(),
 
     override fun onStop() {
         super.onStop()
-        recyclerViewPlanes.clearOnScrollListeners()
-        floatingActionButtonExpand.setOnClickListener(null)
+        planesRecyclerView.clearOnScrollListeners()
+        menuButton.setOnClickListener(null)
         addPlaneButton.setOnClickListener(null)
+        planeStatsButton.setOnClickListener(null)
     }
 
     override fun onListFragmentInteraction(item: Plane?) {
@@ -172,7 +165,7 @@ class PlanesFragment : Fragment(),
                 TAG,
                 "Plane with tailNumber=${item.tailNumber} touched; navigating to PlaneDataFragment"
             )
-            isFabMenuOpen = false
+            isFloatingMenuOpen = false
             findNavController().navigate(
                 PlanesFragmentDirections.actionPlanesFragmentToPlaneDataFragment(
                     item.tailNumber
@@ -181,27 +174,25 @@ class PlanesFragment : Fragment(),
         }
     }
 
-    // Append the next page of data into the adapter
-    // This method probably sends out a network request and appends new data items to your adapter.
     private fun loadNextDataFromApi(offset: Int) {
         Log.d(TAG, "Load data from next page with offset=$offset")
-        viewModel.appendPlanesPage(offset)
+        planesViewModel.appendPlanesPage(offset)
     }
 
     private fun reloadList() {
         Log.d(TAG, "Reload list")
         scrollListener.resetState()
-        viewModel.reloadList()
+        planesViewModel.reloadList()
     }
 
     private fun openFabMenu() {
-        isFabMenuOpen = true
+        isFloatingMenuOpen = true
         addPlaneButton.animate().translationY(-resources.getDimension(R.dimen.standard_65))
         planeStatsButton.animate().translationY(-resources.getDimension(R.dimen.standard_120))
     }
 
     private fun closeFabMenu() {
-        isFabMenuOpen = false
+        isFloatingMenuOpen = false
         addPlaneButton.animate().translationY(0f)
         planeStatsButton.animate().translationY(0f)
     }

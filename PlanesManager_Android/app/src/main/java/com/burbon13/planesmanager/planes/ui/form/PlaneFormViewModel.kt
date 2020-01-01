@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.burbon13.planesmanager.R
 import com.burbon13.planesmanager.core.utils.extensions.TAG
-import com.burbon13.planesmanager.planes.data.remote.PlaneDataSource
 import com.burbon13.planesmanager.planes.data.PlaneRepository
 import com.burbon13.planesmanager.planes.model.Plane
 import com.burbon13.planesmanager.core.Result
@@ -17,8 +16,6 @@ import kotlinx.coroutines.launch
 
 class PlaneFormViewModel : ViewModel() {
     private val planeValidator = PlaneValidator()
-
-    val updatingPlane = MutableLiveData<Boolean>()
 
     private val _planeFormState = MutableLiveData<PlaneFormState>()
     val planeFormState: LiveData<PlaneFormState>
@@ -55,10 +52,6 @@ class PlaneFormViewModel : ViewModel() {
             )
             _processing.value = false
         }
-    }
-
-    fun updatePlane() {
-
     }
 
     fun planeFormStateChanged(

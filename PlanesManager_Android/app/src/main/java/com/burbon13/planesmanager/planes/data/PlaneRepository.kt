@@ -35,7 +35,7 @@ object PlaneRepository {
         }
     }
 
-    suspend fun getPlane(tailNumber: String): Plane {
+    suspend fun getPlane(tailNumber: String): Plane? {
         Log.d(TAG, "Get plane with tailNumber=$tailNumber")
         return planeDao.getByTailNumber(tailNumber)
     }
