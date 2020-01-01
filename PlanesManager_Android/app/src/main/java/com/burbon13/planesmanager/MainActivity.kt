@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -21,12 +23,15 @@ import kotlinx.android.synthetic.main.activity_navigation.*
 
 
 class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityReceiverListener {
+    private lateinit var mainViewModel: MainViewModel
     private lateinit var navController: NavController
     private var snackbar: Snackbar? = null
+    private var showLogout = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate()")
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         setContentView(R.layout.activity_navigation)
         Log.d(TAG, "Setting up the navigation controller")
         navController = findNavController(R.id.my_nav_host_fragment)
@@ -55,6 +60,20 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
         ConnectivityReceiver.connectivityReceiverListener = this
     }
 
+    override fun onStart() {
+        super.onStart()
+        mainViewModel.loggedIn.observe(this, Observer { loggedIn ->
+            Log.e(TAG, "Login state modified: $loggedIn")
+            showLogout = loggedIn
+            invalidateOptionsMenu()
+        })
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mainViewModel.loggedIn.removeObservers(this)
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         Log.d(TAG, "onSupportNavigateUp()")
         return navController.navigateUp()
@@ -67,7 +86,9 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         Log.d(TAG, "onCreateOptionsMenu()")
-        menuInflater.inflate(R.menu.menu_action_bar, menu)
+        if(showLogout) {
+            menuInflater.inflate(R.menu.menu_action_bar, menu)
+        }
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -98,6 +119,7 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
     private fun logout() {
         Log.d(TAG, "logout()")
         LoginRepository.logout()
+        mainViewModel.logout()
         finish()
     }
 }

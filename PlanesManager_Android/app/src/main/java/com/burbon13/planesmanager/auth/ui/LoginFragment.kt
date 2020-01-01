@@ -13,15 +13,19 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment.findNavController
+import com.burbon13.planesmanager.MainViewModel
 import com.burbon13.planesmanager.core.Result
 
 import com.burbon13.planesmanager.R
 import com.burbon13.planesmanager.core.utils.extensions.TAG
 import com.burbon13.planesmanager.core.utils.extensions.afterTextChanged
+import java.lang.Exception
 
 
 class LoginFragment : Fragment() {
     private lateinit var loginViewModel: LoginViewModel
+    private lateinit var mainViewModel: MainViewModel
+
     private lateinit var usernameEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
@@ -31,6 +35,9 @@ class LoginFragment : Fragment() {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate()")
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+        mainViewModel =
+            ViewModelProviders.of(activity ?: throw Exception("Unable to retrieve activity!"))
+                .get(MainViewModel::class.java)
         loginViewModel.checkAlreadyLogin()
     }
 
@@ -67,6 +74,7 @@ class LoginFragment : Fragment() {
             loadingProgressBar.visibility = View.GONE
             if (loginResult.succeeded) {
                 Log.d(TAG, "Login result is successful, navigation to planes fragment")
+                mainViewModel.login()
                 findNavController(this)
                     .navigate(LoginFragmentDirections.actionLoginActivityToPlanesFragment())
             } else if (loginResult is Result.Error) {
