@@ -30,7 +30,6 @@ class MyPlaneRecyclerViewAdapter(
             notifyDataSetChanged()
         }
         get() = mValues
-    private var mShowLoading = false
 
     private val mOnClickListener: View.OnClickListener
 
