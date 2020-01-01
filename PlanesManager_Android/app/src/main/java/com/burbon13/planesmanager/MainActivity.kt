@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.activity_navigation.*
 class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityReceiverListener {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var navController: NavController
+    private lateinit var connectivityReceiver: ConnectivityReceiver
     private var snackbar: Snackbar? = null
     private var showLogout = false
 
@@ -48,8 +49,9 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
             navController
         )
         Log.d(TAG, "Registering the ConnectivityReceiver")
+        connectivityReceiver = ConnectivityReceiver()
         registerReceiver(
-            ConnectivityReceiver(),
+            connectivityReceiver,
             IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
         )
     }
@@ -72,6 +74,7 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
     override fun onStop() {
         super.onStop()
         mainViewModel.loggedIn.removeObservers(this)
+        unregisterReceiver(connectivityReceiver)
     }
 
     override fun onSupportNavigateUp(): Boolean {
