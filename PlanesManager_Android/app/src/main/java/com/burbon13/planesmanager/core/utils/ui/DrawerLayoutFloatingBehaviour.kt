@@ -3,6 +3,7 @@ package com.burbon13.planesmanager.core.utils.ui
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.snackbar.Snackbar
@@ -30,8 +31,19 @@ class DrawerLayoutFloatingBehaviour : CoordinatorLayout.Behavior<DrawerLayout> {
         child: DrawerLayout,
         dependency: View
     ): Boolean {
-        val translationY = 0f.coerceAtMost(dependency.translationY - dependency.height)
-        child.translationY = translationY
+        val layoutParams = child.layoutParams
+        layoutParams.height = parent.height - dependency.height
+        child.layoutParams = layoutParams
         return true
+    }
+
+    override fun onDependentViewRemoved(
+        parent: CoordinatorLayout,
+        child: DrawerLayout,
+        dependency: View
+    ) {
+        val layoutParams = child.layoutParams
+        layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+        child.layoutParams = layoutParams
     }
 }

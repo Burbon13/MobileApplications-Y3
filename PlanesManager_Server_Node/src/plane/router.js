@@ -103,7 +103,19 @@ const createPlane = async (plane, response) => {
     }
 };
 
-router.post('/', async (ctx) => await createPlane(ctx.request.body, ctx.response));
+router.post('/', async (ctx) => {
+    const plane = await planeStore.findOne({tailNumber: ctx.request.body.tailNumber});
+    console.log('Plane: ' + plane);
+    const response = ctx.response;
+    if (plane) {
+        console.log('Tail number already used');
+        response.body = {issue: [{error: 'Tail number ' + ctx.request.body.tailNumber + ' already exists'}]};
+        response.status = 405;
+    } else {
+        console.log('Inserting new plane');
+        await createPlane(ctx.request.body, ctx.response)
+    }
+});
 
 router.put('/', async (ctx) => {
     const plane = ctx.request.body;
