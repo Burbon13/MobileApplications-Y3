@@ -16,13 +16,15 @@ object Api {
         this.addInterceptor(tokenInterceptor)
     }.build()
 
-    private var gson = GsonBuilder()
-        .setLenient()
-        .create()
-
     val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(URL)
-        .addConverterFactory(GsonConverterFactory.create(gson))
+        .addConverterFactory(
+            GsonConverterFactory.create(
+                GsonBuilder()
+                    .setLenient()
+                    .create()
+            )
+        )
         .client(client)
         .build()
 }
