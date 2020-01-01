@@ -82,6 +82,7 @@ class PlanesFragment : Fragment(),
         planesRecyclerView.adapter = planesRecyclerViewAdapter
 
         progressBar = rootView.findViewById(R.id.loading_progress_bar)
+        progressBar.visibility = View.VISIBLE
         menuButton = rootView.findViewById(R.id.floating_btn)
         addPlaneButton = rootView.findViewById(R.id.floating_btn_plane_form)
         planeStatsButton = rootView.findViewById(R.id.floating_btn_plane_stats)
@@ -93,6 +94,7 @@ class PlanesFragment : Fragment(),
         super.onActivityCreated(savedInstanceState)
         planesViewModel.planeLiveData.observe(this, Observer {
             planesRecyclerViewAdapter.planeList = it
+            progressBar.visibility = View.GONE
         })
         planesViewModel.loading.observe(viewLifecycleOwner, Observer {
             if (it) {

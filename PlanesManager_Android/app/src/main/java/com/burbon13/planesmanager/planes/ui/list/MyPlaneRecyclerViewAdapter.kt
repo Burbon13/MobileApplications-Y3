@@ -1,5 +1,6 @@
 package com.burbon13.planesmanager.planes.ui.list
 
+import android.graphics.Color
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -55,8 +56,10 @@ class MyPlaneRecyclerViewAdapter(
         val plane = planesList[position]
         Log.v(TAG, "onBindViewHolder() for position=$position: $plane")
         viewHolder.planeBrandView.text = plane.brand?.toString()
+        viewHolder.planeBrandView.setTextColor(getBrandColor(plane.brand))
         viewHolder.planeModelView.text = plane.model
         viewHolder.planePriceView.text = getPriceText(plane.price)
+        viewHolder.planePriceView.setTextColor(getPriceColor(plane.price))
         viewHolder.planeYearView.text = plane.fabricationYear?.toString()
         viewHolder.planeTailNumberView.text = plane.tailNumber
 
@@ -68,7 +71,7 @@ class MyPlaneRecyclerViewAdapter(
 
     override fun getItemCount(): Int = planesList.size
 
-    private fun getPriceText(price: Long): String {
+    private fun getPriceText(price: Long?): String {
         if (price == null) {
             return "N/A"
         }
@@ -76,6 +79,28 @@ class MyPlaneRecyclerViewAdapter(
             price >= 1000000 -> "US$${price / 1000000} million"
             price >= 1000 -> "US$${price / 1000} K"
             else -> "US$$price"
+        }
+    }
+
+    private fun getPriceColor(price: Long?): Int {
+        if (price == null) {
+            return Color.BLACK
+        }
+        return when (true) {
+            price >= 1000000 -> Color.parseColor("#00e81f")
+            price >= 1000 -> Color.parseColor("#489c55")
+            else -> Color.parseColor("#466b4b")
+        }
+    }
+
+    private fun getBrandColor(brand: Plane.Brand?): Int {
+        return when (brand) {
+            Plane.Brand.BOEING -> Color.parseColor("#0039a6")
+            Plane.Brand.AIRBUS -> Color.parseColor("#eb34eb")
+            Plane.Brand.BOMBARDIER -> Color.parseColor("#23ba35")
+            Plane.Brand.ATR -> Color.parseColor("#1ac7b6")
+            Plane.Brand.EMBRAER -> Color.parseColor("#e6e21c")
+            else -> Color.BLACK
         }
     }
 

@@ -39,4 +39,6 @@
     <string name="brand">Brand</string>
     <string name="engine">Engine</string>
     <string name="logout">Logout</string>
+    <string name="plane">Plane</string>
+    <string name="drag_the_plane">Drag the plane! Don\'t be shy!</string>
 </resources>
