@@ -5,12 +5,12 @@ import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.view.View
 import android.widget.EditText
-import android.widget.ProgressBar
 import android.widget.Toast
+import android.widget.Button
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.burbon13.planesmanager.MainViewModel
@@ -19,6 +19,7 @@ import com.burbon13.planesmanager.core.Result
 import com.burbon13.planesmanager.R
 import com.burbon13.planesmanager.core.utils.extensions.TAG
 import com.burbon13.planesmanager.core.utils.extensions.afterTextChanged
+import com.burbon13.planesmanager.core.utils.ui.Animations
 import java.lang.Exception
 
 
@@ -51,6 +52,9 @@ class LoginFragment : Fragment() {
         passwordEditText = rootView.findViewById(R.id.password)
         loginButton = rootView.findViewById(R.id.login)
         loadingProgressBar = rootView.findViewById(R.id.loading)
+
+        Animations.attachSpringAnimation(rootView.findViewById(R.id.fling))
+
         return rootView
     }
 
