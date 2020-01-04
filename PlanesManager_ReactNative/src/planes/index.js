@@ -4,7 +4,7 @@ import {PlaneEdit} from './plane-edit';
 import {PlaneList} from './plane-list';
 
 export const Planes = createStackNavigator({
-  PlanesLis: {screen: PlaneList},
+  PlanesList: {screen: PlaneList},
   PlaneEdit: {screen: PlaneEdit},
 });
 

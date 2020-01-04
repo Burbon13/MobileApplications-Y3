@@ -10,26 +10,33 @@ const log = getLogger('PlaneList');
 
 export const PlaneList = ({navigation}) => {
   log('render');
-  const {onSignOut} = useContext(AuthContext);
+  const {onLogout} = useContext(AuthContext);
   return (
     <View>
-      <PlaneContext.Consumer>
-        {({isLoading, loadingError, items: planes}) => (
-          <View>
-            <ActivityIndicator animating={!!isLoading} size="large"/>
-            {loadingError && <Text>{loadingError.message || 'Loading error'}</Text>}
-            {planes &&
-            <FlatList
-              data={planes.map(plane => ({...plane, key: plane.id}))}
-              renderItem={({item: plane}) => <Plane item={plane}/>}
-            />}
-          </View>
-        )}
-      </PlaneContext.Consumer>
       <Button
-        onPress={() => onSignOut().then(() => navigation.navigate('Auth'))}
+        onPress={() => onLogout().then(() => navigation.navigate('Auth'))}
         title="Sign Out"
       />
+      <PlaneContext.Consumer>
+        {({isLoading, loadingError, planes}) => {
+          // log(JSON.stringify(planes, undefined, 2));
+          return (
+            <View>
+              <ActivityIndicator animating={!!isLoading} size="large"/>
+              {loadingError && <Text>{loadingError.message || 'Loading error'}</Text>}
+              {planes &&
+              <FlatList
+                data={planes}
+                renderItem={(plane) => {
+                  log('Render me: ' + JSON.stringify(plane, undefined, 2))
+                  return <Plane plane={plane}/>
+                }}
+                keyExtractor={plane => plane.tailNumber}
+              />}
+            </View>
+          )
+        }}
+      </PlaneContext.Consumer>
     </View>
   )
 };

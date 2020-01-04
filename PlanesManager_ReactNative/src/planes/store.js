@@ -17,6 +17,7 @@ export const PlanesStore = ({children}) => {
   const {token} = useContext(AuthContext);
 
   useEffect(() => {
+    log('Use effect', token, planes, loadingError, isLoading);
     if (token && !planes && !loadingError && !isLoading) {
       log('Loading planes started');
       setState({isLoading: true, loadingError: null});
@@ -30,7 +31,7 @@ export const PlanesStore = ({children}) => {
           setState({isLoading: false, loadingError})
         });
     }
-  }, [token]);
+  });
 
   const onSubmit = useCallback(async (text) => {
     log('POST plane started');

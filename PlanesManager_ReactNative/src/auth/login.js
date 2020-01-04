@@ -29,8 +29,12 @@ export const Login = ({navigation}) => {
             value={password}
           />
           <Button title="Sign in!" onPress={() => {
+            log('Sign in button pressed');
             onLogin(username, password)
-              .then(() => navigation.navigate('Todo'));
+              .then(() => {
+                log('Navigating to Planes');
+                navigation.navigate('Planes')
+              });
           }}/>
         </View>
       )}
@@ -39,7 +43,7 @@ export const Login = ({navigation}) => {
 };
 
 Login.navigationOptions = () => ({
-  headerTitle: 'Please Sign In',
+  headerTitle: 'Please Login',
 });
 
 const styles = StyleSheet.create({
