@@ -12,22 +12,22 @@ export const Login = ({navigation}) => {
   return (
     <Consumer>
       {({onLogin, loginError, loginInProgress}) => (
-        <View style={styles.container}>
+        <View style={_styles.container}>
           <TextInput
-            style={[styles.formElemMargin, styles.textInput]}
+            style={[_styles.formElemMargin, _styles.textInput]}
             placeholder='Username'
             onChangeText={text => onChangeUsername(text)}
             value={username}
           />
           <TextInput
-            style={[styles.formElemMargin, styles.textInput]}
+            style={[_styles.formElemMargin, _styles.textInput]}
             placeholder="Password"
             onChangeText={text => onChangePassword(text)}
             secureTextEntry={true}
             value={password}
           />
           <TouchableOpacity
-            style={[styles.formElemMargin, styles.button]}
+            style={[_styles.formElemMargin, _styles.button]}
             onPress={() => {
               log('Sign in button pressed');
               onLogin(username, password)
@@ -49,7 +49,7 @@ export const Login = ({navigation}) => {
             loginError
             &&
             <Text
-              style={[styles.formElemMargin,styles.errorText]}>
+              style={[_styles.formElemMargin,_styles.errorText]}>
               {loginError.message || 'Login error'}
             </Text>
           }
@@ -63,7 +63,7 @@ Login.navigationOptions = () => ({
   headerTitle: 'Please Login',
 });
 
-const styles = StyleSheet.create({
+const _styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
