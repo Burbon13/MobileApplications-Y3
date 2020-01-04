@@ -1,12 +1,26 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {createAppContainer, createSwitchNavigator} from 'react-navigation';
+import {getLogger, navigation} from './src/core';
+import {AuthLoading, Auth, AuthStore} from './src/auth';
 
+const log = getLogger('App');
 
-export default function App() {
+const AppContainer = createAppContainer(
+  createSwitchNavigator(
+    {AuthLoading, Auth},
+    {initialRouteName: 'AuthLoading'},
+  ),
+);
+
+const App = () => {
+  log('Rendering');
   return (
-    <View>
-      <Text>Welcome to PLANesE MANAGER</Text>
-    </View>
+    <AuthStore>
+      <AppContainer ref={navigatorRef => {
+        navigation.setTopLevelNavigator(navigatorRef);
+      }}/>
+    </AuthStore>
   );
-}
+};
 
+export default App;
