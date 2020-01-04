@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {ActivityIndicator, Button, FlatList, Text, View} from 'react-native';
 
-import {getLogger} from '../core';
+import {getLogger, navigation} from '../core';
 import {PlaneContext} from './plane-context';
 import {AuthContext} from '../auth/context';
 import Plane from './plane';
@@ -45,7 +45,7 @@ PlaneList.navigationOptions = {
   headerTitle: 'Plane List',
   headerRight: (
     <Button
-      onPress={() => navigator.navigate('PlaneEdit')}
+      onPress={() => navigation.navigate('PlaneEdit')}
       title="Add Plane <3"
     />
   ),
