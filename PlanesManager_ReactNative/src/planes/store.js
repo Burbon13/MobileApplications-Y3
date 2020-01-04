@@ -17,9 +17,7 @@ export const PlanesStore = ({children}) => {
   const {token} = useContext(AuthContext);
 
   useEffect(() => {
-    log('Use effect', token, planes, loadingError, isLoading);
     if (token && !planes && !loadingError && !isLoading) {
-      log('Loading planes started');
       setState({isLoading: true, loadingError: null});
       httpGet('api/plane')
         .then(json => {
@@ -47,7 +45,7 @@ export const PlanesStore = ({children}) => {
       });
   }, []);
 
-  log('render', isLoading);
+  log(`Rendering, isLoading=${isLoading}`);
   const value = {...state, onSubmit};
   return (
     <PlaneContext.Provider value={value}>

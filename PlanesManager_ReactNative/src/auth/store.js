@@ -4,7 +4,7 @@ import {getLogger, httpPost, setToken} from '../core';
 import {Provider} from './context';
 
 
-const log = getLogger('(auth) AuthStore');
+const log = getLogger('AuthStore');
 
 const TOKEN_KEY = 'TOKEN';
 const SET_TOKEN = 'SET_TOKEN';
@@ -19,7 +19,7 @@ const initialState = {
 };
 
 const reducer = (state, action) => {
-  log('reducer', action);
+  log('Reducer; action =', action);
   const {type, payload} = action;
   switch (type) {
     case SET_TOKEN:
@@ -44,9 +44,9 @@ export const AuthStore = ({children}) => {
     try {
       const value = await AsyncStorage.getItem(TOKEN_KEY);
       token = value || null;
-      log('Token loaded successfully', token, value);
+      log(`Token loaded successfully, token = ${token}`);
     } catch (error) {
-      log('Exception occurred while loading token', error);
+      log(`Exception occurred while loading token, error = ${error}`);
     }
     setToken(token);
     dispatch({type: SET_TOKEN, payload: {token}});
@@ -64,7 +64,8 @@ export const AuthStore = ({children}) => {
         dispatch({type: LOGIN_SUCCEEDED, payload: {token}});
         AsyncStorage.setItem(TOKEN_KEY, token)
           .catch(error => {
-            log('Error while saving token', error);
+            log(`Exception occurred while saving token, error = ${error}`);
+
           });
         return token;
       })
@@ -80,7 +81,7 @@ export const AuthStore = ({children}) => {
       await AsyncStorage.removeItem(TOKEN_KEY);
       log('Successfully removed TOKEN');
     } catch (error) {
-      log('Error occurred while removing token', error);
+      log(`Exception occurred while removing token, error = ${error}`);
     }
     setToken(null);
     dispatch({type: SET_TOKEN, payload: {token: null}});

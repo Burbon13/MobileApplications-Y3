@@ -9,7 +9,7 @@ import Plane from './plane';
 const log = getLogger('PlaneList');
 
 export const PlaneList = ({navigation}) => {
-  log('render');
+  log('Rendering');
   const {onLogout} = useContext(AuthContext);
   return (
     <View>
@@ -19,7 +19,6 @@ export const PlaneList = ({navigation}) => {
       />
       <PlaneContext.Consumer>
         {({isLoading, loadingError, planes}) => {
-          // log(JSON.stringify(planes, undefined, 2));
           return (
             <View>
               <ActivityIndicator animating={!!isLoading} size="large"/>
@@ -27,10 +26,7 @@ export const PlaneList = ({navigation}) => {
               {planes &&
               <FlatList
                 data={planes}
-                renderItem={(plane) => {
-                  log('Render me: ' + JSON.stringify(plane, undefined, 2))
-                  return <Plane plane={plane}/>
-                }}
+                renderItem={(plane) => <Plane plane={plane}/>}
                 keyExtractor={plane => plane.tailNumber}
               />}
             </View>
