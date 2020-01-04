@@ -25,11 +25,11 @@ const reducer = (state, action) => {
     case SET_TOKEN:
       return {...state, token: payload.token};
     case LOGIN_STARTER:
-      return {...state, signInError: null, signInInProgress: true};
+      return {...state, loginError: null, loginInProgress: true};
     case LOGIN_SUCCEEDED:
-      return {...state, token: payload.token, signInInProgress: false};
+      return {...state, token: payload.token, loginInProgress: false};
     case LOGIN_FAILED:
-      return {...state, signInError: payload.error, signInInProgress: false};
+      return {...state, loginError: payload.error, loginInProgress: false};
     default:
       return state;
   }

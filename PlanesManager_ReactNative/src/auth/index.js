@@ -4,5 +4,5 @@ import {Login} from './login';
 export const Auth = createStackNavigator({
   Login: {screen: Login},
 });
-export * from './authLoading';
-export * from './authStore';
+export * from './auth-loading';
+export * from './store';
