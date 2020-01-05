@@ -10,31 +10,39 @@ const log = getLogger('PlaneEdit');
 export class PlaneEdit extends React.Component {
   constructor(props) {
     super(props);
+    log(`Props passed to PlaneEdit: ${JSON.stringify(props, null, 2)}`);
+    if (props.navigation.state.params) {
+      log('Plane exists, retrieving data');
+      this.plane = props.navigation.state.params.plane;
+    } else {
+      this.plane = false;
+    }
+    log(`Plane value passed to PlaneEdit: ${JSON.stringify(this.plane, null, 2)}`);
     this.state = {
       inputs: {
         tailNumber: {
           type: "generic",
-          value: ""
+          value: this.plane ? this.plane.tailNumber : ""
         },
         model: {
           type: "generic",
-          value: ""
+          value: this.plane ? this.plane.model : ""
         },
         year: {
           type: "year",
-          value: ""
+          value: this.plane ? this.plane.fabricationYear.toString() : ""
         },
         price: {
           type: "integer",
-          value: ""
+          value: this.plane ? this.plane.price.toString() : ""
         },
         brand: {
           type: "generic",
-          value: ""
+          value: this.plane ? this.plane.brand : ""
         },
         engine: {
           type: "generic",
-          value: ""
+          value: this.plane ? this.plane.engine : ""
         }
       }
     };
@@ -46,7 +54,7 @@ export class PlaneEdit extends React.Component {
 
   submit(onSubmit) {
     log('Validating form');
-    if(this.getFormValidation()) {
+    if (this.getFormValidation()) {
       log('Form validated successfully!');
       const newPlane = {
         tailNumber: this.state.inputs.tailNumber.value,
@@ -81,7 +89,9 @@ export class PlaneEdit extends React.Component {
               <View>
                 <Text>Tail Number</Text>
                 <TextInput
+                  editable={this.state.inputs.tailNumber.value.length === 0}
                   style={_styles.input}
+                  value={this.state.inputs.tailNumber.value}
                   onChangeText={value => {
                     this.onInputChange({id: "tailNumber", value});
                   }}
@@ -91,6 +101,7 @@ export class PlaneEdit extends React.Component {
               <View>
                 <RNPickerSelect
                   placeholder={{label: 'Select the plane\'s brand'}}
+                  value={this.state.inputs.brand.value}
                   onValueChange={(value) =>
                     this.onInputChange({id: "brand", value})}
                   items={[
@@ -107,6 +118,7 @@ export class PlaneEdit extends React.Component {
                 <Text>Model</Text>
                 <TextInput
                   style={_styles.input}
+                  value={this.state.inputs.model.value}
                   onChangeText={value => {
                     this.onInputChange({id: "model", value});
                   }}
@@ -117,6 +129,7 @@ export class PlaneEdit extends React.Component {
                 <Text>Fabrication Year</Text>
                 <TextInput
                   style={_styles.input}
+                  value={this.state.inputs.year.value}
                   onChangeText={value => {
                     this.onInputChange({id: "year", value});
                   }}
@@ -126,6 +139,7 @@ export class PlaneEdit extends React.Component {
               <View>
                 <RNPickerSelect
                   placeholder={{label: 'Select the plane\'s engine type'}}
+                  value={this.state.inputs.engine.value}
                   onValueChange={(value) => {
                     this.onInputChange({id: "engine", value});
                   }}
@@ -142,6 +156,7 @@ export class PlaneEdit extends React.Component {
                 <Text>Price</Text>
                 <TextInput
                   style={_styles.input}
+                  value={this.state.inputs.price.value}
                   onChangeText={value => {
                     this.onInputChange({id: "price", value});
                   }}

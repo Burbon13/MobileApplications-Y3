@@ -1,14 +1,17 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-
-import {getLogger} from '../core';
+import {getLogger, navigation} from '../core';
 
 const log = getLogger('Item');
 
 export default ({plane}) => {
   plane = plane.item;
   return (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate('PlaneEdit', {plane: plane});
+      }
+      }>
       <View style={_styles.container}>
         <View>
           <View style={{flexDirection: 'row', marginBottom: 10}}>
@@ -35,16 +38,16 @@ export default ({plane}) => {
 const _prettierPrice = price => {
   const intPrice = parseInt(price);
   if (intPrice >= 1000000000000) {
-    return `US$${Math.floor(intPrice/1000000000000)} trillion`;
+    return `US$${Math.floor(intPrice / 1000000000000)} trillion`;
   }
   if (intPrice >= 1000000000) {
-    return `US$${Math.floor(intPrice/1000000000)} million`;
+    return `US$${Math.floor(intPrice / 1000000000)} million`;
   }
   if (intPrice >= 1000000) {
-    return `US$${Math.floor(intPrice/1000000)} million`;
+    return `US$${Math.floor(intPrice / 1000000)} million`;
   }
   if (intPrice >= 1000) {
-    return `US$${Math.floor(intPrice/1000)} K`;
+    return `US$${Math.floor(intPrice / 1000)} K`;
   }
   return `US$${price}`
 };
