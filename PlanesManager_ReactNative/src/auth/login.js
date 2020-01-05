@@ -1,7 +1,7 @@
 import React from 'react';
 import {ActivityIndicator, TouchableOpacity, StyleSheet, Text, TextInput, View, Animated, Easing} from 'react-native';
 import {getLogger} from '../core';
-import {Consumer} from './context';
+import {AuthContextConsumer} from './context';
 
 const log = getLogger('Login');
 
@@ -11,7 +11,7 @@ export const Login = ({navigation}) => {
   const [password, onChangePassword] = React.useState('');
 
   return (
-    <Consumer>
+    <AuthContextConsumer>
       {({onLogin, loginError, loginInProgress}) => (
         <View style={_styles.container}>
           <TextInput
@@ -61,7 +61,7 @@ export const Login = ({navigation}) => {
           </View>
         </View>
       )}
-    </Consumer>
+    </AuthContextConsumer>
   );
 };
 

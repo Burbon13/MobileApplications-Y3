@@ -1,7 +1,7 @@
 import React, {useCallback, useReducer} from 'react';
 import {AsyncStorage} from 'react-native';
 import {getLogger, httpPost, setToken} from '../core';
-import {Provider} from './context';
+import {AuthContextProvider} from './context';
 
 
 const log = getLogger('AuthStore');
@@ -92,8 +92,8 @@ export const AuthStore = ({children}) => {
 
   log('Rendering', value);
   return (
-    <Provider value={value}>
+    <AuthContextProvider value={value}>
       {children}
-    </Provider>
+    </AuthContextProvider>
   );
 };
