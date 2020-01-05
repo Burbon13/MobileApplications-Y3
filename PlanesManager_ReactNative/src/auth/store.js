@@ -19,7 +19,6 @@ const initialState = {
 };
 
 const reducer = (state, action) => {
-  log('Reducer; action =', action);
   const {type, payload} = action;
   switch (type) {
     case SET_TOKEN:
@@ -36,10 +35,12 @@ const reducer = (state, action) => {
 };
 
 export const AuthStore = ({children}) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  log('Rendering');
+
+  const [state, setState] = useReducer(reducer, initialState);
 
   const onLoadToken = useCallback(async () => {
-    log('AuthLoading token');
+    log('onLoadToken()');
     let token = null;
     try {
       const value = await AsyncStorage.getItem(TOKEN_KEY);
@@ -49,20 +50,21 @@ export const AuthStore = ({children}) => {
       log(`Exception occurred while loading token, error = ${error}`);
     }
     setToken(token);
-    dispatch({type: SET_TOKEN, payload: {token}});
+    setState({type: SET_TOKEN, payload: {token}});
     return Promise.resolve(token);
   }, []);
 
   const onLogin = useCallback(async (username, password) => {
-    log('On Login');
-    dispatch({type: LOGIN_STARTER});
+    log('onLogin()');
+    setState({type: LOGIN_STARTER});
     return httpPost('api/auth/login', {username, password})
       .then(tokenHolder => {
         log('Login successful');
         const {token} = tokenHolder;
         setToken(token);
-        dispatch({type: LOGIN_SUCCEEDED, payload: {token}});
-        AsyncStorage.setItem(TOKEN_KEY, token)
+        setState({type: LOGIN_SUCCEEDED, payload: {token}});
+        AsyncStorage
+          .setItem(TOKEN_KEY, token)
           .catch(error => {
             log(`Exception occurred while saving token, error = ${error}`);
 
@@ -70,13 +72,13 @@ export const AuthStore = ({children}) => {
         return token;
       })
       .catch(error => {
-        dispatch({type: LOGIN_FAILED, payload: {error}});
+        setState({type: LOGIN_FAILED, payload: {error}});
         return Promise.reject(error);
       });
   }, []);
 
   const onLogout = useCallback(async () => {
-    log('On Logout');
+    log('onLogout()');
     try {
       await AsyncStorage.removeItem(TOKEN_KEY);
       log('Successfully removed TOKEN');
@@ -84,13 +86,12 @@ export const AuthStore = ({children}) => {
       log(`Exception occurred while removing token, error = ${error}`);
     }
     setToken(null);
-    dispatch({type: SET_TOKEN, payload: {token: null}});
+    setState({type: SET_TOKEN, payload: {token: null}});
     return Promise.resolve(null);
   }, []);
 
   const value = {...state, onLoadToken, onLogin, onLogout};
 
-  log('Rendering');
   return (
     <AuthContextProvider value={value}>
       {children}

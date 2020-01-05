@@ -1,14 +1,27 @@
 import React from 'react';
-import {ActivityIndicator, TouchableOpacity, StyleSheet, Text, TextInput, View, Animated, Easing} from 'react-native';
-import {getLogger} from '../core';
+import {ActivityIndicator, TouchableOpacity, StyleSheet, Text, TextInput, View, Animated} from 'react-native';
+import {getLogger, navigation} from '../core';
 import {AuthContextConsumer} from './context';
 
 const log = getLogger('Login');
 
-export const Login = ({navigation}) => {
-  log('Rendering Login');
+export const Login = () => {
+  log('Rendering');
+
   const [username, onChangeUsername] = React.useState('');
   const [password, onChangePassword] = React.useState('');
+
+  const onSubmit = onLogin => {
+    log('Login button pressed');
+    onLogin(username, password)
+      .then(() => {
+        log('Login successful, navigating to Planes');
+        navigation.navigate('Planes');
+      })
+      .catch(error => {
+        log(`Login error ${error}`);
+      });
+  };
 
   return (
     <AuthContextConsumer>
@@ -29,34 +42,22 @@ export const Login = ({navigation}) => {
           />
           <TouchableOpacity
             style={[_styles.formElemMargin, _styles.button]}
-            onPress={() => {
-              log('Sign in button pressed');
-              onLogin(username, password)
-                .then(() => {
-                  log('Navigating to Planes');
-                  navigation.navigate('Planes')
-                })
-                .catch(error => {
-                  log(`Login error ${error}`);
-                });
-            }}
+            onPress={() => onSubmit(onLogin)}
           >
             <Text>Login</Text>
           </TouchableOpacity>
           <ActivityIndicator
             animating={loginInProgress}
             size='large'/>
-          {
-            loginError
-            &&
-            <Text
-              style={[_styles.formElemMargin, _styles.errorText]}>
-              {loginError.message || 'Login error'}
-            </Text>
+          {loginError &&
+          <Text
+            style={[_styles.formElemMargin, _styles.errorText]}>
+            {loginError.message || 'Login error'}
+          </Text>
           }
-          <View style={{alignItems: 'center', marginTop: 20}}>
+          <View style={_styles.planeImageWrapper}>
             <Animated.Image
-              style={{width: 120, height: 120}}
+              style={_styles.planeImage}
               source={require('../../assets/images/plane.png')}/>
           </View>
         </View>
@@ -73,7 +74,7 @@ const _styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   formElemMargin: {
     padding: 10,
@@ -94,5 +95,12 @@ const _styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     backgroundColor: '#DDDDDD',
-  }
+  },
+  planeImageWrapper: {
+    alignItems: 'center', marginTop: 20,
+  },
+  planeImage: {
+    width: 120,
+    height: 120,
+  },
 });
