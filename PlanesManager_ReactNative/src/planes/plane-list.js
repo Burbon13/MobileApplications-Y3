@@ -58,6 +58,7 @@ export const PlaneList = ({navigation}) => {
               navigation.navigate('PlaneEdit');
               break;
             case 'bt_stats':
+              navigation.navigate('BrandsPieChart');
               break;
             case 'bt_logout':
               onLogout().then(() => navigation.navigate('Auth'))

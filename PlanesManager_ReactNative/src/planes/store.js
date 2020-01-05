@@ -8,6 +8,7 @@ const log = getLogger('PlanesStore');
 const initialState = {
   isLoading: false,
   planes: null,
+  brandsCount: null,
   loadingError: null,
 };
 
@@ -22,7 +23,7 @@ export const PlanesStore = ({children}) => {
       httpGet('api/plane')
         .then(json => {
           log('Loading planes succeeded');
-          setState({isLoading: false, planes: json});
+          setState({isLoading: false, planes: json, brandsCount: _getBrandCounts(json)});
         })
         .catch(loadingError => {
           log('Loading planes failed');
@@ -52,4 +53,17 @@ export const PlanesStore = ({children}) => {
       {children}
     </PlaneContext.Provider>
   );
+};
+
+const _getBrandCounts = (planes) => {
+  let constBrands = planes.reduce((countMap, plane) => {
+    const brand = plane.brand;
+    if (!countMap.hasOwnProperty(brand)) {
+      countMap[brand] = 0;
+    }
+    countMap[brand]++;
+    return countMap;
+  }, {});
+  constBrands.total = planes.length;
+  return constBrands;
 };
