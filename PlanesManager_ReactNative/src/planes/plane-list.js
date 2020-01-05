@@ -42,6 +42,7 @@ export const PlaneList = ({navigation}) => {
               {loadingError && <Text>{loadingError.message || 'Loading error'}</Text>}
               {planes &&
               <FlatList
+                keyboardShouldPersistTaps={"always"}
                 data={planes}
                 renderItem={(plane) => <Plane plane={plane}/>}
                 keyExtractor={plane => plane.tailNumber}

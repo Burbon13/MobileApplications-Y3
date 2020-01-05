@@ -1,5 +1,5 @@
 import React from 'react';
-import {ActivityIndicator, TouchableOpacity, StyleSheet, Text, TextInput, View} from 'react-native';
+import {ActivityIndicator, TouchableOpacity, StyleSheet, Text, TextInput, View, Animated, Easing} from 'react-native';
 import {getLogger} from '../core';
 import {Consumer} from './context';
 
@@ -9,6 +9,7 @@ export const Login = ({navigation}) => {
   log('Rendering Login');
   const [username, onChangeUsername] = React.useState('');
   const [password, onChangePassword] = React.useState('');
+
   return (
     <Consumer>
       {({onLogin, loginError, loginInProgress}) => (
@@ -49,10 +50,15 @@ export const Login = ({navigation}) => {
             loginError
             &&
             <Text
-              style={[_styles.formElemMargin,_styles.errorText]}>
+              style={[_styles.formElemMargin, _styles.errorText]}>
               {loginError.message || 'Login error'}
             </Text>
           }
+          <View style={{alignItems: 'center', marginTop: 20}}>
+            <Animated.Image
+              style={{width: 120, height: 120}}
+              source={require('../../assets/images/plane.png')}/>
+          </View>
         </View>
       )}
     </Consumer>
