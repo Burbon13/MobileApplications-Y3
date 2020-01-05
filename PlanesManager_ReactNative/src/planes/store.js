@@ -31,9 +31,9 @@ export const PlanesStore = ({children}) => {
     }
   });
 
-  const onSubmit = useCallback(async (text) => {
+  const onSubmit = useCallback(async (plane) => {
     log('POST plane started');
-    return httpPost('api/plane', {text})
+    return httpPost('api/plane', plane)
       .then(json => {
         log('POST plane succeeded');
         setState({planes: planes.concat(json)});

@@ -44,8 +44,24 @@ export class PlaneEdit extends React.Component {
     this.submit = this.submit.bind(this);
   };
 
-  submit() {
-    console.log(this.getFormValidation());
+  submit(onSubmit) {
+    log('Validating form');
+    if(this.getFormValidation()) {
+      log('Form validated successfully!');
+      const newPlane = {
+        tailNumber: this.state.inputs.tailNumber.value,
+        brand: this.state.inputs.brand.value,
+        model: this.state.inputs.model.value,
+        price: this.state.inputs.price.value,
+        fabricationYear: this.state.inputs.year.value,
+        engine: this.state.inputs.engine.value,
+      };
+      onSubmit(newPlane)
+        .then(() => navigation.back())
+        .catch(error => {
+          log(`Add plane error ${error}`)
+        });
+    }
   }
 
   renderError(id) {
@@ -57,7 +73,6 @@ export class PlaneEdit extends React.Component {
   }
 
   render() {
-    const {tailNumber, brand, model, year, price, engine} = this.state;
     return (
       <PlaneContext.Consumer>
         {({onSubmit}) => (
@@ -137,13 +152,7 @@ export class PlaneEdit extends React.Component {
               <TouchableOpacity
                 style={[_styles.button]}
                 onPress={() => {
-                  log('Plane submit');
-                  this.submit();
-                  // onSubmit(value)
-                  //   .then(() => navigation.goBack())
-                  //   .catch(error => {
-                  //     log(`Add plane error ${error}`)
-                  //   });
+                  this.submit(onSubmit);
                 }}
               >
                 <Text>Add plane</Text>
