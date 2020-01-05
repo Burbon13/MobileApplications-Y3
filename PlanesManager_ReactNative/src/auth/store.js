@@ -90,7 +90,7 @@ export const AuthStore = ({children}) => {
 
   const value = {...state, onLoadToken, onLogin, onLogout};
 
-  log('Rendering', value);
+  log('Rendering');
   return (
     <AuthContextProvider value={value}>
       {children}
