@@ -1,4 +1,4 @@
-package com.planemanager_reactnative_cli;
+package com.planesmanager_reactnative;
 
 import android.app.Application;
 import android.content.Context;

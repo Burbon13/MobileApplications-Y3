@@ -1,8 +1,8 @@
 platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-target 'PlaneManager_ReactNative_CLI' do
-  # Pods for PlaneManager_ReactNative_CLI
+target 'PlanesManager_ReactNative' do
+  # Pods for PlanesManager_ReactNative
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
@@ -34,7 +34,7 @@ target 'PlaneManager_ReactNative_CLI' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  target 'PlaneManager_ReactNative_CLITests' do
+  target 'PlanesManager_ReactNativeTests' do
     inherit! :search_paths
     # Pods for testing
   end
@@ -42,10 +42,10 @@ target 'PlaneManager_ReactNative_CLI' do
   use_native_modules!
 end
 
-target 'PlaneManager_ReactNative_CLI-tvOS' do
-  # Pods for PlaneManager_ReactNative_CLI-tvOS
+target 'PlanesManager_ReactNative-tvOS' do
+  # Pods for PlanesManager_ReactNative-tvOS
 
-  target 'PlaneManager_ReactNative_CLI-tvOSTests' do
+  target 'PlanesManager_ReactNative-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end

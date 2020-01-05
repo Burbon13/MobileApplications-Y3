@@ -14,11 +14,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface PlaneManager_ReactNative_CLITests : XCTestCase
+@interface PlanesManager_ReactNativeTests : XCTestCase
 
 @end
 
-@implementation PlaneManager_ReactNative_CLITests
+@implementation PlanesManager_ReactNativeTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL(^)(UIView *view))test
 {

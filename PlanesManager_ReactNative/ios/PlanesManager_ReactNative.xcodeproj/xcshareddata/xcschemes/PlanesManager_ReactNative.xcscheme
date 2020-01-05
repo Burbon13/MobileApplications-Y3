@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "PlaneManager_ReactNative_CLI.app"
-               BlueprintName = "PlaneManager_ReactNative_CLI"
-               ReferencedContainer = "container:PlaneManager_ReactNative_CLI.xcodeproj">
+               BuildableName = "PlanesManager_ReactNative.app"
+               BlueprintName = "PlanesManager_ReactNative"
+               ReferencedContainer = "container:PlanesManager_ReactNative.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "PlaneManager_ReactNative_CLITests.xctest"
-               BlueprintName = "PlaneManager_ReactNative_CLITests"
-               ReferencedContainer = "container:PlaneManager_ReactNative_CLI.xcodeproj">
+               BuildableName = "PlanesManager_ReactNativeTests.xctest"
+               BlueprintName = "PlanesManager_ReactNativeTests"
+               ReferencedContainer = "container:PlanesManager_ReactNative.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -61,9 +61,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "PlaneManager_ReactNative_CLITests.xctest"
-               BlueprintName = "PlaneManager_ReactNative_CLITests"
-               ReferencedContainer = "container:PlaneManager_ReactNative_CLI.xcodeproj">
+               BuildableName = "PlanesManager_ReactNativeTests.xctest"
+               BlueprintName = "PlanesManager_ReactNativeTests"
+               ReferencedContainer = "container:PlanesManager_ReactNative.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -71,9 +71,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "PlaneManager_ReactNative_CLI.app"
-            BlueprintName = "PlaneManager_ReactNative_CLI"
-            ReferencedContainer = "container:PlaneManager_ReactNative_CLI.xcodeproj">
+            BuildableName = "PlanesManager_ReactNative.app"
+            BlueprintName = "PlanesManager_ReactNative"
+            ReferencedContainer = "container:PlanesManager_ReactNative.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -94,9 +94,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "PlaneManager_ReactNative_CLI.app"
-            BlueprintName = "PlaneManager_ReactNative_CLI"
-            ReferencedContainer = "container:PlaneManager_ReactNative_CLI.xcodeproj">
+            BuildableName = "PlanesManager_ReactNative.app"
+            BlueprintName = "PlanesManager_ReactNative"
+            ReferencedContainer = "container:PlanesManager_ReactNative.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -113,9 +113,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "PlaneManager_ReactNative_CLI.app"
-            BlueprintName = "PlaneManager_ReactNative_CLI"
-            ReferencedContainer = "container:PlaneManager_ReactNative_CLI.xcodeproj">
+            BuildableName = "PlanesManager_ReactNative.app"
+            BlueprintName = "PlanesManager_ReactNative"
+            ReferencedContainer = "container:PlanesManager_ReactNative.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

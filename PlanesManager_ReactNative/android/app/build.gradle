@@ -128,7 +128,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.planemanager_reactnative_cli"
+        applicationId "com.planesmanager_reactnative"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

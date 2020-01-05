@@ -1,4 +1,4 @@
-package com.planemanager_reactnative_cli;
+package com.planesmanager_reactnative;
 
 import com.facebook.react.ReactActivity;
 
@@ -10,6 +10,6 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "PlaneManager_ReactNative_CLI";
+    return "PlanesManager_ReactNative";
   }
 }
