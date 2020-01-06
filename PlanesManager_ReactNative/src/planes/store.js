@@ -14,7 +14,7 @@ const initialState = {
 
 export const PlanesStore = ({children}) => {
   const [state, setState] = React.useState(initialState);
-  const {isLoading, planes, loadingError} = state;
+  const {isLoading, planes, loadingError, brandsCount} = state;
   const {token} = useContext(AuthContext);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export const PlanesStore = ({children}) => {
     return httpPost('api/plane', plane)
       .then(json => {
         log('POST plane succeeded');
-        setState({planes: planes.concat(json)});
+        setState({planes: planes.concat(json), brandsCount: brandsCount});
         return Promise.resolve(json);
       })
       .catch(error => {
@@ -55,7 +55,7 @@ export const PlanesStore = ({children}) => {
           throw new Error(`Error finding plane with tailNumber=${updatedPlane.tailNumber}`);
         }
         planes[planeIndex] = updatedPlane;
-        setState({planes: planes});
+        setState({planes: planes, brandsCount: brandsCount});
         return Promise.resolve(json);
       })
       .catch(error => {
@@ -74,7 +74,7 @@ export const PlanesStore = ({children}) => {
           throw new Error(`Error finding plane with tailNumber=${tailNumber}`);
         }
         planes.splice(planeIndex, 1);
-        setState({planes: planes});
+        setState({planes: planes, brandsCount: brandsCount});
         return Promise.resolve(json);
       })
       .catch(error => {

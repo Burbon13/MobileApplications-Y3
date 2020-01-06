@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, TextInput, Picker, StyleSheet, TouchableOpacity, Text, ScrollView} from 'react-native';
+import {View, TextInput, Alert, StyleSheet, TouchableOpacity, Text, ScrollView} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import {getLogger, navigation} from '../../core';
 import {PlaneContext} from '../plane-context';
@@ -94,11 +94,27 @@ export class PlaneEdit extends React.Component {
   }
 
   deletePlane(onDelete) {
-    onDelete(this.state.inputs.tailNumber.value)
-      .then(() => navigation.back())
-      .catch(error => {
-        log(`Add plane error ${error}`);
-      });
+    Alert.alert(
+      `Delete plane ${this.state.inputs.tailNumber.value}`,
+      'Are you sure you want to proceed?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: 'DELETE', onPress: () => {
+            onDelete(this.state.inputs.tailNumber.value)
+              .then(() => navigation.back())
+              .catch(error => {
+                log(`Add plane error ${error}`);
+              });
+          },
+        },
+      ],
+      {cancelable: true},
+    );
   }
 
   renderError(id) {
@@ -118,7 +134,7 @@ export class PlaneEdit extends React.Component {
               <View>
                 <Text>Tail Number</Text>
                 <TextInput
-                  editable={this.state.inputs.tailNumber.value.length === 0}
+                  editable={this.update === false}
                   style={_styles.input}
                   value={this.state.inputs.tailNumber.value}
                   onChangeText={value => {
@@ -185,7 +201,7 @@ export class PlaneEdit extends React.Component {
               {(this.update === false) &&
               <TouchableOpacity
                 style={[_styles.button]}
-                onPress={() => this.submit(onUpdate)}>
+                onPress={() => this.submit(onSubmit)}>
                 < Text>ADD PLANE</Text>
               </TouchableOpacity>
               }
