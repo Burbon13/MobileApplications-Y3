@@ -73,7 +73,7 @@ export const PlaneList = () => {
 };
 
 PlaneList.navigationOptions = {
-  headerTitle: 'Plane List',
+  headerTitle: 'Plane Manager',
 };
 
 

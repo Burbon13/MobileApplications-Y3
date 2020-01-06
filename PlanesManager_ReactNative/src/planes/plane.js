@@ -4,6 +4,14 @@ import {getLogger, navigation} from '../core';
 
 const log = getLogger('Item');
 
+const _brandColor = {
+  BOEING: '#0039a6',
+  AIRBUS: '#eb34eb',
+  ATR: '#1ac7b6',
+  BOMBARDIER: '#23ba35',
+  EMBRAER: '#e6e21c',
+};
+
 export default ({plane}) => {
   // log('Rendering');
   return (
@@ -13,11 +21,12 @@ export default ({plane}) => {
       <View style={_styles.container}>
         <View>
           <View style={_styles.firstLeftPane}>
-            <Text style={_styles.brandText}>{plane.brand}</Text>
+            <Text style={{..._styles.brandText, color: _brandColor[plane.brand]}}>{plane.brand}</Text>
             <Text style={_styles.modelText}>{plane.model}</Text>
           </View>
           <View style={_styles.secondLeftPane}>
-            <Text style={_styles.priceText}>{_prettierPrice(plane.price)}</Text>
+            <Text
+              style={{..._styles.priceText, color: _getPriceColor(plane.price)}}>{_prettierPrice(plane.price)}</Text>
             <Text style={_styles.yearText}>{plane.fabricationYear}</Text>
           </View>
         </View>
@@ -26,6 +35,17 @@ export default ({plane}) => {
       <View style={_styles.horizontalLine}/>
     </TouchableOpacity>
   );
+};
+
+const _getPriceColor = price => {
+  const intPrice = parseInt(price);
+  if (intPrice >= 1000000) {
+    return '#00e81f';
+  }
+  if (intPrice >= 1000) {
+    return '#489c55';
+  }
+  return '#466b4b';
 };
 
 const _prettierPrice = price => {
