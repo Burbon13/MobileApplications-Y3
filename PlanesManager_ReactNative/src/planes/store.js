@@ -1,6 +1,6 @@
 import React, {useCallback, useContext, useEffect} from 'react';
 import {PlaneContext} from './plane-context';
-import {getLogger, httpGet, httpPost, httpPut} from '../core';
+import {getLogger, httpGet, httpPost, httpPut, httpDelete} from '../core';
 import {AuthContext} from '../auth/context';
 
 const log = getLogger('PlanesStore');
@@ -59,13 +59,32 @@ export const PlanesStore = ({children}) => {
         return Promise.resolve(json);
       })
       .catch(error => {
-        log(`PUT plane failed: ${error}`);
+        log(`POST plane failed: ${error}`);
+        return Promise.reject(error);
+      });
+  }, [state]);
+
+  const onDelete = useCallback(async (tailNumber) => {
+    log('DELETE plane started');
+    return httpDelete(`api/plane/${tailNumber}`)
+      .then(json => {
+        log(JSON.stringify(json, null, 2));
+        let planeIndex = planes.findIndex(plane => tailNumber === plane.tailNumber);
+        if (planeIndex === -1) {
+          throw new Error(`Error finding plane with tailNumber=${tailNumber}`);
+        }
+        planes.splice(planeIndex, 1);
+        setState({planes: planes});
+        return Promise.resolve(json);
+      })
+      .catch(error => {
+        log(`DELETE plane failed: ${error}`);
         return Promise.reject(error);
       });
   }, [state]);
 
   log(`Rendering, isLoading=${isLoading}`);
-  const value = {...state, onSubmit, onUpdate};
+  const value = {...state, onSubmit, onUpdate, onDelete};
   return (
     <PlaneContext.Provider value={value}>
       {children}

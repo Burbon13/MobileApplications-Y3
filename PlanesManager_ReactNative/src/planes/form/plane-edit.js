@@ -93,6 +93,14 @@ export class PlaneEdit extends React.Component {
     }
   }
 
+  deletePlane(onDelete) {
+    onDelete(this.state.inputs.tailNumber.value)
+      .then(() => navigation.back())
+      .catch(error => {
+        log(`Add plane error ${error}`);
+      });
+  }
+
   renderError(id) {
     const {inputs} = this.state;
     if (inputs[id].errorLabel) {
@@ -104,7 +112,7 @@ export class PlaneEdit extends React.Component {
   render() {
     return (
       <PlaneContext.Consumer>
-        {({onSubmit, onUpdate}) => (
+        {({onSubmit, onUpdate, onDelete}) => (
           <ScrollView>
             <View style={_styles.container}>
               <View>
@@ -174,18 +182,29 @@ export class PlaneEdit extends React.Component {
                 {this.renderError('price')}
               </View>
 
+              {(this.update === false) &&
               <TouchableOpacity
                 style={[_styles.button]}
-                onPress={() => {
-                  if (this.update) {
-                    this.submit(onUpdate);
-                  } else {
-                    this.submit(onSubmit);
-                  }
-                }}
-              >
-                <Text>Add plane</Text>
+                onPress={() => this.submit(onUpdate)}>
+                < Text>ADD PLANE</Text>
               </TouchableOpacity>
+              }
+
+              {this.update === true &&
+              <TouchableOpacity
+                style={[_styles.button]}
+                onPress={() => this.submit(onUpdate)}>
+                <Text>UPDATE PLANE</Text>
+              </TouchableOpacity>
+              }
+
+              {this.update === true &&
+              <TouchableOpacity
+                style={[_styles.button, _styles.deleteButton]}
+                onPress={() => this.deletePlane(onDelete)}>
+                <Text>DELETE PLANE</Text>
+              </TouchableOpacity>
+              }
             </View>
           </ScrollView>
         )}
@@ -225,5 +244,8 @@ const _styles = StyleSheet.create({
     backgroundColor: '#DDDDDD',
     padding: 10,
     marginVertical: 10,
+  },
+  deleteButton: {
+    backgroundColor: '#dd0214',
   },
 });
