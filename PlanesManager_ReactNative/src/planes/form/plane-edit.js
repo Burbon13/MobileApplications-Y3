@@ -59,8 +59,10 @@ export class PlaneEdit extends React.Component {
     log(`Props passed to PlaneEdit: ${JSON.stringify(props, null, 2)}`);
     if (props.navigation.state.params) {
       log('Plane exists, retrieving data');
+      this.update = true;
       this.plane = props.navigation.state.params.plane;
     } else {
+      this.update = false;
       this.plane = false;
     }
     log(`Plane value passed to PlaneEdit: ${JSON.stringify(this.plane, null, 2)}`);
@@ -102,7 +104,7 @@ export class PlaneEdit extends React.Component {
   render() {
     return (
       <PlaneContext.Consumer>
-        {({onSubmit}) => (
+        {({onSubmit, onUpdate}) => (
           <ScrollView>
             <View style={_styles.container}>
               <View>
@@ -175,7 +177,11 @@ export class PlaneEdit extends React.Component {
               <TouchableOpacity
                 style={[_styles.button]}
                 onPress={() => {
-                  this.submit(onSubmit);
+                  if (this.update) {
+                    this.submit(onUpdate);
+                  } else {
+                    this.submit(onSubmit);
+                  }
                 }}
               >
                 <Text>Add plane</Text>

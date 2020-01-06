@@ -1,6 +1,6 @@
 import React, {useCallback, useContext, useEffect} from 'react';
 import {PlaneContext} from './plane-context';
-import {getLogger, httpGet, httpPost} from '../core';
+import {getLogger, httpGet, httpPost, httpPut} from '../core';
 import {AuthContext} from '../auth/context';
 
 const log = getLogger('PlanesStore');
@@ -27,7 +27,7 @@ export const PlanesStore = ({children}) => {
         })
         .catch(loadingError => {
           log('Loading planes failed');
-          setState({isLoading: false, loadingError})
+          setState({isLoading: false, loadingError});
         });
     }
   });
@@ -41,13 +41,31 @@ export const PlanesStore = ({children}) => {
         return Promise.resolve(json);
       })
       .catch(error => {
-        log('POST plane failed');
+        log(`POST plane failed: ${error}`);
         return Promise.reject(error);
       });
-  }, []);
+  }, [state]);
+
+  const onUpdate = useCallback(async (updatedPlane) => {
+    log('POST plane started');
+    return httpPut('api/plane', updatedPlane)
+      .then(json => {
+        let planeIndex = planes.findIndex(plane => updatedPlane.tailNumber === plane.tailNumber);
+        if (planeIndex === -1) {
+          throw new Error(`Error finding plane with tailNumber=${updatedPlane.tailNumber}`);
+        }
+        planes[planeIndex] = updatedPlane;
+        setState({planes: planes});
+        return Promise.resolve(json);
+      })
+      .catch(error => {
+        log(`PUT plane failed: ${error}`);
+        return Promise.reject(error);
+      });
+  }, [state]);
 
   log(`Rendering, isLoading=${isLoading}`);
-  const value = {...state, onSubmit};
+  const value = {...state, onSubmit, onUpdate};
   return (
     <PlaneContext.Provider value={value}>
       {children}

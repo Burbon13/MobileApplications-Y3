@@ -5,7 +5,7 @@ import {getLogger, navigation} from '../core';
 const log = getLogger('Item');
 
 export default ({plane}) => {
-  log('Rendering');
+  // log('Rendering');
   return (
     <TouchableOpacity onPress={() => {
       navigation.navigate('PlaneEdit', {plane: plane});

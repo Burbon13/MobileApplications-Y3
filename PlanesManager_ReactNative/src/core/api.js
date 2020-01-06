@@ -29,6 +29,14 @@ export const httpPost = (path, payload) =>
     }),
   );
 
+export const httpPut = (path, payload) =>
+  _withErrorHandling(
+    fetch(`${_httpApiUrl}/${path}`, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+      headers: _buildHeaders(),
+    }),
+  );
 
 const _buildHeaders = () => {
   const headers = {..._defaultHeaders};
