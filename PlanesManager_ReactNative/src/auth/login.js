@@ -11,7 +11,7 @@ export const Login = () => {
   const [username, onChangeUsername] = React.useState('');
   const [password, onChangePassword] = React.useState('');
 
-  const onSubmit = onLogin => {
+  const onSubmit = React.useCallback(onLogin => {
     log('Login button pressed');
     onLogin(username, password)
       .then(() => {
@@ -21,7 +21,7 @@ export const Login = () => {
       .catch(error => {
         log(`Login error ${error}`);
       });
-  };
+  }, [username, password]);
 
   return (
     <AuthContextConsumer>
