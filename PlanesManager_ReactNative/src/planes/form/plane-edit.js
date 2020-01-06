@@ -1,11 +1,57 @@
 import React from 'react';
 import {View, TextInput, Picker, StyleSheet, TouchableOpacity, Text, ScrollView} from 'react-native';
-import RNPickerSelect from 'react-native-picker-select'
+import RNPickerSelect from 'react-native-picker-select';
 import {getLogger, navigation} from '../../core';
-import {PlaneContext} from "../plane-context";
-import {validationService} from "./service";
+import {PlaneContext} from '../plane-context';
+import {validationService} from './service';
 
 const log = getLogger('PlaneEdit');
+
+const _brandsLabels = [
+  {label: 'Boeing', value: 'BOEING'},
+  {label: 'Airbus', value: 'AIRBUS'},
+  {label: 'ATR', value: 'ATR'},
+  {label: 'Embraer', value: 'EMBRAER'},
+  {label: 'Bombardier', value: 'BOMBARDIER'},
+];
+
+const _engineLabels = [
+  {label: 'Turboprop', value: 'TURBOPROP'},
+  {label: 'Ramjet', value: 'RAMJET'},
+  {label: 'Turbojet', value: 'TURBOJET'},
+  {label: 'Turbofan', value: 'TURBOFAN'},
+];
+
+const _getInitialState = plane => {
+  return {
+    inputs: {
+      tailNumber: {
+        type: 'generic',
+        value: plane ? plane.tailNumber : '',
+      },
+      model: {
+        type: 'generic',
+        value: plane ? plane.model : '',
+      },
+      year: {
+        type: 'year',
+        value: plane ? plane.fabricationYear.toString() : '',
+      },
+      price: {
+        type: 'integer',
+        value: plane ? plane.price.toString() : '',
+      },
+      brand: {
+        type: 'generic',
+        value: plane ? plane.brand : '',
+      },
+      engine: {
+        type: 'generic',
+        value: plane ? plane.engine : '',
+      },
+    },
+  };
+};
 
 export class PlaneEdit extends React.Component {
   constructor(props) {
@@ -18,34 +64,7 @@ export class PlaneEdit extends React.Component {
       this.plane = false;
     }
     log(`Plane value passed to PlaneEdit: ${JSON.stringify(this.plane, null, 2)}`);
-    this.state = {
-      inputs: {
-        tailNumber: {
-          type: "generic",
-          value: this.plane ? this.plane.tailNumber : ""
-        },
-        model: {
-          type: "generic",
-          value: this.plane ? this.plane.model : ""
-        },
-        year: {
-          type: "year",
-          value: this.plane ? this.plane.fabricationYear.toString() : ""
-        },
-        price: {
-          type: "integer",
-          value: this.plane ? this.plane.price.toString() : ""
-        },
-        brand: {
-          type: "generic",
-          value: this.plane ? this.plane.brand : ""
-        },
-        engine: {
-          type: "generic",
-          value: this.plane ? this.plane.engine : ""
-        }
-      }
-    };
+    this.state = _getInitialState(this.plane);
 
     this.onInputChange = validationService.onInputChange.bind(this);
     this.getFormValidation = validationService.getFormValidation.bind(this);
@@ -67,7 +86,7 @@ export class PlaneEdit extends React.Component {
       onSubmit(newPlane)
         .then(() => navigation.back())
         .catch(error => {
-          log(`Add plane error ${error}`)
+          log(`Add plane error ${error}`);
         });
     }
   }
@@ -93,26 +112,20 @@ export class PlaneEdit extends React.Component {
                   style={_styles.input}
                   value={this.state.inputs.tailNumber.value}
                   onChangeText={value => {
-                    this.onInputChange({id: "tailNumber", value});
+                    this.onInputChange({id: 'tailNumber', value});
                   }}
                 />
-                {this.renderError("tailNumber")}
+                {this.renderError('tailNumber')}
               </View>
               <View>
                 <RNPickerSelect
                   placeholder={{label: 'Select the plane\'s brand'}}
                   value={this.state.inputs.brand.value}
                   onValueChange={(value) =>
-                    this.onInputChange({id: "brand", value})}
-                  items={[
-                    {label: 'Boeing', value: 'BOEING'},
-                    {label: 'Airbus', value: 'AIRBUS'},
-                    {label: 'ATR', value: 'ATR'},
-                    {label: 'Embraer', value: 'EMBRAER'},
-                    {label: 'Bombardier', value: 'BOMBARDIER'},
-                  ]}
+                    this.onInputChange({id: 'brand', value})}
+                  items={_brandsLabels}
                 />
-                {this.renderError("brand")}
+                {this.renderError('brand')}
               </View>
               <View>
                 <Text>Model</Text>
@@ -120,10 +133,10 @@ export class PlaneEdit extends React.Component {
                   style={_styles.input}
                   value={this.state.inputs.model.value}
                   onChangeText={value => {
-                    this.onInputChange({id: "model", value});
+                    this.onInputChange({id: 'model', value});
                   }}
                 />
-                {this.renderError("model")}
+                {this.renderError('model')}
               </View>
               <View>
                 <Text>Fabrication Year</Text>
@@ -131,26 +144,21 @@ export class PlaneEdit extends React.Component {
                   style={_styles.input}
                   value={this.state.inputs.year.value}
                   onChangeText={value => {
-                    this.onInputChange({id: "year", value});
+                    this.onInputChange({id: 'year', value});
                   }}
                 />
-                {this.renderError("year")}
+                {this.renderError('year')}
               </View>
               <View>
                 <RNPickerSelect
                   placeholder={{label: 'Select the plane\'s engine type'}}
                   value={this.state.inputs.engine.value}
                   onValueChange={(value) => {
-                    this.onInputChange({id: "engine", value});
+                    this.onInputChange({id: 'engine', value});
                   }}
-                  items={[
-                    {label: 'Turboprop', value: 'TURBOPROP'},
-                    {label: 'Ramjet', value: 'RAMJET'},
-                    {label: 'Turbojet', value: 'TURBOJET'},
-                    {label: 'Turbofan', value: 'TURBOFAN'},
-                  ]}
+                  items={_engineLabels}
                 />
-                {this.renderError("engine")}
+                {this.renderError('engine')}
               </View>
               <View styles={_styles.inputWrapper}>
                 <Text>Price</Text>
@@ -158,10 +166,10 @@ export class PlaneEdit extends React.Component {
                   style={_styles.input}
                   value={this.state.inputs.price.value}
                   onChangeText={value => {
-                    this.onInputChange({id: "price", value});
+                    this.onInputChange({id: 'price', value});
                   }}
                 />
-                {this.renderError("price")}
+                {this.renderError('price')}
               </View>
 
               <TouchableOpacity
@@ -176,7 +184,7 @@ export class PlaneEdit extends React.Component {
           </ScrollView>
         )}
       </PlaneContext.Consumer>
-    )
+    );
   };
 }
 
@@ -188,28 +196,28 @@ const _styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 8,
-    paddingTop: 50
+    paddingTop: 50,
   },
   input: {
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: 'black',
     padding: 10,
     marginBottom: 15,
-    alignSelf: "stretch"
+    alignSelf: 'stretch',
   },
   split: {
-    flexDirection: "row"
+    flexDirection: 'row',
   },
   error: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
-    color: "red",
-    fontSize: 12
+    color: 'red',
+    fontSize: 12,
   },
   button: {
     alignItems: 'center',
     backgroundColor: '#DDDDDD',
     padding: 10,
     marginVertical: 10,
-  }
+  },
 });

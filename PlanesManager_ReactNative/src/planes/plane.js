@@ -5,32 +5,25 @@ import {getLogger, navigation} from '../core';
 const log = getLogger('Item');
 
 export default ({plane}) => {
-  plane = plane.item;
+  log('Rendering');
   return (
-    <TouchableOpacity
-      onPress={() => {
-        navigation.navigate('PlaneEdit', {plane: plane});
-      }
-      }>
+    <TouchableOpacity onPress={() => {
+      navigation.navigate('PlaneEdit', {plane: plane});
+    }}>
       <View style={_styles.container}>
         <View>
-          <View style={{flexDirection: 'row', marginBottom: 10}}>
+          <View style={_styles.firstLeftPane}>
             <Text style={_styles.brandText}>{plane.brand}</Text>
             <Text style={_styles.modelText}>{plane.model}</Text>
           </View>
-          <View style={{flexDirection: 'row'}}>
+          <View style={_styles.secondLeftPane}>
             <Text style={_styles.priceText}>{_prettierPrice(plane.price)}</Text>
             <Text style={_styles.yearText}>{plane.fabricationYear}</Text>
           </View>
         </View>
         <Text style={_styles.tailNumberText}>{plane.tailNumber}</Text>
       </View>
-      <View
-        style={{
-          borderBottomColor: 'black',
-          borderBottomWidth: 1,
-        }}
-      />
+      <View style={_styles.horizontalLine}/>
     </TouchableOpacity>
   );
 };
@@ -49,7 +42,7 @@ const _prettierPrice = price => {
   if (intPrice >= 1000) {
     return `US$${Math.floor(intPrice / 1000)} K`;
   }
-  return `US$${price}`
+  return `US$${price}`;
 };
 
 const _styles = StyleSheet.create({
@@ -80,5 +73,16 @@ const _styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     textAlignVertical: 'center',
+  },
+  horizontalLine: {
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+  },
+  firstLeftPane: {
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  secondLeftPane: {
+    flexDirection: 'row',
   },
 });

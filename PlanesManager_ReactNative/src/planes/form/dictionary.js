@@ -34,7 +34,7 @@ export const validationDictionary = {
       message: "^This is required"
     },
     length: {
-      minimum: 4,
+      minimum: 3,
       message: "^Must be at least 4 characters long"
     }
   },
