@@ -46,6 +46,19 @@ export const PlanesStore = ({children}) => {
       });
   }, [state]);
 
+  const onGeolocation = useCallback(async (tailNumber) => {
+    log('GET plane geolocation started');
+    return httpGet(`api/plane/position/${tailNumber}`)
+      .then(json => {
+        log('GET plane geolocation succeeded');
+        return Promise.resolve(json);
+      })
+      .catch(error => {
+        log(`GET plane geolocation failed: ${error}`);
+        return Promise.reject(error);
+      });
+  }, []);
+
   const onUpdate = useCallback(async (updatedPlane) => {
     log('POST plane started');
     return httpPut('api/plane', updatedPlane)
@@ -84,7 +97,7 @@ export const PlanesStore = ({children}) => {
   }, [state]);
 
   log(`Rendering, isLoading=${isLoading}`);
-  const value = {...state, onSubmit, onUpdate, onDelete};
+  const value = {...state, onSubmit, onUpdate, onDelete, onGeolocation};
   return (
     <PlaneContext.Provider value={value}>
       {children}

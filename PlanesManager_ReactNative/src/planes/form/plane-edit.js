@@ -4,6 +4,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import {getLogger, navigation} from '../../core';
 import {PlaneContext} from '../plane-context';
 import {validationService} from './service';
+import openMap from 'react-native-open-maps';
 
 const log = getLogger('PlaneEdit');
 
@@ -122,6 +123,12 @@ export class PlaneEdit extends React.Component {
     );
   }
 
+  openGeolocation(onGeolocation) {
+    onGeolocation(this.state.inputs.tailNumber.value)
+      .then(geolocation => openMap({latitude: geolocation.x, longitude: geolocation.y}))
+      .catch(error => log(`Add plane error ${error}`));
+  }
+
   renderError(id) {
     const {inputs} = this.state;
     if (inputs[id].errorLabel) {
@@ -133,7 +140,7 @@ export class PlaneEdit extends React.Component {
   render() {
     return (
       <PlaneContext.Consumer>
-        {({onSubmit, onUpdate, onDelete}) => (
+        {({onSubmit, onUpdate, onDelete, onGeolocation}) => (
           <ScrollView>
             <View style={_styles.container}>
               <View>
@@ -214,6 +221,19 @@ export class PlaneEdit extends React.Component {
                 }>
                 <Text
                   style={this.state.loading ? _styles.disabledText : {}}>ADD PLANE</Text>
+              </TouchableOpacity>
+              }
+
+              {this.update === true &&
+              <TouchableOpacity
+                style={this.state.loading ?
+                  [_styles.button, _styles.disabledButton] :
+                  [_styles.button]
+                }
+                onPress={() => {
+                  this.openGeolocation(onGeolocation);
+                }}>
+                <Text style={this.state.loading ? _styles.disabledText : {}}>GEOLOCATION</Text>
               </TouchableOpacity>
               }
 
