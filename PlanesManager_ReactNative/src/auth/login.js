@@ -1,7 +1,8 @@
 import React from 'react';
-import {ActivityIndicator, TouchableOpacity, StyleSheet, Text, TextInput, View, Animated} from 'react-native';
+import {ActivityIndicator, TouchableOpacity, StyleSheet, Text, TextInput, View, Image} from 'react-native';
 import {getLogger, navigation} from '../core';
 import {AuthContextConsumer} from './context';
+import {PlaneIconAnimation} from './animations/plane-icon-animation';
 
 const log = getLogger('Login');
 
@@ -56,9 +57,11 @@ export const Login = () => {
           </Text>
           }
           <View style={_styles.planeImageWrapper}>
-            <Animated.Image
-              style={_styles.planeImage}
-              source={require('../../assets/images/plane.png')}/>
+            <PlaneIconAnimation>
+              <Image
+                style={_styles.planeImage}
+                source={require('../../assets/images/plane.png')}/>
+            </PlaneIconAnimation>
           </View>
         </View>
       )}
@@ -100,7 +103,7 @@ const _styles = StyleSheet.create({
     alignItems: 'center', marginTop: 20,
   },
   planeImage: {
-    width: 120,
-    height: 120,
+    width: 150,
+    height: 150,
   },
 });
