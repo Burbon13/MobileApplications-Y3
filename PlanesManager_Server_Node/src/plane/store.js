@@ -44,6 +44,7 @@ export class PlaneStore {
     }
 
     validatePlane(plane) {
+        console.log(`Validating plane: ${JSON.stringify(plane, null, 2)}`);
         let tailNumber = plane.tailNumber;
         if (!tailNumber) {
             throw new Error('Missing tail_number property');

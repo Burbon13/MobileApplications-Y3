@@ -135,7 +135,8 @@ router.put('/', async (ctx) => {
 
 router.del('/:tailNumber', async (ctx) => {
     await planeStore.remove({tailNumber: ctx.params.tailNumber});
-    ctx.response.status = 204;
+    ctx.response.status = 200;
+    ctx.response.body = {message: 'Success'};
 });
 
 router.post('/generate/:nr', async (ctx) => await generatePlanes(ctx.params.nr, ctx.response));
