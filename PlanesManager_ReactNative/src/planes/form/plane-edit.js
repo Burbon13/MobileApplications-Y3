@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, TextInput, Alert, StyleSheet, TouchableOpacity, Text, ScrollView} from 'react-native';
+import {View, TextInput, Alert, StyleSheet, TouchableOpacity, Text, ScrollView, ActivityIndicator} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import {getLogger, navigation} from '../../core';
 import {PlaneContext} from '../plane-context';
@@ -50,6 +50,7 @@ const _getInitialState = plane => {
         value: plane ? plane.engine : '',
       },
     },
+    loading: false,
   };
 };
 
@@ -77,6 +78,7 @@ export class PlaneEdit extends React.Component {
     log('Validating form');
     if (this.getFormValidation()) {
       log('Form validated successfully!');
+      this.setState({...this.state, loading: true});
       const newPlane = {
         tailNumber: this.state.inputs.tailNumber.value,
         brand: this.state.inputs.brand.value,
@@ -89,6 +91,7 @@ export class PlaneEdit extends React.Component {
         .then(() => navigation.back())
         .catch(error => {
           log(`Add plane error ${error}`);
+          this.setState({...this.state, loading: false});
         });
     }
   }
@@ -105,10 +108,12 @@ export class PlaneEdit extends React.Component {
         },
         {
           text: 'DELETE', onPress: () => {
+            this.setState({...this.state, loading: true});
             onDelete(this.state.inputs.tailNumber.value)
               .then(() => navigation.back())
               .catch(error => {
                 log(`Add plane error ${error}`);
+                this.setState({...this.state, loading: false});
               });
           },
         },
@@ -201,26 +206,48 @@ export class PlaneEdit extends React.Component {
               {(this.update === false) &&
               <TouchableOpacity
                 style={[_styles.button]}
-                onPress={() => this.submit(onSubmit)}>
-                < Text>ADD PLANE</Text>
+                onPress={() => {
+                  if (!this.state.loading) {
+                    this.submit(onSubmit);
+                  }
+                }
+                }>
+                <Text
+                  style={this.state.loading ? _styles.disabledText : {}}>ADD PLANE</Text>
               </TouchableOpacity>
               }
 
               {this.update === true &&
               <TouchableOpacity
                 style={[_styles.button]}
-                onPress={() => this.submit(onUpdate)}>
-                <Text>UPDATE PLANE</Text>
+                onPress={() => {
+                  if (!this.state.loading) {
+                    this.submit(onUpdate);
+                  }
+                }}>
+                <Text
+                  style={this.state.loading ? _styles.disabledText : {}}>UPDATE PLANE</Text>
               </TouchableOpacity>
               }
 
               {this.update === true &&
               <TouchableOpacity
-                style={[_styles.button, _styles.deleteButton]}
-                onPress={() => this.deletePlane(onDelete)}>
-                <Text>DELETE PLANE</Text>
+                style={this.state.loading ?
+                  [_styles.button, _styles.deleteButton, _styles.disabledButton] :
+                  [_styles.button, _styles.deleteButton]
+                }
+                onPress={() => {
+                  if (!this.state.loading) {
+                    this.deletePlane(onDelete);
+                  }
+                }}>
+                <Text style={this.state.loading ? _styles.disabledText : {}}>DELETE PLANE</Text>
               </TouchableOpacity>
               }
+
+              <ActivityIndicator
+                animating={this.state.loading}
+                size='large'/>
             </View>
           </ScrollView>
         )}
@@ -263,5 +290,11 @@ const _styles = StyleSheet.create({
   },
   deleteButton: {
     backgroundColor: '#dd0214',
+  },
+  disabledButton: {
+    backgroundColor: '#c6c7ca',
+  },
+  disabledText: {
+    color: '#9b9c9e',
   },
 });
