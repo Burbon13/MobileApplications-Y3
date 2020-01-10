@@ -13,8 +13,6 @@ export const Login = () => {
   const [password, onChangePassword] = React.useState('');
   const [loading, onChangeLoading] = React.useState(false);
 
-  log('FUCK ' + loading);
-
   const onSubmit = React.useCallback(onLogin => {
     log('Login button pressed');
     onChangeLoading(true);

@@ -2,6 +2,7 @@ import React, {useCallback, useContext, useEffect} from 'react';
 import {PlaneContext} from './plane-context';
 import {getLogger, httpGet, httpPost, httpPut, httpDelete} from '../core';
 import {AuthContext} from '../auth/context';
+import {AsyncStorage} from 'react-native';
 
 const log = getLogger('PlanesStore');
 
@@ -20,15 +21,25 @@ export const PlanesStore = ({children}) => {
   useEffect(() => {
     if (token && !planes && !loadingError && !isLoading) {
       setState({isLoading: true, loadingError: null});
-      httpGet('api/plane')
-        .then(json => {
-          log('Loading planes succeeded');
-          setState({isLoading: false, planes: json, brandsCount: _getBrandCounts(json)});
-        })
-        .catch(loadingError => {
-          log('Loading planes failed');
-          setState({isLoading: false, loadingError});
-        });
+
+      AsyncStorage.getItem('planes-manager:planes', (err, result) => {
+        log(`Planes retrieved from async storage, setting state: ${result}`);
+        if (result !== null) {
+          const planes = JSON.parse(result);
+          setState({isLoading: false, planes: planes, brandsCount: _getBrandCounts(planes)});
+        }
+        httpGet('api/plane')
+          .then(json => {
+            log('Loading planes succeeded, saving async storage');
+            AsyncStorage
+              .setItem('planes-manager:planes', JSON.stringify(json))
+              .catch(error => log(`Saving to async storage failed: ${error}`));
+            setState({isLoading: false, planes: json, brandsCount: _getBrandCounts(json)});
+          })
+          .catch(loadingError => {
+            log(`Loading planes failed: ${loadingError}`);
+          });
+      });
     }
   });
 
@@ -40,7 +51,11 @@ export const PlanesStore = ({children}) => {
         const newPlanes = planes.concat(json);
         newPlanes.sort((plane1, plane2) => plane1.tailNumber.localeCompare(plane2.tailNumber));
         setState({planes: newPlanes, brandsCount: brandsCount});
-        return Promise.resolve(json);
+        return AsyncStorage.setItem('planes-manager:planes', JSON.stringify(newPlanes));
+      })
+      .then(result => {
+        log('Saved new plane to async storage');
+        return Promise.resolve(result);
       })
       .catch(error => {
         log(`POST plane failed: ${error}`);
@@ -71,7 +86,11 @@ export const PlanesStore = ({children}) => {
         }
         planes[planeIndex] = updatedPlane;
         setState({planes: planes, brandsCount: brandsCount});
-        return Promise.resolve(json);
+        return AsyncStorage.setItem('planes-manager:planes', JSON.stringify(planes));
+      })
+      .then(result => {
+        log('Plane updated successfully stored to async storage');
+        return Promise.resolve(result);
       })
       .catch(error => {
         log(`POST plane failed: ${error}`);
@@ -90,8 +109,9 @@ export const PlanesStore = ({children}) => {
         }
         planes.splice(planeIndex, 1);
         setState({planes: planes, brandsCount: brandsCount});
-        return Promise.resolve(json);
+        return AsyncStorage.setItem('planes-manager:planes', JSON.stringify(planes));
       })
+      .then(result => Promise.resolve(result))
       .catch(error => {
         log(`DELETE plane failed: ${error}`);
         return Promise.reject(error);
