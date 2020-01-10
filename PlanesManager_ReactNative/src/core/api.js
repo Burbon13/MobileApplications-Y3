@@ -1,5 +1,6 @@
 // const _apiUrl = '192.168.1.203:3000'; // local IP
-const _apiUrl = '192.168.1.8:3000'; // local IP
+// const _apiUrl = '192.168.1.8:3000'; // local IP
+const _apiUrl = '192.168.43.105:3000'; // hotspot IP
 
 const _httpApiUrl = `http://${_apiUrl}`;
 

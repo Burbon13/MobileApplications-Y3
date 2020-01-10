@@ -184,6 +184,7 @@ export class PlaneEdit extends React.Component {
                   onChangeText={value => {
                     this.onInputChange({id: 'year', value});
                   }}
+                  keyboardType={'numeric'}
                 />
                 {this.renderError('year')}
               </View>
@@ -206,6 +207,7 @@ export class PlaneEdit extends React.Component {
                   onChangeText={value => {
                     this.onInputChange({id: 'price', value});
                   }}
+                  keyboardType={'numeric'}
                 />
                 {this.renderError('price')}
               </View>

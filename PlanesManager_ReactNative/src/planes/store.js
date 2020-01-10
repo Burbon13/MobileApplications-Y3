@@ -37,7 +37,9 @@ export const PlanesStore = ({children}) => {
     return httpPost('api/plane', plane)
       .then(json => {
         log('POST plane succeeded');
-        setState({planes: planes.concat(json), brandsCount: brandsCount});
+        const newPlanes = planes.concat(json);
+        newPlanes.sort((plane1, plane2) => plane1.tailNumber.localeCompare(plane2.tailNumber));
+        setState({planes: newPlanes, brandsCount: brandsCount});
         return Promise.resolve(json);
       })
       .catch(error => {
