@@ -50,10 +50,6 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
         )
         Log.d(TAG, "Registering the ConnectivityReceiver")
         connectivityReceiver = ConnectivityReceiver()
-        registerReceiver(
-            connectivityReceiver,
-            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
-        )
     }
 
     override fun onResume() {
@@ -69,6 +65,10 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
             showLogout = loggedIn
             invalidateOptionsMenu()
         })
+        registerReceiver(
+            connectivityReceiver,
+            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        )
     }
 
     override fun onStop() {

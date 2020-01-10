@@ -1,5 +1,6 @@
 package com.burbon13.planesmanager.auth.ui
 
+import android.graphics.drawable.AnimationDrawable
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.widget.EditText
 import android.widget.Toast
 import android.widget.Button
 import android.widget.ProgressBar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.burbon13.planesmanager.MainViewModel
@@ -31,6 +33,7 @@ class LoginFragment : Fragment() {
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
     private lateinit var loadingProgressBar: ProgressBar
+    private lateinit var backgroundAnimation: AnimationDrawable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +55,10 @@ class LoginFragment : Fragment() {
         passwordEditText = rootView.findViewById(R.id.password)
         loginButton = rootView.findViewById(R.id.login)
         loadingProgressBar = rootView.findViewById(R.id.loading)
+        val constraintLayout = rootView.findViewById<ConstraintLayout>(R.id.container)
+        backgroundAnimation = constraintLayout.background as AnimationDrawable
+        backgroundAnimation.setEnterFadeDuration(4000)
+        backgroundAnimation.setExitFadeDuration(4000)
 
         Animations.attachSpringAnimation(rootView.findViewById(R.id.fling))
 
@@ -112,6 +119,7 @@ class LoginFragment : Fragment() {
                 passwordEditText.text.toString()
             )
         }
+        backgroundAnimation.start()
     }
 
     override fun onStop() {
@@ -120,5 +128,6 @@ class LoginFragment : Fragment() {
         usernameEditText.afterTextChanged {}
         passwordEditText.afterTextChanged {}
         loginButton.setOnClickListener(null)
+        backgroundAnimation.stop()
     }
 }
