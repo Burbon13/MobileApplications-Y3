@@ -13,7 +13,7 @@ import java.lang.Exception
  * Class which contains various utils functions for the API
  */
 object ApiUtils {
-    private const val DEFAULT_ERROR_MESSAGE = "An error occurred"
+    private const val DEFAULT_ERROR_MESSAGE = "Something went wrong"
 
     /**
      * Executes an API call and wraps the result into an Result (Result.Success or Result.Error)
