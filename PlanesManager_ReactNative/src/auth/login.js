@@ -11,9 +11,13 @@ export const Login = () => {
 
   const [username, onChangeUsername] = React.useState('');
   const [password, onChangePassword] = React.useState('');
+  const [loading, onChangeLoading] = React.useState(false);
+
+  log('FUCK ' + loading);
 
   const onSubmit = React.useCallback(onLogin => {
     log('Login button pressed');
+    onChangeLoading(true);
     onLogin(username, password)
       .then(() => {
         log('Login successful, navigating to Planes');
@@ -21,6 +25,7 @@ export const Login = () => {
       })
       .catch(error => {
         log(`Login error ${error}`);
+        onChangeLoading(false);
       });
   }, [username, password]);
 
@@ -42,11 +47,24 @@ export const Login = () => {
             value={password}
           />
           <TouchableOpacity
-            style={[_styles.formElemMargin, _styles.button]}
-            onPress={() => onSubmit(onLogin)}
+            style={!loading ?
+              [_styles.formElemMargin, _styles.button] :
+              [_styles.formElemMargin, _styles.button, _styles.disabledButton]}
+            onPress={() => {
+              if (!loading) {
+                onSubmit(onLogin);
+              }
+            }}
           >
-            <Text>Login</Text>
+            <Text style={loading ? _styles.disabledText : {}}>Login</Text>
           </TouchableOpacity>
+          <View style={_styles.planeImageWrapper}>
+            <PlaneIconAnimation>
+              <Image
+                style={_styles.planeImage}
+                source={require('../../assets/images/plane.png')}/>
+            </PlaneIconAnimation>
+          </View>
           <ActivityIndicator
             animating={loginInProgress}
             size='large'/>
@@ -56,13 +74,6 @@ export const Login = () => {
             {loginError.message || 'Login error'}
           </Text>
           }
-          <View style={_styles.planeImageWrapper}>
-            <PlaneIconAnimation>
-              <Image
-                style={_styles.planeImage}
-                source={require('../../assets/images/plane.png')}/>
-            </PlaneIconAnimation>
-          </View>
         </View>
       )}
     </AuthContextConsumer>
@@ -100,10 +111,18 @@ const _styles = StyleSheet.create({
     backgroundColor: '#DDDDDD',
   },
   planeImageWrapper: {
-    alignItems: 'center', marginTop: 20,
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 40,
   },
   planeImage: {
     width: 150,
     height: 150,
+  },
+  disabledButton: {
+    backgroundColor: '#c6c7ca',
+  },
+  disabledText: {
+    color: '#9b9c9e',
   },
 });
