@@ -1,5 +1,5 @@
 import React, {useCallback, useReducer} from 'react';
-import {AsyncStorage} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import {getLogger, httpPost, setToken} from '../core';
 import {AuthContextProvider} from './context';
 

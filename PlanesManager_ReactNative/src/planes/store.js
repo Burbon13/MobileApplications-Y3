@@ -2,7 +2,7 @@ import React, {useCallback, useContext, useEffect} from 'react';
 import {PlaneContext} from './plane-context';
 import {getLogger, httpGet, httpPost, httpPut, httpDelete} from '../core';
 import {AuthContext} from '../auth/context';
-import {AsyncStorage} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const log = getLogger('PlanesStore');
 
