@@ -7,7 +7,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 object Api {
-    private const val URL = "http://192.168.1.8:3000/" // My home
+    private const val URL = "http://192.168.43.105:3000/" // Hotspot
+//    private const val URL = "http://192.168.1.8:3000/" // My home
     // private const val URL = "http://192.168.1.203:3000/" // Catrina's home
 
     val tokenInterceptor = TokenInterceptor()
