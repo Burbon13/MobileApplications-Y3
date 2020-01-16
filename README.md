@@ -37,9 +37,7 @@ npm install # Only once (installs the dependencies)
 npm start # Runs the server
 ```
 
-To run the native Android application enter **PlanesManager\_Android** and:
-
-...
+To run the native Android application open  **PlanesManager\_Android** in **Android Studio** and run the application from there.
 
 To run the React Native application enter **PlanesManager\_ReactNative** and run the following commands:
 
@@ -50,7 +48,7 @@ react-native run-android # To run on an emulator or Android physical device (nee
 
 ## Reflection
 
-This was a project built during my Mobile Applications module at Babes Bolyai University.
+This was a project built during my Mobile Applications course at Babes Bolyai University.
 
 ### Outcomes
 
