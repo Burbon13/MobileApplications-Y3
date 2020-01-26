@@ -8,11 +8,11 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.burbon13.template.screens.login.LoginFragment"
-        android:label="fragment_login"
+        android:label="Login"
         tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/myObjectListFragment"
         android:name="com.burbon13.template.screens.list.MyObjectListFragment"
-        android:label="fragment_my_object_list"
+        android:label="MyObjects list"
         tools:layout="@layout/fragment_my_object_list" />
 </navigation>
