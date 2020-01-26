@@ -7,7 +7,7 @@
     tools:context=".screens.list.MyObjectListFragment">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_btn_plane_form"
+        android:id="@+id/floating_btn_action_1"
         android:layout_width="@dimen/standard_55"
         android:layout_height="@dimen/standard_55"
         android:layout_marginEnd="16dp"
@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_btn_plane_stats"
+        android:id="@+id/floating_btn_action_2"
         android:layout_width="@dimen/standard_55"
         android:layout_height="@dimen/standard_55"
         android:layout_marginEnd="16dp"
@@ -46,7 +46,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_planes"
+        android:id="@+id/recycler_view_my_objects"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/recycler_view_planes"
+        app:layout_constraintBottom_toBottomOf="@+id/recycler_view_my_objects"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

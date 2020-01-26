@@ -21,7 +21,7 @@ object MyObjectRepository {
         return myObjectDao.getById(id)
     }
 
-    suspend fun getAllPlanes(): LiveData<List<MyObject>> {
+    fun getAllPlanes(): LiveData<List<MyObject>> {
         Log.d(TAG, "Get all myObjects")
         return myObjectDao.getAll()
     }

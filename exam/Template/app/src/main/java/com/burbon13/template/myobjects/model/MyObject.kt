@@ -15,5 +15,11 @@ data class MyObject(
     val name: String,
 
     @ColumnInfo(name = "count")
-    val count: Int
+    val count: Int,
+
+    @ColumnInfo(name = "val3")
+    val val3: String,
+
+    @ColumnInfo(name = "val4")
+    val val4: String
 )
