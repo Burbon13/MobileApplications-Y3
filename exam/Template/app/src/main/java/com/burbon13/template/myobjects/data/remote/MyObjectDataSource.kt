@@ -80,7 +80,7 @@ object MyObjectDataSource {
     }
 
     suspend fun deleteMyObject(id: String): MyResult<Boolean> {
-        Log.d(TAG, "Deleting plane with id=$id")
+        Log.d(TAG, "Deleting myObject with id=$id")
         return ApiUtils.retrieveResult(
             {
                 myObjectService.deleteMyObject(id)
@@ -92,7 +92,7 @@ object MyObjectDataSource {
     }
 
     suspend fun updatePlane(myObject: MyObject): MyResult<MyObject> {
-        Log.d(TAG, "Updating plane=$myObject")
+        Log.d(TAG, "Updating myObject=$myObject")
         return ApiUtils.retrieveResult(
             { myObjectService.updateMyObject(myObject) },
             "Exception occurred while updating myObject=$myObject",
