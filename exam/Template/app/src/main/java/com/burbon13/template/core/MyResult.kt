@@ -4,9 +4,9 @@ package com.burbon13.template.core
 /**
  * A generic class that holds a value with its status.
  */
-sealed class Result<out T : Any> {
-    data class Success<out T : Any>(val data: T) : Result<T>()
-    data class Error(val message: String) : Result<Nothing>()
+sealed class MyResult<out T : Any> {
+    data class Success<out T : Any>(val data: T) : MyResult<T>()
+    data class Error(val message: String) : MyResult<Nothing>()
 
     val succeeded
         get() = this is Success
