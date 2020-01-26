@@ -91,7 +91,7 @@ object MyObjectDataSource {
         )
     }
 
-    suspend fun updatePlane(myObject: MyObject): MyResult<MyObject> {
+    suspend fun updateMyObject(myObject: MyObject): MyResult<MyObject> {
         Log.d(TAG, "Updating myObject=$myObject")
         return ApiUtils.retrieveResult(
             { myObjectService.updateMyObject(myObject) },

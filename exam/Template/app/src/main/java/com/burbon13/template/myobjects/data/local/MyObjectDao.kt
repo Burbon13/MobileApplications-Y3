@@ -7,6 +7,9 @@ import com.burbon13.template.myobjects.model.MyObject
 
 @Dao
 interface MyObjectDao {
+    @Query("SELECT * FROM myObjects WHERE id=:id")
+    fun getById(id: String): MyObject?
+
     //    @Query("SELECT * FROM myObjects ORDER BY count ASC")
     @Query("SELECT * FROM myObjects")
     fun getAll(): LiveData<List<MyObject>>

@@ -8,15 +8,15 @@ import com.burbon13.template.myobjects.model.MyObject
 
 
 @Database(entities = [MyObject::class], version = 1)
-abstract class PlanesDatabase : RoomDatabase() {
+abstract class MyObjectDatabase : RoomDatabase() {
     abstract fun myObjectDao(): MyObjectDao
 
     companion object {
         @Volatile
-        private var INSTANCE: PlanesDatabase? = null
+        private var INSTANCE: MyObjectDatabase? = null
         private const val DATABASE_NAME = "my_template_db"
 
-        fun getDatabase(context: Context): PlanesDatabase {
+        fun getDatabase(context: Context): MyObjectDatabase {
             val inst = INSTANCE
             if (inst != null) {
                 return inst
@@ -24,7 +24,7 @@ abstract class PlanesDatabase : RoomDatabase() {
             val instance =
                 Room.databaseBuilder(
                     context.applicationContext,
-                    PlanesDatabase::class.java,
+                    MyObjectDatabase::class.java,
                     DATABASE_NAME
                 )
                     .build()
