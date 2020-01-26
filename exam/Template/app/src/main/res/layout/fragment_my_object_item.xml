@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".MyObjectItemFragment">
+
+    <TextView
+    android:id="@+id/obj_item_val_1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="16dp"
+    android:gravity="center"
+    android:textColor="#020000"
+    android:textSize="24sp"
+    android:textStyle="bold"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:text="Value 1" />
+
+    <TextView
+        android:id="@+id/obj_item_val_2"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:textColor="#77000000"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/obj_item_val_1"
+        app:layout_constraintStart_toEndOf="@+id/obj_item_val_1"
+        app:layout_constraintTop_toTopOf="@+id/obj_item_val_1"
+        tools:text="Value 2" />
+
+    <TextView
+        android:id="@+id/obj_item_val_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/obj_item_val_4"
+        app:layout_constraintStart_toEndOf="@+id/obj_item_val_4"
+        tools:text="Value 3" />
+
+    <TextView
+        android:id="@+id/obj_item_val_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/obj_item_val_1"
+        tools:text="Value 4" />
+
+    <TextView
+        android:id="@+id/obj_item_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="ID" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
