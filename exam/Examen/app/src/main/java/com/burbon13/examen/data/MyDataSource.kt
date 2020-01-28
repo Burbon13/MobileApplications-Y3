@@ -1,7 +1,9 @@
 package com.burbon13.examen.data
 
+import android.util.Log
 import com.burbon13.examen.utils.Api
 import com.burbon13.examen.data.model.ProductPage
+import com.burbon13.examen.utils.TAG
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
@@ -19,8 +21,9 @@ object MyDataSource {
     )
 
     suspend fun x() {
+        Log.w(TAG, "INAINTE DE TESTARE")
         val result = retrofitService.getPage(1)
-        val a = 3
+        Log.w(TAG, "DUPA TESTEARE: $result")
     }
 
 }
