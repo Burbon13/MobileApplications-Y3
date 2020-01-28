@@ -15,7 +15,7 @@ class MainViewModel : ViewModel() {
         Log.d(TAG, "Init MainViewModel")
         viewModelScope.launch(Dispatchers.IO) {
             Log.d(TAG, "Before test!")
-            MyDataSource.test()
+//            MyDataSource.test()
             Log.d(TAG, "After test!")
         }
     }
