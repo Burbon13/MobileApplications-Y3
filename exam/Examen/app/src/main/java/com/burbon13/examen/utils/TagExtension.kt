@@ -1,5 +1,6 @@
 package com.burbon13.examen.utils
 
+
 val Any.TAG: String
     get() {
         val tag = javaClass.simpleName

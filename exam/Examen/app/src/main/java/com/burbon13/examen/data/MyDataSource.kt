@@ -8,6 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
 
+
 object MyDataSource {
 
     interface RetrofitService {
@@ -20,7 +21,7 @@ object MyDataSource {
         RetrofitService::class.java
     )
 
-    suspend fun x() {
+    suspend fun test() {
         Log.w(TAG, "INAINTE DE TESTARE")
         val result = retrofitService.getPage(1)
         Log.w(TAG, "DUPA TESTEARE: $result")
