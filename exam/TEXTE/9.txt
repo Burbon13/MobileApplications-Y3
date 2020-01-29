@@ -1,0 +1,92 @@
+31:01:2018
+Un server expune o lista de task-uri prin http (localhost:3000), fiecare task avand un id intreg,
+un text - sir de caractere, status - sir de caractere (active sau deleted), updated - intreg
+reprezentand in millis data ultimei actualizari si version - intreg reprezentand versiunea entitatii.
+Dezvoltati o aplicatie mobila (client) dupa cum urmeaza.
+
+1. (Master) Primul ecran al aplicatiei prezinta lista task-urilor active, sortate descrescator dupa campul updated,
+incarcate de aplicatie de pe suportul persistent local.
+
+2. (Sync - downloading) La pornirea aplicatiei client se descarca ultimele modificari de pe server apeland
+GET /task?lastUpdated=m unde m reprezinta maximul campurilor updated avute local. Daca clientul nu are task-uri locale
+atunci m este 0. Serverul returneaza doar entitatile actualizate dupa valoarea m.
+
+3. (Sync - receive notifications or periodic update) Serverul emite notificari prin web sockets (ws://localhost:3000).
+Mesajele emise avand structura JSON {event: "inserted" | "deleted", task: {...}}. Clientul isi va actualiza suportul
+persistent local folosind notificarile emise de server prin web sockets, sau apeland periodic serverul, la 5 secunde.
+
+4. (Detail - edit) Prin click/touch pe un task din lista, utilizatorul intra in editarea acelui task intr-un ecran nou.
+Doar textul task-ului poate fi modificat de catre utilizator. La inchiderea ecranului de editare (buton back),
+task-ul este salvat local iar lista prezentata de primul ecran al aplicatiei este actualizata.
+
+5. (Sync - uploading) Imediat dupa salvarea de la punctul 4, aplicatia client programeaza trimiterea datelor pe server,
+folosind PUT task/:id si incapsuland in body task-ul cu textul modificat de utilizator.
+(Sync - retry) Pentru operatiile (5) care esueaza, aplicatia programeaza automat reluarea lor.
+
+6. (Update - conflict) Dupa editare, e posibil ca operatia 5 sa esueze cu codul http 409 Conflict
+daca alt utilizator a modificat intre timp acelasi task. De asemenea e posibil ca si operatia 3 sa esueze, aducand de pe server
+actualizari la acelasi task. Lista de task-uri din primul ecran va indica pentru astfel de task-uri '[conflict]'.
+
+7. (Update - precondition failed) Daca task-ul editat a fost chiar sters de catre sistem (status = 'deleted'),
+operatia 5 esueaza cu codul 412 Precondition Failed. Lista de task-uri din primul ecran va indica pentru astfel
+de task-uri un marcaj '[deleted]'. Cand utilizatorul facee click pe acel task, el va fi sters din lista.
+
+8. (Detail - resolve conflict) Pentru rezolvarea conflictului posibil de la punctul 6, cand se deschide ecranul detail,
+acesta va prezenta utilizatorului si textul introdus simultan de altcineva, permitandu-i acestuia sa faca 'merge'
+la texte, la revenirea din detail considerand ca el a rezolvat conflictul.
+
+9. (Sync info) In contextul ambelor ecrane, cand operatiile de sincronizare modifica lista task-urile locale,
+aplicatia va prezenta sumar cate task-uri au fost actualizate prin download si cate au fost trimise prin upload.
+
+
+
+
+Mai de mult.....
+Tasks
+
+Un server expune o lista de task-uri prin http (localhost:3000), fiecare task avand un id intreg,
+un text - sir de caractere, si date - data inregistrarii.
+Dezvoltati o aplicatie mobila (client) dupa cum urmeaza.
+
+1. (Master) Primul ecran al aplicatiei prezinta lista task-urilor. Serverul returneaza task-urile sortate
+crescator dupa date si paginat - GET /task?page=n, unde n este numarul paginii (1, 2, ...), returnand cel mult
+10 elemente per pagina. Raspunsul serverului (200 OK) este in format JSON si are structura
+{page: n, tasks: [...], count: m}, unde count indica cate elemente sunt pe server.
+
+2. (Activity info, notifications) Deasupra listei va fi prezentata o componenta care expune informatii
+relevante despre starea aplicatiei. Aceasta componenta este vizibila daca dispozitivul nu este conectat
+la internat, daca este in cursul descarcarii primei pagini sau daca descarcarea primei pagini a esuat.
+Componenta prezinta textul 'Offline' daca dispozitivul nu este conectat la internet.
+Cand dispozitivul reintra 'Online', daca descarcarea primei pagini esuase, automat aplicatia va incerca
+sa descarce prima pagina.
+
+3. (Loading indicator) La lansarea in executie, in timpul incarcarii primei pagini, componenta activity info
+va afisa un indicator de progress 'Loading...'. Daca descarcarea esueaza, componenta va afisa
+'Loading failed - error, touch to retry', unde error indica motivul esuarii.
+
+4. (Pagination) Daca utilizatorul face scroll catre sfarsitul listei si aplicatia nu a adus toate task-urile
+de pe server, pe durata descarcarii paginii urmatoare de pe server ultimul element din lista va prezenta
+textul 'Loading...'. Daca descarcarea esueaza, componenta va afisa 'Loading failed - error, touch to retry',
+unde error indica motivul esuarii.
+
+5. (Retry) In ambele cazuri (3, 4), daca descarcarea esueaza utilizatorul poate declansa reluarea operatiilor.
+
+6. (In memory cache) Intotdeuna cand returneaza o pagina serverul pune 'Last-Modified' in response header,
+reprezentand data ultimei modificari asupra listei. Clientul va folosi un cache in memorie pentru paginile
+prezentate in UI, retinand ultima valoare 'Last-Modified' returnata de server si paginile prezentate.
+Pentru o pagina data n, daca aceasta este in cache, la fiecare apel GET /task?page=n, clientul va trimite
+in request header 'If-Modified-Since', reprezentand ultima valoare 'Last-Modified' returnata de server.
+Daca serverul raspunde 304 Not Modified, clientul va folosi ce are in cache.
+
+7. (Persistent cache) Clientul va folosi de asemenea un cache persistent pentru 'Last-Modified' si paginile
+descarcate anterior de aplicatie. Astfel, la lansare, daca clientul are pagini in cache-ul persistent,
+el va arata intai ce are in cache si apoi va incerca sa descarce pagini noi.
+
+8. (Detail) Daca dispozitivul este online, prin click/touch pe un task din lista utilizatorul
+declanseaza stergerea acelui task. Pentru stergere se apeleaza 'DELETE /task/id', indicand id-ul
+task-ului, serverul raspunzand cu 204 No Content. In timpul executiei acestei operatii se afiseaza
+un dialog modal cu textul 'Deleting, please wait'.
+
+9. (Sync) Serverul emite notificari prin web sockets (ws://localhost:3000). Mesajele emise avand structura
+JSON {event: "inserted" | "deleted", task: {...}}. Clientul isi va actualiza cache-urile folosind
+notificarile emise de server prin web sockets, sau apeland periodic serverul, de ex. la 5 secunde.
